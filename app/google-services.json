@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "516034666294",
+    "firebase_url": "https://solpl-25967-default-rtdb.firebaseio.com",
+    "project_id": "solpl-25967",
+    "storage_bucket": "solpl-25967.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516034666294:android:462243ec29139ad51add97",
+        "android_client_info": {
+          "package_name": "com.example.solpl1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "516034666294-g5eoigtettqubtu56um3rq38t8op7927.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.solpl1",
+            "certificate_hash": "b28c3086b8a725055dd8c7d51923eb1c17fc8e56"
+          }
+        },
+        {
+          "client_id": "516034666294-7bs8oh2iisnpbl4v1aemd7emj1paj4ik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDln3skpo4sLRXUrKeG7cG2gfPEii74ACo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "516034666294-7bs8oh2iisnpbl4v1aemd7emj1paj4ik.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

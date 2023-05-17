@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">SOLPL</string>
+    <string name="email">Email</string>
+    <string name="signIn">Sign In</string>
+    <string name="password">Password</string>
+    <string name="sign">Google Login</string>
+    <string name="member">회원가입</string>
+    <string name="find_id">ID 찾기</string>
+    <string name="find_password">비밀번호 찾기</string>
+    <string name="nav_calendar">일정</string>
+    <string name="nav_chat">채팅</string>
+    <string name="nav_map">지도</string>
+    <string name="nav_mypage">마이페이지</string>
+</resources>
