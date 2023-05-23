@@ -111,53 +111,7 @@
             android:layout_height="wrap_content"
             android:textColor="#FF0000"
             android:visibility="gone" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Phone"
-            android:textStyle="bold"
-            android:textSize = "15dp"
-            android:textColor="@color/black"
-            />
-        <EditText
-            android:id="@+id/et_phone"
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:padding="10dp"
-            android:textSize="14dp"
-            android:layout_gravity="left|center_vertical"
-            android:hint="Phone Number"
-            android:background="@drawable/border_sign_up"
-            />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="61dp"
-            android:gravity="center">
-
-            <EditText
-                android:id="@+id/et_phone_authentication"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:gravity="center"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/border_sign_up"
-                android:hint="인증번호 입력"
-                android:textAllCaps="false" />
-
-            <Button
-                android:id="@+id/et_phone_authentication_btn"
-                android:layout_width="150dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/border_sign_up"
-                android:text="인증요청"
-                android:textAllCaps="false" />
-        </LinearLayout>
         <Button
             android:id="@+id/sign_up"
             android:layout_marginTop="10dp"

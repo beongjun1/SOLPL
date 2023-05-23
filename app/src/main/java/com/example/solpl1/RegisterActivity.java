@@ -25,8 +25,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mFireBaseAuth;     // 파이어베이스 인증
     private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
-    private EditText mEtName,mEtEmail, mEtPassword,mEtPasswordConfirm,mPhone,mPhoneAuthentication;
-    private Button mBtnAuthentication,mBtnRegister; // 전화번호 인증버튼, 회원가입 버튼
+    private EditText mEtName,mEtEmail, mEtPassword,mEtPasswordConfirm;
+    private Button mBtnRegister; // 회원가입 버튼
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEtEmail = findViewById(R.id.et_email);
         mEtPassword = findViewById(R.id.et_password);
         mEtPasswordConfirm = findViewById(R.id.et_pwd_equals);
-        mPhone = findViewById(R.id.et_phone);
-        mPhoneAuthentication = findViewById(R.id.et_phone_authentication);
-        mBtnAuthentication = findViewById(R.id.et_phone_authentication_btn);
+
         mBtnRegister = findViewById(R.id.sign_up);
         mBtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
