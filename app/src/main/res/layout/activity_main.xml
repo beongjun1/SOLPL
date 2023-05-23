@@ -19,7 +19,7 @@
         android:layout_alignParentBottom="true"
         app:itemIconTint="@drawable/menu_item_color"
         app:itemTextColor="@drawable/menu_item_color"
-        app:labelVisibilityMode="labeled"
+        app:labelVisibilityMode="unlabeled"
         app:menu="@menu/menu"
         />
 </RelativeLayout>
