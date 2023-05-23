@@ -27,7 +27,7 @@ public class MainCalendar extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
-                    case R.id.nav_home:
+                    case R.id.nav_main:
                         Intent intent = new Intent(MainCalendar.this, MainActivity.class);
                         startActivity(intent);
                         finish();

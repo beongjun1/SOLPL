@@ -2,23 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_main"
         android:enabled="true"
+        android:icon="@drawable/main_icon"
         android:title="@string/nav_home"/>
     <item
         android:id="@+id/nav_calendar"
         android:enabled="true"
+        android:icon="@drawable/calendar_icon"
         android:title="@string/nav_calendar"/>
     <item
         android:id="@+id/nav_chat"
         android:enabled="true"
+        android:icon="@drawable/chat_icon"
         android:title="@string/nav_chat"/>
     <item
         android:id="@+id/nav_map"
         android:enabled="true"
+        android:icon="@drawable/main_icon"
         android:title="@string/nav_map"/>
     <item
         android:id="@+id/nav_mypage"
         android:enabled="true"
+        android:icon="@drawable/person_icon"
         android:title="@string/nav_mypage"/>
 </menu>
