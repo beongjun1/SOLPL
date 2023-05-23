@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:background="#022E62"
         android:layout_alignParentBottom="true"
+        app:itemIconTint="@drawable/menu_item_color"
+        app:itemTextColor="@drawable/menu_item_color"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/menu"
         />
