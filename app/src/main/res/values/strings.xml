@@ -7,6 +7,7 @@
     <string name="member">회원가입</string>
     <string name="find_id">ID 찾기</string>
     <string name="find_password">비밀번호 찾기</string>
+    <string name="nav_home">홈</string>
     <string name="nav_calendar">일정</string>
     <string name="nav_chat">채팅</string>
     <string name="nav_map">지도</string>
