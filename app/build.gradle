@@ -54,4 +54,8 @@ dependencies {
 
     //지도 색칠
     implementation 'com.github.devsideal:VectorChildFinder:1.0.0'
+
+    //OCR 기능
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.0'
+    implementation 'com.google.mlkit:text-recognition-korean:16.0.0'
 }
