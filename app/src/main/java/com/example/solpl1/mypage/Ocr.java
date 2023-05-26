@@ -24,6 +24,8 @@ import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+//OCR 기능 일단 구현 완료
+
 public class Ocr extends AppCompatActivity {
     static final int REQUEST_CODE = 2;
     Uri uri;                //갤러리에서 가져온 이미지에 대한 Uri
