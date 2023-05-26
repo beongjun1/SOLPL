@@ -51,4 +51,7 @@ dependencies {
     //구글 맵 사용
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:19.0.1'
+
+    //지도 색칠
+    implementation 'com.github.devsideal:VectorChildFinder:1.0.0'
 }

@@ -1,13 +1,17 @@
 package com.example.solpl1.mypage;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.devs.vectorchildfinder.VectorChildFinder;
+import com.devs.vectorchildfinder.VectorDrawableCompat;
 import com.example.solpl1.MainActivity;
 import com.example.solpl1.R;
 import com.example.solpl1.calendar.MainCalendar;
@@ -53,6 +57,19 @@ public class MainMypage extends AppCompatActivity {
                 return true;
             }
         });
+
+
+        ImageView imageView = findViewById(R.id.map_korea);
+
+        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.map_of_south_korea, imageView);
+        VectorDrawableCompat.VFullPath path = vector.findPathByName("용인");
+        path.setFillColor(Color.RED);
+
+        VectorDrawableCompat.VFullPath path1 = vector.findPathByName("광명");
+        path1.setFillColor(Color.BLUE);
+
+        imageView.invalidate();
+
     }
 
 }
