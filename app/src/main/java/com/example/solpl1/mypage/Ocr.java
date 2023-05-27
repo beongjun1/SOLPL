@@ -1,5 +1,6 @@
 package com.example.solpl1.mypage;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -50,7 +51,10 @@ public class Ocr extends AppCompatActivity {
 //            // 갤러리에서 선택한 사진에 대한 uri를 가져온다
 //            uri = data.getData();
 //
-//            setImage(uri);
+//            bitmap=resize(this,uri,500);
+//            imageView.setImageBitmap(bitmap);
+//            image = InputImage.fromBitmap(bitmap, 0);
+
 //        }
 //    }
 //
@@ -89,4 +93,33 @@ public class Ocr extends AppCompatActivity {
 //                        });
 //    }
 
+    //이미지 사이즈 줄이는 메소드
+//    private Bitmap resize(Context context, Uri uri, int resize){
+//        Bitmap resizeBitmap=null;
+//
+//        BitmapFactory.Options options = new BitmapFactory.Options();
+//        try {
+//            BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options); // 1번
+//
+//            int width = options.outWidth;
+//            int height = options.outHeight;
+//            int samplesize = 1;
+//
+//            while (true) {//2번
+//                if (width / 2 < resize || height / 2 < resize)
+//                    break;
+//                width /= 2;
+//                height /= 2;
+//                samplesize *= 2;
+//            }
+//
+//            options.inSampleSize = samplesize;
+//            Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options); //3번
+//            resizeBitmap=bitmap;
+//
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return resizeBitmap;
+//    }
 }
