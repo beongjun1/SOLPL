@@ -8,11 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.solpl1.MainActivity;
 import com.example.solpl1.R;
+import com.example.solpl1.MainActivity;
 import com.example.solpl1.calendar.MainCalendar;
 import com.example.solpl1.map.MainMap;
 import com.example.solpl1.mypage.MainMypage;
+import com.example.solpl1.mypage.mypage_main_activity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainChat extends AppCompatActivity {

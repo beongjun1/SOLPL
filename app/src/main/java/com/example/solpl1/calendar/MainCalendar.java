@@ -8,11 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.solpl1.MainActivity;
 import com.example.solpl1.R;
-import com.example.solpl1.chat.MainChat;
+import com.example.solpl1.MainActivity;
+import com.example.solpl1.chat.chat_activity;
 import com.example.solpl1.map.MainMap;
-import com.example.solpl1.mypage.MainMypage;
+import com.example.solpl1.mypage.mypage_main_activity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainCalendar extends AppCompatActivity {
@@ -35,7 +35,7 @@ public class MainCalendar extends AppCompatActivity {
                     case R.id.nav_calendar:
                         break;
                     case R.id.nav_chat:
-                        Intent intent2 = new Intent(MainCalendar.this, MainChat.class);
+                        Intent intent2 = new Intent(MainCalendar.this, chat_activity.class);
                         startActivity(intent2);
                         finish();
                         break;
@@ -44,7 +44,7 @@ public class MainCalendar extends AppCompatActivity {
                         startActivity(intent3);
                         break;
                     case R.id.nav_mypage:
-                        Intent intent4 = new Intent(MainCalendar.this, MainMypage.class);
+                        Intent intent4 = new Intent(MainCalendar.this, mypage_main_activity.class);
                         startActivity(intent4);
                         finish();
                         break;

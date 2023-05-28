@@ -12,11 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.devs.vectorchildfinder.VectorChildFinder;
 import com.devs.vectorchildfinder.VectorDrawableCompat;
-import com.example.solpl1.MainActivity;
 import com.example.solpl1.R;
+import com.example.solpl1.MainActivity;
 import com.example.solpl1.calendar.MainCalendar;
 import com.example.solpl1.chat.MainChat;
 import com.example.solpl1.map.MainMap;
+import com.example.solpl1.mypage.mypage_main_activity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainMypage extends AppCompatActivity {

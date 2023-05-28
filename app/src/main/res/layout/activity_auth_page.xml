@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circle_image_view1"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="70dp"
+            android:src="@drawable/title_logo"
+
+            android:scaleType="centerCrop"
+            tools:ignore="MissingClass" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:text="김인영"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/badge"
+            />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:background="#000000" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="지역"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/my_page_auth_loc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="지역"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="여행 날짜"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/my_page_auth_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2023.01.23 ~ 2022.01.23"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="인증하기"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:layout_marginStart="10dp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/my_page_auth_picture_upload_btn"
+        android:text="첨부 파일 올리기"
+        android:textColor="@color/black"
+        android:background="@color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="35dp"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/my_page_auth_camera_btn"
+        android:text="사진찍기"
+        android:textColor="@color/black"
+        android:background="@color/white"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="35dp"
+        />
+
+    <Button
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/my_page_auth_btn"
+        android:text="인증하기"
+        android:textColor="@color/black"
+        android:background="@color/white"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+
+        />
+
+</LinearLayout>

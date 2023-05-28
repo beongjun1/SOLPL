@@ -12,4 +12,26 @@
     <string name="nav_chat">채팅</string>
     <string name="nav_map">지도</string>
     <string name="nav_mypage">마이페이지</string>
+
+    <string name="add_post">Add Post</string>
+    <string name="title">SOLPL</string>
+    <string name="feed">피드</string>
+    <string name="realtime_feed">실시간 피드</string>
+    <string name="posting">게시글 올리기</string>
+    <string name="profile_edit"><u>프로필 편집</u></string>
+    <string name="price">%1$s원</string>
+
+    <string name="success_login">구글 로그인 성공</string>
+    <string name="failed_login">구글 로그인 실패</string>
+    <string name="success_logout">로그아웃 되었습니다</string>
+    <string name="status_login">이미 로그인 되어있습니다</string>
+    <string name="name">이름</string>
+    <string name="phone">전화번호</string>
+    <string name="location">주소</string>
+    <string name="sex">성별</string>
+    <string name="join">Join</string>
+    <string name="guide">가이드 채팅</string>
+    <string name="together">함께 여행하기</string>
+    <string name="category_location">내 주변 채팅</string>
+    <string name="create_room">방 만들기</string>
 </resources>

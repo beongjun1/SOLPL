@@ -39,6 +39,14 @@
         <activity android:name=".mypage.MainMypage"/>
         <activity android:name=".chat.MainChat"/>
         <activity android:name=".calendar.MainCalendar"/>
+        <activity android:name=".chat.chat_activity" />
+        <activity android:name=".chat.chat_room_activity" />
+        <activity android:name=".mypage.my_page_writing_activity" />
+        <activity android:name=".mypage.my_page_writing_date_select_activity" />
+        <activity android:name=".mypage.mypage_auth_activity" />
+        <activity android:name=".mypage.mypage_main_activity" />
+        <activity android:name=".post_management.post_management_activity" />
+        <activity android:name=".profile_edit.profile_edit_activity" />
     </application>
 
 </manifest>

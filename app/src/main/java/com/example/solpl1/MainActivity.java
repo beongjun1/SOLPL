@@ -1,18 +1,17 @@
 package com.example.solpl1;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import com.example.solpl1.MainActivity;
 import com.example.solpl1.calendar.MainCalendar;
-import com.example.solpl1.chat.MainChat;
+import com.example.solpl1.chat.chat_activity;
 import com.example.solpl1.map.MainMap;
-import com.example.solpl1.mypage.MainMypage;
+import com.example.solpl1.mypage.mypage_main_activity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         break;
                     case R.id.nav_chat:
-                        Intent intent2 = new Intent(MainActivity.this, MainChat.class);
+                        Intent intent2 = new Intent(MainActivity.this, chat_activity.class);
                         startActivity(intent2);
                         finish();
                         break;
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent3);
                         break;
                     case R.id.nav_mypage:
-                        Intent intent4 = new Intent(MainActivity.this, MainMypage.class);
+                        Intent intent4 = new Intent(MainActivity.this, mypage_main_activity.class);
                         startActivity(intent4);
                         finish();
                         break;
