@@ -42,7 +42,7 @@
             android:padding="10dp"
             android:textSize="14dp"
             android:layout_gravity="left|center_vertical"
-            android:hint="Phone Number"
+            android:hint="Ex)1011111111"
             android:background="@drawable/border_sign_up"
             />
 
