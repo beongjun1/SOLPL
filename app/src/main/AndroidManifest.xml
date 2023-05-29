@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Solpl"
         tools:targetApi="31"
-        android:hardwareAccelerated="false">
+        android:hardwareAccelerated="false"
+        android:enableOnBackInvokedCallback="true">
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="ocr" />
@@ -46,6 +47,7 @@
         <activity android:name=".post_management.post_management_activity" />
         <activity android:name=".profile_edit.profile_edit_activity" />
         <activity android:name=".PhoneAuth"/>
+        <activity android:name=".mypage.my_page_achievement"/>
     </application>
 
 </manifest>

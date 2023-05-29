@@ -49,7 +49,10 @@ public class PhoneAuth extends AppCompatActivity {
             @Override
             public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
                 Toast.makeText(PhoneAuth.this, "인증코드가 발송되었습니다. 60초 이내에 입력해주세요.", Toast.LENGTH_SHORT).show();
-                String phoneNum=mPhone.getText().toString();
+
+                //전화번호 수정 불가
+                mPhone.setFocusable(false);
+                mPhone.setClickable(false);
 
                 // 인증하기 버튼 눌렸을때
                 mBtnAuthentication.setOnClickListener(new View.OnClickListener() {
@@ -57,9 +60,9 @@ public class PhoneAuth extends AppCompatActivity {
                     public void onClick(View view) {
                         if(isEditTextEmpty(mPhoneAuthentication)){
                             Toast.makeText(PhoneAuth.this, "인증번호를 입력해주세요", Toast.LENGTH_SHORT).show();
-                            return;
                         }
-                        verifyPhoneNumberWithCode(phoneAuthCredential, phoneNum);
+                        Toast.makeText(PhoneAuth.this, "인증하기 버튼 클릭.", Toast.LENGTH_SHORT).show();
+                        signInWithPhoneAuthCredential(phoneAuthCredential);
                     }
                 });
             }
@@ -78,9 +81,10 @@ public class PhoneAuth extends AppCompatActivity {
                     Toast.makeText(PhoneAuth.this, "전화번호를 입력해주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 PhoneAuthOptions options =
                         PhoneAuthOptions.newBuilder(mAuth)
-                                .setPhoneNumber("+82"+mPhone.getText().toString())       // Phone number to verify
+                                .setPhoneNumber("+1"+mPhone.getText().toString())       // Phone number to verify
                                 .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                                 .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
                                 .setActivity(PhoneAuth.this)
@@ -88,6 +92,7 @@ public class PhoneAuth extends AppCompatActivity {
                 PhoneAuthProvider.verifyPhoneNumber(options);
             }
         });
+
 
     }
     //빈 필드가 있는지 확인하는 코드
@@ -117,19 +122,5 @@ public class PhoneAuth extends AppCompatActivity {
                         }
                     }
                 });
-    }
-    //인증번호 확인 후 진행하는 코드
-    private void verifyPhoneNumberWithCode(PhoneAuthCredential phoneAuthCredential, String phoneNum){
-        String etPhone=mPhone.getText().toString();
-        String code=mBtnAuthentication.getText().toString();
-        if(code.equals(phoneAuthCredential.getSmsCode())&&phoneNum.equals(etPhone)) {
-            signInWithPhoneAuthCredential(phoneAuthCredential);
-        }
-        else if(code.equals(phoneAuthCredential.getSmsCode())){
-            Toast.makeText(PhoneAuth.this,"입력하신 전화번호가 바뀌었습니다.",Toast.LENGTH_SHORT);
-        }
-        else{
-            Toast.makeText(PhoneAuth.this,"인증번호가 틀렸습니다.",Toast.LENGTH_SHORT);
-        }
     }
 }

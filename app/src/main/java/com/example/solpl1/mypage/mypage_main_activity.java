@@ -12,6 +12,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,13 +45,15 @@ public class mypage_main_activity extends AppCompatActivity {
     private ArrayList<my_page_item> tripList;
     private my_page_recycler_adapter mRecyclerAdapter;
     private TextView postCountTextView;
-    Button my_page_writing;
+    Button my_page_writing,trip_current;
     ImageView menu;
     BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
 
         RatingBar ratingBar = findViewById(R.id.my_page_rating_bar);
 
@@ -63,6 +66,8 @@ public class mypage_main_activity extends AppCompatActivity {
         postCountTextView = findViewById(R.id.post_count_textview);
 
         my_page_writing = findViewById(R.id.mypage_writing);
+
+        trip_current=findViewById(R.id.trip_current);
 
         mRecyclerView.setAdapter(mRecyclerAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -170,6 +175,14 @@ public class mypage_main_activity extends AppCompatActivity {
                         break;
                 }
                 return true;
+            }
+        });
+
+        trip_current.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent= new Intent(mypage_main_activity.this, my_page_achievement.class);
+                startActivity(intent);
             }
         });
     }

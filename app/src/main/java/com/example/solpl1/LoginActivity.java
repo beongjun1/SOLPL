@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -66,6 +68,14 @@ public class LoginActivity extends AppCompatActivity {
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(isEditTextEmpty(mEtEmail)||isEditTextEmpty(mEtPwd)){
+                    Toast.makeText(LoginActivity.this,"빈 칸을 채워주세요.",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!isValidEmail(mEtEmail.getText().toString())) {
+                    Toast.makeText(LoginActivity.this, "올바른 이메일 형식이 아닙니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String strEmail = mEtEmail.getText().toString();
                 String strPwd = mEtPwd.getText().toString();
 
@@ -153,6 +163,12 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    private boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+    private boolean isEditTextEmpty(EditText editText) {
+        return editText.getText().toString().trim().length() == 0;
+    }
 
 
 }

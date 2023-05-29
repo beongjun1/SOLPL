@@ -10,29 +10,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/chat_room_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:layout_margin="20dp"
-        android:text="내 채팅방"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        tools:ignore="RtlHardcoded" />
-
-        <EditText
-            android:layout_width="295dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:background="@drawable/chat_search_border"
-            android:drawableStart="@drawable/activity_search"
-            android:elevation="10dp"
-            android:hint="Search"
-            android:drawablePadding="10dp"
-            android:outlineProvider="bounds"
-            android:layout_marginBottom="20dp"
-            android:padding="10dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+            <EditText
+                android:layout_width="295dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:background="@drawable/chat_search_border"
+                android:drawableStart="@drawable/activity_search"
+                android:elevation="10dp"
+                android:hint="Search"
+                android:drawablePadding="10dp"
+                android:outlineProvider="bounds"
+                android:padding="10dp"
+                android:layout_marginLeft="10dp"/>
+            <TextView
+                android:id="@+id/chat_room_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="20dp"
+                android:text="내 채팅방"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                tools:ignore="RtlHardcoded" />
+        </LinearLayout>
         <LinearLayout
             android:background="#022E62"
             android:layout_width="match_parent"
