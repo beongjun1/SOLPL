@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,8 +28,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -53,6 +57,7 @@ public class my_page_writing_activity extends AppCompatActivity {
     private RecyclerView image_recycler_view;
     private my_page_post_image_adpater recycler_view_adapter;
     private DatabaseReference mDatabaseRef; //실시간 데이터베이스
+    private DatabaseReference user_account_database; //실시간 데이터베이스
     private FirebaseAuth mFirebaseAuth; // 파이어베이스 인증
 
     DecimalFormat myFormatter = new DecimalFormat("###,###"); //비용을 처리할 때 쉼표를 표시하기 위한 객체
@@ -239,13 +244,13 @@ public class my_page_writing_activity extends AppCompatActivity {
     }
 
     //데이터베이스에 객체들을 저장
-    private void database_save(){
+    private void database_save() {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("post_database");
 
         String currentTime = DateFormat.getDateTimeInstance().format(new Date());
 
-        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+        user_account_database = FirebaseDatabase.getInstance().getReference("UserAccount");
 
         writing_item.setUrlList(new ArrayList<>()); // urlList 객체 초기화
 
@@ -266,8 +271,6 @@ public class my_page_writing_activity extends AppCompatActivity {
         // 추출된 해시태그를 리스트로 저장
         List<String> trip_hashtags = extractHashtags(post_hashtag.getText().toString()); // 해시태그 추출
 
-
-
         Map<String, Object> postValues = new HashMap<>();
         //firebase 데이터베이스에 저장
         postValues.put("cost", trip_cost);
@@ -278,10 +281,25 @@ public class my_page_writing_activity extends AppCompatActivity {
         postValues.put("hashtags", trip_hashtags);
         postValues.put("post_date", currentTime);
         postValues.put("post_id", key);
-        mDatabaseRef.child("post").child(key).setValue(postValues); // post 노드에 레코드 추가
 
-        finish();
+        user_account_database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    String id_token = dataSnapshot.child("idToken").getValue(String.class);
+                    postValues.put("id_token", id_token);
+                    mDatabaseRef.child("post").child(key).setValue(postValues); // post 노드에 레코드 추가
+                    finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // onCancelled 처리
+            }
+        });
     }
+
 
     //해시태그 #으로 된 패턴을 기준으로 스트링에 저장하는 코드
     private List<String> extractHashtags(String text) {
