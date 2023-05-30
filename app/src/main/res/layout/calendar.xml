@@ -5,10 +5,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/calendar_capture"/>
+        android:layout_height="wrap_content"
+        android:text="언제 여행을 가시나요?"
+        android:textSize="35dp"
+        android:textAlignment="center"
+        android:layout_margin="30dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:id="@+id/title"/>
+    <CalendarView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/title"
+        android:layout_centerVertical="true"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottomNavi"
+        android:layout_margin="20dp"
+        android:text="다음"/>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavi"
         android:layout_width="match_parent"

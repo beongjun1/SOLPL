@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,8 +39,9 @@ import java.util.Locale;
 public class mypage_auth_activity extends AppCompatActivity {
     TextView auth_loc;
     TextView auth_date;
-    Button upload_picture, camera, auth_btn;
+    Button upload_picture, auth_btn;
     static final int REQUEST_CODE = 2;
+    ImageView imageView;    //갤러리에서 가져온 이미지를 보여줄 뷰
     Uri uri;                //갤러리에서 가져온 이미지에 대한 Uri
     Bitmap bitmap;          //갤러리에서 가져온 이미지를 담을 비트맵
     InputImage image;       //ML 모델이 인식할 인풋 이미지
@@ -55,9 +57,9 @@ public class mypage_auth_activity extends AppCompatActivity {
 
         auth_loc = findViewById(R.id.my_page_auth_loc);
         auth_date = findViewById(R.id.my_page_auth_date);
-        camera = findViewById(R.id.my_page_auth_camera_btn);
         upload_picture = findViewById(R.id.my_page_auth_picture_upload_btn);
         auth_btn = findViewById(R.id.my_page_auth_btn);
+        imageView=findViewById(R.id.imageView);
         recognizer = TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build());
 
         // Intent에서 전달된 값들을 가져옵니다.
@@ -75,30 +77,6 @@ public class mypage_auth_activity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_CODE);
             }
         });
-        camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 카메라 앱 실행을 위한 Intent 생성
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    // 사진이 저장될 임시 파일 생성
-                    File photoFile = null;
-                    try {
-                        photoFile = createImageFile();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                    if (photoFile != null) {
-                        Uri photoURI = FileProvider.getUriForFile(mypage_auth_activity.this,
-                                "com.example.mypage.fileprovider",
-                                photoFile);
-                        // 생성된 임시 파일의 경로를 Intent에 설정
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                        startActivityForResult(takePictureIntent, 3333);
-                    }
-                }
-            }
-        });
 
         auth_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,24 +84,6 @@ public class mypage_auth_activity extends AppCompatActivity {
                 TextRecognition(recognizer);
             }
         });
-    }
-
-
-
-    // 임시 파일 생성을 위한 메서드
-    private File createImageFile() throws IOException {
-        // 이미지 파일 이름 생성
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        // 이미지가 저장될 디렉토리 생성
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File imageFile = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-        // 생성된 파일의 경로 반환
-        return imageFile;
     }
 
     private void TextRecognition(TextRecognizer recognizer){
@@ -136,8 +96,6 @@ public class mypage_auth_activity extends AppCompatActivity {
                         // Task completed successfully
                         String resultText = visionText.getText();
                         text=resultText;  // 인식한 텍스트를 text에 저장
-                        TextView recotext = findViewById(R.id.recotext);
-                        recotext.setText(text);
                     }
                 })
                 // 이미지 인식에 실패하면 실행되는 리스너
@@ -157,12 +115,7 @@ public class mypage_auth_activity extends AppCompatActivity {
             uri = data.getData();
 
             bitmap=resize(this,uri,500);
-            image = InputImage.fromBitmap(bitmap, 0);
-
-        }
-        if (requestCode == 3333) {
-            uri = data.getData();
-            bitmap=resize(this,uri,500);
+            imageView.setImageBitmap(bitmap);
             image = InputImage.fromBitmap(bitmap, 0);
 
         }
@@ -174,13 +127,13 @@ public class mypage_auth_activity extends AppCompatActivity {
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         try {
-            BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options); // 1번
+            BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options);
 
             int width = options.outWidth;
             int height = options.outHeight;
             int samplesize = 1;
 
-            while (true) {//2번
+            while (true) {
                 if (width / 2 < resize || height / 2 < resize)
                     break;
                 width /= 2;
@@ -189,7 +142,7 @@ public class mypage_auth_activity extends AppCompatActivity {
             }
 
             options.inSampleSize = samplesize;
-            Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options); //3번
+            Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options);
             resizeBitmap=bitmap;
 
         } catch (FileNotFoundException e) {

@@ -97,6 +97,11 @@
         android:layout_marginStart="10dp"
         android:textStyle="bold"
         android:layout_marginBottom="10dp" />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"/>
 
     <Button
         android:layout_width="match_parent"
@@ -106,17 +111,6 @@
         android:textColor="@color/black"
         android:background="@color/white"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/my_page_auth_camera_btn"
-        android:text="사진찍기"
-        android:textColor="@color/black"
-        android:background="@color/white"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
