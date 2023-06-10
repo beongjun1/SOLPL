@@ -10,15 +10,6 @@ public class UserAccount {
     private String name;
     private String phone;
 
-    private String PhotoUrl;
-
-    public String getPhotoUrl() {
-        return PhotoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.PhotoUrl = photoUrl;
-    }
 
     public String getPhone() {
         return phone;

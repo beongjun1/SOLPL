@@ -30,7 +30,6 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
     private EditText mEtName, mEtEmail, mEtPassword, mEtPasswordConfirm;
     private Button mBtnRegister; // 회원가입 버튼
-    private Uri mImageUri; // 선택된 이미지의 Uri
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String strName = mEtName.getText().toString();
 
                 // 이미지 URL을 default 이미지로 설정
-                mImageUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.community);
-                String photoUrl = mImageUri.toString();
+
 
                 // Firebase Auth 진행
                 mFireBaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
@@ -91,8 +89,6 @@ public class RegisterActivity extends AppCompatActivity {
                             account.setEmailId(firebaseUser.getEmail());
                             account.setName(strName);
                             account.setPassword(strPwd);
-                            account.setPhotoUrl(photoUrl); // 데이터베이스에 default 이미지 URL 저장
-
                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
                             Toast.makeText(RegisterActivity.this, "회원가입에 성공했습니다.", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
