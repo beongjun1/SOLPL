@@ -1,20 +1,26 @@
 package com.example.solpl1.post_management;
 
+import java.util.ArrayList;
+
 public class post_management_item {
+    private String postId;
     private String name;
     private String time;
     private String title;
     private String content;
-    private int picture_id;
+    private ArrayList<String> imageUrl;
 
-    public post_management_item(){}
 
-    public post_management_item(String name, String time, String title, String content, int picture_id) {
+    public post_management_item() {
+    }
+
+    public post_management_item( String postId,String name, String time, String title, String content, ArrayList<String> imageUrl) {
         this.name = name;
         this.time = time;
         this.title = title;
         this.content = content;
-        this.picture_id = picture_id;
+        this.imageUrl = imageUrl;
+        this.postId = postId;
     }
 
     public String getName() {
@@ -49,11 +55,19 @@ public class post_management_item {
         this.content = content;
     }
 
-    public int getPicture_id() {
-        return picture_id;
+    public ArrayList<String> getImageUrl() {
+        return imageUrl;
     }
 
-    public void setPicture_id(int picture_id) {
-        this.picture_id = picture_id;
+    public void setImageUrl(ArrayList<String> imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 }

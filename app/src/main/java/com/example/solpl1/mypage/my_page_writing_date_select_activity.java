@@ -36,6 +36,7 @@ public class my_page_writing_date_select_activity extends AppCompatActivity {
         itemList.add(new my_page_item(R.drawable.activity_post_picture, "2023-05-22", "Location 2"));
         itemList.add(new my_page_item(R.drawable.activity_post_picture, "2023-05-23", "Location 3"));
 
+        adapter.setHideButton(true); // 버튼 숨김 설정
         // ClickableRecyclerAdapter에 데이터 설정
         adapter.setTripList(itemList);
 

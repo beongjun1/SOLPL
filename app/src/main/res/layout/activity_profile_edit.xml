@@ -53,14 +53,14 @@
         android:layout_marginTop="20dp"
         android:background="#d9d9d9" />
 
+
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_img"
+        android:id="@+id/profile_edit_img"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:src="@drawable/title_logo" />
-
 
     <Button
         android:id="@+id/change_photo_button"
@@ -102,6 +102,7 @@
                 android:id="@+id/profile_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:text="이름"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -123,6 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="이메일"
+                android:enabled="false"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -143,6 +145,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="전화번호"
+                android:enabled="false"
                 android:focusable="false"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -164,6 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="주소"
+                android:enabled="false"
                 android:focusable="false"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -187,6 +191,8 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:enabled="false"
+                    android:checked="true"
                     android:layout_width="70dp"
                     android:layout_height="50dp"
                     android:layout_marginEnd="20dp"
@@ -194,6 +200,7 @@
                     android:textSize="20sp" />
 
                 <RadioButton
+                    android:enabled="false"
                     android:layout_width="70dp"
                     android:layout_height="50dp"
                     android:text="여성"

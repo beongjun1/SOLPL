@@ -1,6 +1,7 @@
 package com.example.solpl1.mypage;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -12,11 +13,16 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.target.Target;
 import com.example.solpl1.R;
 import com.example.solpl1.MainActivity;
 import com.example.solpl1.calendar.MainCalendar;
@@ -40,12 +46,16 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class mypage_main_activity extends AppCompatActivity {
+    private static final int PROFILE_EDIT_REQUEST_CODE = 1;
     private RecyclerView mRecyclerView;
     private ArrayList<my_page_item> tripList;
     private my_page_recycler_adapter mRecyclerAdapter;
     private TextView postCountTextView;
     Button my_page_writing,trip_current;
+    CircleImageView profile_img;
     ImageView menu;
     BottomNavigationView bottomNavigationView;
     @Override
@@ -57,6 +67,7 @@ public class mypage_main_activity extends AppCompatActivity {
 
         RatingBar ratingBar = findViewById(R.id.my_page_rating_bar);
 
+        profile_img= findViewById(R.id.mypage_profile_img);
         menu = findViewById(R.id.my_page_menu);
 
         mRecyclerView = findViewById(R.id.recyclerView);
@@ -84,7 +95,6 @@ public class mypage_main_activity extends AppCompatActivity {
 
         my_page_item item = tripList.get(0); // 0번 인덱스에 저장된 데이터 가져오기
         mRecyclerAdapter.setTripList(tripList);
-        String date = item.getDate(); // 날짜 가져오기
 
         //Intent를 받고 평균 값을 추출합니다.
         Intent intent = getIntent();
@@ -103,7 +113,6 @@ public class mypage_main_activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mypage_main_activity.this, my_page_writing_activity.class);
-                intent.putExtra("date",date);
                 startActivity(intent);
             }
         });
@@ -123,7 +132,7 @@ public class mypage_main_activity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.my_page_profile_edit:
                                 Intent profileEditIntent = new Intent(mypage_main_activity.this, profile_edit_activity.class);
-                                startActivity(profileEditIntent);
+                                startActivityForResult(profileEditIntent, PROFILE_EDIT_REQUEST_CODE);
                                 break;
                             case R.id.my_page_message:
                                 Intent messageIntent = new Intent(mypage_main_activity.this, chat_room_activity.class);
@@ -187,6 +196,23 @@ public class mypage_main_activity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PROFILE_EDIT_REQUEST_CODE && resultCode == RESULT_OK) {
+            if (data != null && data.hasExtra("imageUri")) {
+                String imageUri = data.getStringExtra("imageUri");
+                // 이미지 URL을 사용하여 이미지 업데이트 처리
+                if (imageUri != null && !imageUri.isEmpty()) {
+                    Glide.with(getApplicationContext())
+                            .load(imageUri)
+                            .into(profile_img);
+                }
+            }
+        }
+    }
+
     private void updatePostCount() {
         int postCount = tripList.size();
         String formattedPostCount = formatNumber(postCount); // 숫자 형식을 포맷팅하여 문자열로 변환
@@ -215,11 +241,18 @@ public class mypage_main_activity extends AppCompatActivity {
                         if (dataSnapshot.exists()) {
                             for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                                 String userName = childSnapshot.child("name").getValue(String.class);
+                                String imageUrl = childSnapshot.child("imageUrl").getValue(String.class);
 
                                 if (userName != null && !userName.isEmpty()) {
                                     TextView userNameTextView = findViewById(R.id.my_page_user_name);
                                     userNameTextView.setText(userName);
                                 }
+                                if (imageUrl != null && !imageUrl.isEmpty()) {
+                                    Glide.with(getApplicationContext())
+                                            .load(imageUrl)
+                                            .into(profile_img);
+                                }
+
                             }
                         }
                     }

@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.solpl1">
 
+    <!-- 카메라 권한 추가 -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- 파일 저장 권한 추가 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -40,14 +47,26 @@
         <activity android:name=".calendar.MainCalendar"/>
         <activity android:name=".chat.chat_activity" />
         <activity android:name=".chat.chat_room_activity" />
-        <activity android:name=".mypage.my_page_writing_activity" />
+        <activity android:name=".mypage.my_page_writing_activity"
+                  android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".mypage.my_page_writing_date_select_activity" />
         <activity android:name=".mypage.mypage_auth_activity" />
         <activity android:name=".mypage.mypage_main_activity" />
         <activity android:name=".post_management.post_management_activity" />
         <activity android:name=".profile_edit.profile_edit_activity" />
         <activity android:name=".PhoneAuth"/>
-        <activity android:name=".mypage.my_page_achievement"/>
+        <activity android:name=".mypage.my_page_achievement"/>+
+
+        <!-- 카메라 사용하는 API -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.solpl1.profile_edit.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

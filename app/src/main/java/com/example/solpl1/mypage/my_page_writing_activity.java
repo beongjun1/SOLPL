@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,6 +13,8 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -19,10 +22,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.solpl1.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -37,6 +42,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONArray;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
@@ -49,38 +56,37 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class my_page_writing_activity extends AppCompatActivity {
+
+//    private boolean isKeyboardShowing = false;
+    private RecyclerView image_recycler_view;
+    private my_page_post_image_adpater recycler_view_adapter;
 
     TextView post_date;
     Button writing_btn_attach_photo;
     ArrayList<Uri> uriList = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
-    private RecyclerView image_recycler_view;
-    private my_page_post_image_adpater recycler_view_adapter;
-    private DatabaseReference mDatabaseRef; //실시간 데이터베이스
-    private DatabaseReference user_account_database; //실시간 데이터베이스
-    private FirebaseAuth mFirebaseAuth; // 파이어베이스 인증
-
+    DatabaseReference user_account_database; //실시간 데이터베이스
     DecimalFormat myFormatter = new DecimalFormat("###,###"); //비용을 처리할 때 쉼표를 표시하기 위한 객체
     String result1 = "";
     TextInputEditText writing_editTextPrice;
-
     EditText post_title;
     EditText post_content;
     EditText post_hashtag;
-
-    List<String> urlList = new ArrayList<>(); // urlList 객체 초기화
-
-    my_page_writing_activity_item writing_item = new my_page_writing_activity_item();
-
+    ArrayList<String> urlList = new ArrayList<>(); // urlList 객체 초기화
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
         post_date = findViewById(R.id.post_travel_date_btn);
         writing_btn_attach_photo = findViewById(R.id.writing_btn_attach_photo);
 
         image_recycler_view = findViewById(R.id.post_image_recycler_view);
+
         //비용
         writing_editTextPrice = findViewById(R.id.writing_edit_text_price);
         writing_editTextPrice.addTextChangedListener(trip_price);
@@ -90,6 +96,7 @@ public class my_page_writing_activity extends AppCompatActivity {
         post_content = findViewById(R.id.post_feed_content);
         post_hashtag = findViewById(R.id.post_feed_hashtag);
 
+        setUserNameFromDatabase(); // 데이터베이스에서 userName가져오기
 
 
         //이전 화면에서 데이터를 선택하는 화면
@@ -122,15 +129,30 @@ public class my_page_writing_activity extends AppCompatActivity {
             public void onClick(View v) {
                 if (uriList.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "이미지를 선택해주세요.", Toast.LENGTH_LONG).show();
-                } else {
-                    storage_upload();
-                    database_save();
-                    Toast.makeText(getApplicationContext(), "업로드 되었습니다.", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    if (post_date.getText().toString().equals("날짜 선택")){
+                        Toast.makeText(my_page_writing_activity.this, "날짜를 선택해주세요", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        if (isEditTextEmpty(post_title) || isEditTextEmpty(writing_editTextPrice) || isEditTextEmpty(post_content)) {
+                            Toast.makeText(my_page_writing_activity.this, "해시태그를 제외한 입력필드를 모두 입력해주세요", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else {
+                            storage_upload();
+                        }
+
+                    }
+
                 }
             }
 
         });
 
+    }
+    private boolean isEditTextEmpty(EditText editText) {
+        return editText.getText().toString().trim().length() == 0;
     }
     // 앨범에서 액티비티로 돌아온 후 실행되는 메서드
     @Override
@@ -183,7 +205,7 @@ public class my_page_writing_activity extends AppCompatActivity {
         }
     }
 
-    // 비용을 입력했을시 쉼표가 자동으로 추가되는 코드
+    // 비용을 입력했을시 ,가 자동으로 추가되는 코드
     TextWatcher trip_price = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -192,7 +214,6 @@ public class my_page_writing_activity extends AppCompatActivity {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             if(!TextUtils.isEmpty(s.toString()) && !s.toString().equals(result1)){
                 result1 = myFormatter.format(Double.parseDouble(s.toString().replaceAll(",","")));
                 writing_editTextPrice.setText(result1);
@@ -211,63 +232,69 @@ public class my_page_writing_activity extends AppCompatActivity {
     //storage에 사진 저장
     private void storage_upload() {
         InputStream stream = null;
-        for (int i = 0; i < uriList.size(); i++) {
+
+
+            DatabaseReference mDatabaseRef; //실시간 데이터베이스
+            mDatabaseRef = FirebaseDatabase.getInstance().getReference("post_database");
+            String key = mDatabaseRef.child("writing_items").push().getKey(); // 새로운 레코드를 추가할 위치에 대한 key 생성
+
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            String userEmail = user.getEmail();
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+            String filePath = userEmail + "/post/" +key + "/";
+
+           for (int i = 0; i < uriList.size(); i++) {
             Uri imageUri = uriList.get(i);
             if (imageUri == null) {
                 continue; // 이미지 URI가 null인 경우 건너뜁니다.
             }
+               String filename = "image_" + System.currentTimeMillis() + ".jpg";
+               StorageReference imageRef = storageRef.child(filePath + filename);
 
-            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-            String filename = "image_" + System.currentTimeMillis() + ".jpg";
-            StorageReference imageRef = storageRef.child("images/urls/" + filename);
-            try {
+               try {
                 stream = getContentResolver().openInputStream(imageUri);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             UploadTask uploadTask = imageRef.putStream(stream);
 
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            String imageUrl = uri.toString();
-                            Log.d(TAG, "Image uploaded to Firebase Storage. URL: " + imageUrl);
-                            urlList.add(imageUrl);
-                        }
-                    });
-                }
+            int finalI = i; // 람다식에서 사용하기 위해 변수의 final 복사본을 생성합니다.
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String imageUrl = uri.toString();
+                    Log.d(TAG, "Image uploaded to Firebase Storage. URL: " + imageUrl);
+                    urlList.add(imageUrl);
+
+                    if (finalI == uriList.size() - 1) {
+                        // 마지막 이미지의 URL을 가져왔을 때 데이터베이스에 저장
+                        database_save(key);
+                    }
+                });
             });
         }
     }
 
     //데이터베이스에 객체들을 저장
-    private void database_save() {
+    private void database_save(String key) {
+
+        DatabaseReference mDatabaseRef; //실시간 데이터베이스
+        FirebaseAuth mFirebaseAuth; // 파이어베이스 인증
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("post_database");
 
         String currentTime = DateFormat.getDateTimeInstance().format(new Date());
-
         user_account_database = FirebaseDatabase.getInstance().getReference("UserAccount");
-
-        writing_item.setUrlList(new ArrayList<>()); // urlList 객체 초기화
 
         //텍스트 들을 String으로 변환후 저장
         String trip_cost = writing_editTextPrice.getText().toString();
         String trip_date = post_date.getText().toString();
         String trip_title = post_title.getText().toString();
         String trip_content = post_content.getText().toString();
-        String key = mDatabaseRef.child("writing_items").push().getKey(); // 새로운 레코드를 추가할 위치에 대한 key 생성
-
         String post_hashtag_text = post_hashtag.getText().toString().trim();
 
-        if (!post_hashtag_text.contains("#")) {
-            // 해시태그를 입력했지만 #을 사용하지 않았을 경우
-            Toast.makeText(this, "#을 사용하여 입력하세요", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         // 추출된 해시태그를 리스트로 저장
         List<String> trip_hashtags = extractHashtags(post_hashtag.getText().toString()); // 해시태그 추출
 
@@ -277,31 +304,55 @@ public class my_page_writing_activity extends AppCompatActivity {
         postValues.put("trip_date", trip_date);
         postValues.put("title", trip_title);
         postValues.put("content", trip_content);
-        postValues.put("urlList", urlList);
         postValues.put("hashtags", trip_hashtags);
         postValues.put("post_date", currentTime);
         postValues.put("post_id", key);
 
-        user_account_database.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    String id_token = dataSnapshot.child("idToken").getValue(String.class);
-                    postValues.put("id_token", id_token);
-                    mDatabaseRef.child("post").child(key).setValue(postValues); // post 노드에 레코드 추가
-                    finish();
-                }
-            }
+        Map<String, Object> imageValues = new HashMap<>();
+        for (String imageUrl : urlList) {
+            String imageKey = mDatabaseRef.child(key).child("images").push().getKey();
+            imageValues.put(imageKey, imageUrl);
+        }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // onCancelled 처리
-            }
-        });
+
+        if (post_hashtag_text != null && post_hashtag_text.contains("#") || post_hashtag_text.isEmpty()) {
+            user_account_database.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    FirebaseUser currentUser = mFirebaseAuth.getCurrentUser();
+                    if (currentUser != null) {
+                        String currentUserId = currentUser.getUid();
+                        String idToken = snapshot.child(currentUserId).child("idToken").getValue(String.class);
+
+                        if (idToken != null) {
+                            postValues.put("id_token", idToken);
+                            mDatabaseRef.child(key).setValue(postValues); // post 노드에 레코드 추가
+                            mDatabaseRef.child(key).child("images").updateChildren(imageValues);
+                            Toast.makeText(getApplicationContext(), "업로드 되었습니다.", Toast.LENGTH_LONG).show();
+                            finish();
+
+                        } else {
+                            // 로그인한 사용자의 ID 토큰이 데이터베이스에 없음
+                        }
+                    } else {
+                        // 현재 로그인된 사용자가 없음
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // onCancelled 처리
+                }
+            });
+        }
+        else {
+            Toast.makeText(this, "#을 사용하여 입력하세요", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
-    //해시태그 #으로 된 패턴을 기준으로 스트링에 저장하는 코드
+
+    //해시태그 #으로 된 패턴을 기준으로 List에 저장하는 코드
     private List<String> extractHashtags(String text) {
         List<String> hashtags = new ArrayList<>();
         Pattern pattern = Pattern.compile("#\\w+");
@@ -312,7 +363,41 @@ public class my_page_writing_activity extends AppCompatActivity {
 
         return hashtags;
     }
+    private void setUserNameFromDatabase() {
+        // 현재 로그인한 사용자의 이메일을 가져오는 코드 (Firebase Authentication을 사용한다고 가정)
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userEmail = currentUser.getEmail();
 
+        // 데이터베이스에서 사용자의 이메일을 기준으로 이름을 가져오는 쿼리 수행
+        FirebaseDatabase.getInstance().getReference().child("UserAccount")
+                .orderByChild("emailId").equalTo(userEmail)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+                                String userName = childSnapshot.child("name").getValue(String.class);
+                                String ImageUrl = childSnapshot.child("imageUrl").getValue(String.class);
+                                if (userName != null && !userName.isEmpty()) {
+                                    TextView userNameTextView = findViewById(R.id.writing_name);
+                                    userNameTextView.setText(userName);
+                                }
+                                CircleImageView profile_img = findViewById(R.id.post_profile_img);
+                                if (ImageUrl != null && !ImageUrl.isEmpty()) {
+                                    Glide.with(getApplicationContext())
+                                            .load(ImageUrl)
+                                            .into(profile_img);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e("DatabaseError", "Error: " + databaseError.getMessage());
+                    }
+                });
+    }
 
 
 

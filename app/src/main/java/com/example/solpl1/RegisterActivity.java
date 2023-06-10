@@ -1,6 +1,7 @@
 package com.example.solpl1;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -20,13 +21,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mFireBaseAuth;     // 파이어베이스 인증
     private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
-    private EditText mEtName,mEtEmail, mEtPassword,mEtPasswordConfirm;
+    private EditText mEtName, mEtEmail, mEtPassword, mEtPasswordConfirm;
     private Button mBtnRegister; // 회원가입 버튼
+    private Uri mImageUri; // 선택된 이미지의 Uri
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,26 +67,31 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
                 // 비밀번호가 6자리 미만인 경우
-                if (mEtPassword.length()<6) {
+                if (mEtPassword.length() < 6) {
                     Toast.makeText(RegisterActivity.this, "비밀번호는 6자리 이상이어야 합니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                //회원가입 처리 시작
+                // 회원가입 처리 시작
                 String strEmail = mEtEmail.getText().toString();
                 String strPwd = mEtPassword.getText().toString();
                 String strName = mEtName.getText().toString();
 
-                // Firebase Auth진행
-                mFireBaseAuth.createUserWithEmailAndPassword(strEmail,strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                // 이미지 URL을 default 이미지로 설정
+                mImageUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.community);
+                String photoUrl = mImageUri.toString();
+
+                // Firebase Auth 진행
+                mFireBaseAuth.createUserWithEmailAndPassword(strEmail, strPwd).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             FirebaseUser firebaseUser = mFireBaseAuth.getCurrentUser();
                             UserAccount account = new UserAccount();
                             account.setIdToken(firebaseUser.getUid());
                             account.setEmailId(firebaseUser.getEmail());
                             account.setName(strName);
                             account.setPassword(strPwd);
+                            account.setPhotoUrl(photoUrl); // 데이터베이스에 default 이미지 URL 저장
 
                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
                             Toast.makeText(RegisterActivity.this, "회원가입에 성공했습니다.", Toast.LENGTH_SHORT).show();
@@ -90,22 +100,23 @@ public class RegisterActivity extends AppCompatActivity {
                         } else {
                             Toast.makeText(RegisterActivity.this, "회원가입에 실패했습니다.", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
             }
         });
     }
-    //빈 필드가 있는지 확인하는 코드
+
+    // 빈 필드가 있는지 확인하는 코드
     private boolean isEditTextEmpty(EditText editText) {
         return editText.getText().toString().trim().length() == 0;
     }
 
-    //패스워드가 같은지 확인하는 코드
+    // 패스워드가 같은지 확인하는 코드
     private boolean isPasswordSame(EditText password1, EditText password2) {
         return password1.getText().toString().equals(password2.getText().toString());
     }
-    //이메일 형식인지 아닌지 파악하는 코드
+
+    // 이메일 형식인지 아닌지 파악하는 코드
     private boolean isValidEmail(CharSequence target) {
         return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }

@@ -1,5 +1,7 @@
 package com.example.solpl1.mypage;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class my_page_writing_activity_item {
@@ -8,50 +10,21 @@ public class my_page_writing_activity_item {
         private String title;
         private String content;
         private String hashtag;
-         private List<String> urlList;
-
-        private String post_id;
-
-    public my_page_writing_activity_item(String title, String content, String cost, String date, String hashtag, String idToken, List<String> urlList) {
-        this.title = title;
-        this.content = content;
-        this.cost = cost;
-        this.date = date;
-        this.hashtag = hashtag;
-        this.idToken = idToken;
-        this.urlList = urlList;
-    }
-
-    public List<String> getUrlList() {
-        return urlList;
-    }
-
-    public void setUrlList(List<String> urlList) {
-        this.urlList = urlList;
-    }
-
-    public String getPost_id() {
-        return post_id;
-    }
-
-    public void setPost_id(String post_id) {
-        this.post_id = post_id;
-    }
-
-
-    private String idToken; // Firebase Uid (고유 토큰정보)
-    public String getIdToken() {
-        return idToken;
-    }
-
-    public void setIdToken(String idToken) {
-        this.idToken = idToken;
-    }
-
+        private ArrayList<String> urlList;
+    private String post_id;
 
 
     public my_page_writing_activity_item() {
-        // Default constructor required for calls to DataSnapshot.getValue(Item.class)
+    }
+
+    public my_page_writing_activity_item(String cost, String date, String title, String content, String hashtag, ArrayList<String> urlList, String post_id) {
+        this.cost = cost;
+        this.date = date;
+        this.title = title;
+        this.content = content;
+        this.hashtag = hashtag;
+        this.urlList = urlList;
+        this.post_id = post_id;
     }
 
     public String getCost() {
@@ -94,7 +67,19 @@ public class my_page_writing_activity_item {
         this.hashtag = hashtag;
     }
 
+    public ArrayList<String> getUrlList() {
+        return urlList;
+    }
 
+    public void setUrlList(ArrayList<String> urlList) {
+        this.urlList = urlList;
+    }
 
+    public String getPost_id() {
+        return post_id;
+    }
 
+    public void setPost_id(String post_id) {
+        this.post_id = post_id;
+    }
 }

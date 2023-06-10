@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recycler_adapter.ViewHolder> {
 
     protected ArrayList<my_page_item> PageList;
+    private boolean hideButton; // 버튼 숨김 여부를 저장하는 변수
 
     private ClickableRecyclerAdapter.OnItemClickListener itemClickListener;
 
@@ -36,6 +37,8 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (PageList != null) {
             holder.onBind(PageList.get(position));
+            holder.setButtonVisibility(hideButton); // 버튼의 숨김 여부 설정
+
         }
     }
 
@@ -58,6 +61,11 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
     public int getItemViewType(int position) {
         return position;
     }
+    // 버튼 숨김 여부를 설정하는 메소드
+    public void setHideButton(boolean hide) {
+        this.hideButton = hide;
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -107,6 +115,14 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
                 trip_picture.setImageResource(item.getResourceId());
                 trip_date.setText(item.getDate());
                 trip_loc.setText(item.getLoc());
+            }
+        }
+        // 버튼의 숨김 여부를 설정하는 메소드
+        public void setButtonVisibility(boolean hide) {
+            if (hide) {
+                mypageAuthButton.setVisibility(View.GONE);
+            } else {
+                mypageAuthButton.setVisibility(View.VISIBLE);
             }
         }
     }
