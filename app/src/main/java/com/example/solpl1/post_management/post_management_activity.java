@@ -2,8 +2,10 @@ package com.example.solpl1.post_management;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,7 +42,7 @@ public class post_management_activity extends AppCompatActivity {
         setContentView(R.layout.activity_post_management);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
-
+        TextView emptyTextView = findViewById(R.id.post_text);
         post_management_recycler = findViewById(R.id.post_management_recycler_view);
 
         post_management_recycler_adapter = new post_management_recycler_adapter();
@@ -63,7 +65,6 @@ public class post_management_activity extends AppCompatActivity {
 
                 if (currentUser != null) {
                     String currentUserIdToken = currentUser.getUid();
-
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         // 데이터베이스에서 각 데이터의 고유한 식별자인 Key 값을 가져오는 역할
                         String postId = postSnapshot.getKey();
@@ -80,6 +81,7 @@ public class post_management_activity extends AppCompatActivity {
                                         String time = postSnapshot.child("post_date").getValue(String.class);
                                         String title = postSnapshot.child("title").getValue(String.class);
                                         String content = postSnapshot.child("content").getValue(String.class);
+                                        String profile_img = userSnapshot.child("imageUrl").getValue(String.class);
 
                                         ArrayList<String> urlList = new ArrayList<>();
                                         for (DataSnapshot urlSnapshot : postSnapshot.child("images").getChildren()) {
@@ -89,9 +91,10 @@ public class post_management_activity extends AppCompatActivity {
                                             }
                                         }
 
-                                        post_management_item item = new post_management_item(postId,name, time, title, content, urlList);
+                                        post_management_item item = new post_management_item(postId,name, time, title, content, urlList,profile_img);
                                         post_management_items.add(item);
                                         post_management_recycler_adapter.setPost_management_items(post_management_items);
+
                                     }
                                 }
 
@@ -101,6 +104,8 @@ public class post_management_activity extends AppCompatActivity {
                                     Toast.makeText(post_management_activity.this, "idToken error", Toast.LENGTH_SHORT).show();
                                 }
                             });
+
+
                         }
                     }
                 }
@@ -111,6 +116,6 @@ public class post_management_activity extends AppCompatActivity {
                 // 에러 처리
             }
         });
-    }
 
     }
+}

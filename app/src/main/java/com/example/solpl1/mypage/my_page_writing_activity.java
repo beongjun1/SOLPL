@@ -137,7 +137,6 @@ public class my_page_writing_activity extends AppCompatActivity {
                     else {
                         if (isEditTextEmpty(post_title) || isEditTextEmpty(writing_editTextPrice) || isEditTextEmpty(post_content)) {
                             Toast.makeText(my_page_writing_activity.this, "해시태그를 제외한 입력필드를 모두 입력해주세요", Toast.LENGTH_SHORT).show();
-                            return;
                         }
                         else {
                             storage_upload();

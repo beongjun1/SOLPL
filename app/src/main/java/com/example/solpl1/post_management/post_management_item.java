@@ -9,17 +9,27 @@ public class post_management_item {
     private String title;
     private String content;
     private ArrayList<String> imageUrl;
+    private String profile_img;
 
 
     public post_management_item() {
     }
 
-    public post_management_item( String postId,String name, String time, String title, String content, ArrayList<String> imageUrl) {
+    public post_management_item(String postId, String name, String time, String title, String content, ArrayList<String> imageUrl, String profile_img) {
+        this.postId = postId;
         this.name = name;
         this.time = time;
         this.title = title;
         this.content = content;
         this.imageUrl = imageUrl;
+        this.profile_img = profile_img;
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
         this.postId = postId;
     }
 
@@ -63,11 +73,11 @@ public class post_management_item {
         this.imageUrl = imageUrl;
     }
 
-    public String getPostId() {
-        return postId;
+    public String getProfile_img() {
+        return profile_img;
     }
 
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public void setProfile_img(String profile_img) {
+        this.profile_img = profile_img;
     }
 }

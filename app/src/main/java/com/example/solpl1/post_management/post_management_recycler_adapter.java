@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.solpl1.R;
 import com.example.solpl1.mypage.my_page_writing_activity;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,6 +29,8 @@ import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class post_management_recycler_adapter extends RecyclerView.Adapter<post_management_recycler_adapter.ViewHolder> {
     private ArrayList<post_management_item> post_management_items;
@@ -135,6 +138,7 @@ public class post_management_recycler_adapter extends RecyclerView.Adapter<post_
         private TextView post_management_title;
         private TextView post_management_content;
         private ImageView post_management_picture;
+        private CircleImageView post_management_profile;
         int text_content_max_length = 70;
         int text_title_max_length = 14;
 
@@ -149,11 +153,10 @@ public class post_management_recycler_adapter extends RecyclerView.Adapter<post_
             post_management_title = view.findViewById(R.id.post_management_title);
             post_management_content = view.findViewById(R.id.post_management_content);
             post_management_picture = view.findViewById(R.id.post_management_picture);
-
+            post_management_profile = view.findViewById(R.id.post_profile_image);
             delete_btn = view.findViewById(R.id.delete_post_button);
 
-            databaseReference = FirebaseDatabase.getInstance().getReference(); // Firebase Realtime Database 참조 객체 초기화
-            delete_btn.setOnClickListener(new View.OnClickListener() {
+             delete_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // 클릭된 포지션에 해당하는 데이터를 데이터베이스에서 삭제
@@ -184,12 +187,10 @@ public class post_management_recycler_adapter extends RecyclerView.Adapter<post_
                 String imageUrl = urlList.get(0); // 첫 번째 이미지 URL 사용 또는 원하는 로직에 맞게 선택
                 Picasso.get().load(imageUrl).into(post_management_picture);
             }
-
-//            ArrayList<String> profile_img_url = post_management_item.getProfile_img_url();
-//            if (profile_img_url != null && !profile_img_url.isEmpty()) {
-//                String profile_url = profile_img_url.get(0); // 첫 번째 이미지 URL 사용 또는 원하는 로직에 맞게 선택
-//                Picasso.get().load(imageUrl).into(post_management_picture);
-//            }
+            String profile_img = post_management_item.getProfile_img();
+            if (profile_img != null && !profile_img.isEmpty()) {
+                Picasso.get().load(profile_img).into(post_management_profile);
+            }
         }
     }
 }
