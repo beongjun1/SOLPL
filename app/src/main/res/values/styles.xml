@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Calendar_SelectedDate">
+        <item name="android:textColor">#80C9C9C9</item>
+
+    </style>
+    <style name="SelectedDateTextAppearance">
+        <item name="android:textColor">@color/selected_date_color</item>
+    </style>
+</resources>
