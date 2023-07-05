@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="google_red">#DB4437</color>
     <color name="selected_date_color">#80C9C9C9</color>
+    <color name="dottedLineColor">#FF0000</color>
 </resources>

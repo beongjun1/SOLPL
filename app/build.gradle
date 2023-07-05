@@ -78,4 +78,6 @@ dependencies {
     //캘린더
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
+    //구글맵 유틸리티
+    implementation 'com.google.maps.android:android-maps-utils:2.2.0'
 }
