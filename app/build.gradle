@@ -25,6 +25,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     namespace 'com.example.solpl1'
 }
 
@@ -78,4 +79,8 @@ dependencies {
     //캘린더
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
+
+    //박정연
+    implementation 'com.github.MrNouri:DynamicSizes:1.0'    // 화면 스크린에 맞게 사진 띄우기
+    implementation 'com.makeramen:roundedimageview:2.3.0'   // 이미지 라운드 뷰
 }

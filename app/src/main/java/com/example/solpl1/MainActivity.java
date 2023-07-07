@@ -8,9 +8,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.solpl1.MainActivity;
 import com.example.solpl1.calendar.MainCalendar;
 import com.example.solpl1.chat.chat_activity;
+import com.example.solpl1.mainPost.MainPostFragment;
 import com.example.solpl1.map.MainMap;
 import com.example.solpl1.mypage.mypage_main_activity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -26,12 +29,18 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
+        // 시작하자마자 MainPostFragment로 가기
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, new MainPostFragment());
+        transaction.commit();
 
         mAuth = FirebaseAuth.getInstance();
         // 구글 로그인 클라이언트 설정
@@ -46,8 +55,12 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
                 switch (item.getItemId()){
                     case R.id.nav_main:
+                        transaction.replace(R.id.container, new MainPostFragment());
                         break;
                     case R.id.nav_calendar:
                         Intent intent1 = new Intent(MainActivity.this, MainCalendar.class);
@@ -69,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         break;
                 }
+                transaction.commit();
                 return true;
             }
         });
