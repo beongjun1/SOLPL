@@ -27,6 +27,11 @@ android {
     }
 
     namespace 'com.example.solpl1'
+
+    // 바인딩을 사용해서 xml id를 찾기위해
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
