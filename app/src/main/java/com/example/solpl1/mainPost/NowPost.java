@@ -6,6 +6,15 @@ public class NowPost {
     private String postedBy;
     private String postDescription;
     private long postedAt;
+    private int postLike;
+
+    public int getPostLike() {
+        return postLike;
+    }
+
+    public void setPostLike(int postLike) {
+        this.postLike = postLike;
+    }
 
     public NowPost() {
     }

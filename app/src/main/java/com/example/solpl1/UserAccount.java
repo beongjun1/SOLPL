@@ -10,6 +10,15 @@ public class UserAccount {
     private String name;
     private String phone;
 
+    private String imageUrl;            //프로필 이미지
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public String getPhone() {
         return phone;

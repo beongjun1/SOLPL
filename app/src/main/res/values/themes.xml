@@ -46,4 +46,10 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@android:color/darker_gray</item>
     </style>
+
+    <!-- Progressbar 스타일-->
+    <style name="PBarTheme">
+        <item name="colorSecondary">#0B0377</item>
+        
+    </style>
 </resources>

@@ -6,26 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".mainPost.MainPostFragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="-114dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/nowpost_addNew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:text="게시글 작성"
                 android:contentDescription="nowpost 등록 버튼"
                 android:drawableLeft="@drawable/ic_add_circle"
+                android:text="게시글 작성"
                 app:layout_constraintEnd_toEndOf="@+id/nowpost_recyclerView"
                 app:layout_constraintTop_toBottomOf="@+id/button2" />
 
@@ -130,8 +120,8 @@
             </androidx.recyclerview.widget.RecyclerView>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+
+
 
 
 

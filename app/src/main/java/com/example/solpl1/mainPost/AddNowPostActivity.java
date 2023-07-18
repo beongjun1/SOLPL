@@ -4,10 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
+import android.app.Presentation;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.solpl1.R;
@@ -31,17 +35,23 @@ public class AddNowPostActivity extends AppCompatActivity {
     FirebaseDatabase database;
     FirebaseStorage storage;
     Uri uri;
+    Dialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_now_post);
+        binding = ActivityAddNowPostBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
+        dialog  = new Dialog(AddNowPostActivity.this);
+        dialog.setContentView(R.layout.dialog_loading);
+
 
         database.getReference().child("UserAccount")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getEmail())
+                .child(FirebaseAuth.getInstance().getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -65,10 +75,12 @@ public class AddNowPostActivity extends AppCompatActivity {
         });
 
 
+
         // 게시글 올리기 버튼 눌렀을때
         binding.nowpostNewAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.show();
                 // firebase storage에 사진 저장 저장
                 final StorageReference reference = storage.getReference().child("nowPosts")
                         .child(FirebaseAuth.getInstance().getUid())
@@ -90,7 +102,8 @@ public class AddNowPostActivity extends AppCompatActivity {
                                         .push().setValue(nowPost).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
-                                                Toast.makeText(getBaseContext() , "게시글이 등록되었습니다.",Toast.LENGTH_SHORT).show();
+                                                dialog.cancel();
+                                                Toast.makeText(AddNowPostActivity.this, "게시글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                             }
@@ -100,7 +113,6 @@ public class AddNowPostActivity extends AppCompatActivity {
             }
         });
 
-        binding.getRoot();
     }
 
     @Override

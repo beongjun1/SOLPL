@@ -127,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
                     //구글 로그인이 성공했을때,
                     GoogleSignInAccount account = task.getResult(ApiException.class);
                     firebaseAuthWithGoogle(account.getIdToken());
-                    Intent intent = new Intent(LoginActivity.this,PhoneAuth.class);
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(intent);
                     Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                     finish();
