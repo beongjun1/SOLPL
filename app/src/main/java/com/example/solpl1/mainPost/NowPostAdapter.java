@@ -79,6 +79,8 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
 
                     }
                 });
+
+        // 좋아요 기능
         FirebaseDatabase.getInstance().getReference()
                 .child("nowPosts")
                 .child(model.getPostId())
@@ -87,7 +89,7 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
                 .addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if(snapshot.exists()){
+                                if(snapshot.exists()){                                              // nowpost DB에 사용자 Uid가 있을때(사용자가 좋아요를 눌렀을때)
                                     holder.binding.nowpostLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite,0,0,0);
                                 } else {
                                     holder.binding.nowpostLike.setOnClickListener(new View.OnClickListener() {
@@ -98,16 +100,16 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
                                                     .child(model.getPostId())
                                                     .child("likes")
                                                     .child(FirebaseAuth.getInstance().getUid())
-                                                    .setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    .setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() { // likes DB 값 변경
                                                         @Override
-                                                        public void onSuccess(Void unused) {
+                                                        public void onSuccess(Void unused) {                            //성공시 like개수 +1
                                                             FirebaseDatabase.getInstance().getReference()
                                                                     .child("nowPosts")
                                                                     .child(model.getPostId())
                                                                     .child("postLike")
                                                                     .setValue(model.getPostLike() + 1).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                         @Override
-                                                                        public void onSuccess(Void unused) {
+                                                                        public void onSuccess(Void unused) {            // 좋아요 누른 ui로 변경
                                                                             holder.binding.nowpostLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite,0,0,0);
 
                                                                         }
