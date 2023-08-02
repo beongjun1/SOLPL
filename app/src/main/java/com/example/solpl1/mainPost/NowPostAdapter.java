@@ -1,6 +1,7 @@
 package com.example.solpl1.mainPost;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -127,6 +128,15 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
 
                             }
                         });
+
+        // 댓글 버튼 누를때
+        holder.binding.nowpostComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, NowPostCommentActivity.class);
+                context.startActivity(intent);
+            }
+        });
 
 
 
