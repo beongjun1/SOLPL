@@ -50,6 +50,7 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
                 .placeholder(R.drawable.solpl_icon)
                 .into(holder.binding.nowpostImage);
         holder.binding.nowpostLike.setText(model.getPostLike()+"");
+        holder.binding.nowpostComment.setText(model.getCommentCount()+"");
         String content = model.getPostDescription();
         if(content.equals("")){                                         // 내용 글이 없으면 textView 제거
             holder.binding.nowpostContent.setVisibility(View.GONE);
@@ -134,6 +135,9 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, NowPostCommentActivity.class);
+                intent.putExtra("postId", model.getPostId());
+                intent.putExtra("postedBy", model.getPostedBy());
+                intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK);         // 새로운 테스크 생성-> 기존에 열어둔게 없으면 새로 생성, 기존게 있으면 그 태스크로 들어감
                 context.startActivity(intent);
             }
         });
