@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.solpl1.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -20,7 +19,6 @@ public class schedule_adapter extends RecyclerView.Adapter<schedule_adapter.sche
 
     public schedule_adapter(List<PlaceData> placeList) {
         this.placeList = placeList;
-
     }
 
     public void setData(List<PlaceData> placeList) {
@@ -39,6 +37,22 @@ public class schedule_adapter extends RecyclerView.Adapter<schedule_adapter.sche
         PlaceData placeData = placeList.get(position);
         // 텍스트 데이터 설정
         holder.placeTextView.setText(placeData.getName());
+//        String iconUrl = placeData.getIconUrl();
+//        if (iconUrl != null) {
+//            Glide.with(holder.itemView.getContext())
+//                    .load(iconUrl)
+//                    .into(holder.placeIconView);
+//        } else {
+//            // 이미지가 없는 경우에 대한 처리
+//            // 예를 들어, 기본 이미지를 표시하거나 숨김 처리 등을 수행할 수 있습니다.
+//        }
+        String time = placeData.getTime();
+        if(time != null){
+            holder.placeTimeView.setText(placeData.getTime());
+        }
+        else {
+            holder.placeTimeView.setText("알 수 없음");
+        }
 
         // 이미지 로드 및 표시
         Bitmap imageBitmap = placeData.getImageBitmap();
@@ -59,11 +73,18 @@ public class schedule_adapter extends RecyclerView.Adapter<schedule_adapter.sche
 
         private ImageView placeImageView;
         private TextView placeTextView;
+        private TextView placeTimeView;
+        private ImageView placeIconView;
+        private View lineView;
+
 
         public scheduleViewHolder(@NonNull View itemView) {
             super(itemView);
+//            placeIconView = itemView.findViewById(R.id.placeIconView);
             placeTextView = itemView.findViewById(R.id.placeNameTextView);
             placeImageView = itemView.findViewById(R.id.placeImageView);
+            placeTimeView = itemView.findViewById(R.id.placeTimeTextView);
+
         }
 
     }

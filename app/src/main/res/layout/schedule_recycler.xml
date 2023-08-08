@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="15dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,10 +12,15 @@
 
         <ImageView
             android:id="@+id/placeImageView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="centerCrop"
             android:src="@drawable/solpl_icon"/>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
         <TextView
             android:id="@+id/placeNameTextView"
             android:layout_width="wrap_content"
@@ -23,18 +29,29 @@
             android:textColor="@color/black"
             android:layout_marginStart="10dp"
             android:textStyle="bold"
+            android:textSize="20sp"
             android:text="서울식당"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+<!--            <ImageView-->
+<!--                android:background="@color/white"-->
+<!--                android:id="@+id/placeIconView"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:layout_marginStart="10dp"-->
+<!--                android:src="@drawable/solpl_icon"/>-->
+        <TextView
+            android:id="@+id/placeTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:text="월 11:00~21:00"/>
+        </LinearLayout>
 
     </LinearLayout>
+    </LinearLayout>
 
-    <!-- 점선 뷰 -->
-<!--    <View-->
-<!--        android:id="@+id/dottedLineView"-->
-<!--        android:layout_width="1dp"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:layout_marginBottom="16dp"-->
-<!--        android:layout_toLeftOf="@id/placeNameTextView"-->
-<!--        android:layout_toRightOf="@id/placeImageView"-->
-<!--        android:background="@drawable/dotted_line" />-->
 </RelativeLayout>

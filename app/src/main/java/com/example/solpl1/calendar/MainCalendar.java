@@ -120,9 +120,9 @@ public class MainCalendar extends AppCompatActivity {
                     Log.e(TAG, "선택된 시작일 : " + startDay + ", 종료일 : " + endDay);
 
                     // TODO: 선택된 시작일과 종료일을 다음 페이지로 전달하거나 처리하는 로직 작성
-                    Intent intent = new Intent(MainCalendar.this, schedule_activity.class);
-                    intent.putExtra(startDay,"startDay");
-                    intent.putExtra(endDay,"endDay");
+                    Intent intent = new Intent(MainCalendar.this, EditCalendar.class);
+                    intent.putExtra("startDay", startDay); // "startDay"라는 키로 시작일 전달
+                    intent.putExtra("endDay", endDay); // "endDay"라는 키로 종료일 전달
                     startActivity(intent);
                     Toast.makeText(getApplicationContext(),startDay+endDay,Toast.LENGTH_LONG).show();
                 }

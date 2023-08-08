@@ -96,13 +96,13 @@ public class mypage_main_activity extends AppCompatActivity {
         my_page_item item = tripList.get(0); // 0번 인덱스에 저장된 데이터 가져오기
         mRecyclerAdapter.setTripList(tripList);
 
-        //Intent를 받고 평균 값을 추출합니다.
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("average_rating")) {
-            float avg_rating = intent.getFloatExtra("average_rating", 0f);
-            //평균값을 rating_bar에 넣는다
-            ratingBar.setRating(avg_rating);
-        }
+//        //Intent를 받고 평균 값을 추출합니다.
+//        Intent intent = getIntent();
+//        if (intent != null && intent.hasExtra("average_rating")) {
+//            float avg_rating = intent.getFloatExtra("average_rating", 0f);
+//            //평균값을 rating_bar에 넣는다
+//            ratingBar.setRating(avg_rating);
+//        }
 
 
         updatePostCount(); //포스트 숫자에 맞게 count늘어나는 코드

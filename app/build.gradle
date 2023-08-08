@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.solpl1"
-        minSdk 21
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -80,4 +80,6 @@ dependencies {
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
     //구글맵 유틸리티
     implementation 'com.google.maps.android:android-maps-utils:2.2.0'
+
+    implementation 'androidx.cardview:cardview:1.0.0'
 }

@@ -21,17 +21,17 @@
         android:layout_below="@+id/schedule_map"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/place_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+
     <Button
         android:layout_alignParentBottom="true"
         android:id="@+id/edit_loc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="편집"
+        android:text="생성"
         android:textSize="30dp" />
 </RelativeLayout>
