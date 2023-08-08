@@ -73,7 +73,7 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
                                     .into(holder.binding.profile);
                         }
 
-                        holder.binding.nowpostName.setText(userAccount.getName());              // 유저이름
+                        holder.binding.name.setText(userAccount.getName());              // 유저이름
                     }
 
                     @Override

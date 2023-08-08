@@ -88,4 +88,5 @@ dependencies {
     //박정연
     implementation 'com.github.MrNouri:DynamicSizes:1.0'    // 화면 스크린에 맞게 사진 띄우기
     implementation 'com.makeramen:roundedimageview:2.3.0'   // 이미지 라운드 뷰
+    implementation 'com.github.marlonlom:timeago:4.0.3'     // 시간 표시(ex) 1 day ago)
 }

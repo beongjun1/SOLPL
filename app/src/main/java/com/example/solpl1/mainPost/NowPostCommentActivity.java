@@ -2,10 +2,12 @@ package com.example.solpl1.mainPost;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.solpl1.R;
@@ -19,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class NowPostCommentActivity extends AppCompatActivity {
@@ -29,6 +32,7 @@ public class NowPostCommentActivity extends AppCompatActivity {
     String postedBy;
     FirebaseDatabase database;
     FirebaseAuth auth;
+    ArrayList<Comment> list = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +140,32 @@ public class NowPostCommentActivity extends AppCompatActivity {
 
             }
         });
+
+        CommentAdapter adapter = new CommentAdapter(this,list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        binding.commentRecylerView.setLayoutManager(layoutManager);
+        binding.commentRecylerView.setAdapter(adapter);
+
+        database.getReference()
+                .child("nowPosts")
+                .child(postId)
+                .child("comments").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        list.clear();
+                        for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                            Comment comment = dataSnapshot.getValue(Comment.class);
+                            list.add(comment);
+                        }
+                        adapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
     }
 }
