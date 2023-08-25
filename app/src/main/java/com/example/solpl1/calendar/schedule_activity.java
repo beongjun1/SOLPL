@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,8 +39,14 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -63,13 +70,15 @@ public class schedule_activity extends AppCompatActivity implements OnMapReadyCa
     private static final String TAG = "MapActivity";
 
     private List<PlaceData> placeList;
-    private List<DayData> dayList;
 
     private RecyclerView recyclerView;
     private schedule_adapter adapter;
     private Button edit_btn;
     private SupportMapFragment mapFragment;
     private PlacesClient placesClient;
+
+    String selectedDay;
+    private String key;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +86,12 @@ public class schedule_activity extends AppCompatActivity implements OnMapReadyCa
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
+        Intent intent = getIntent();
+        if (intent != null) {
+            selectedDay = intent.getStringExtra("selected_day");
+            key = intent.getStringExtra("random_key");
+            // 이제 selectedDay를 사용하여 해당 일차에 맞는 일정 데이터를 표시하면 됨
+        }
 
         Places.initialize(getApplicationContext(), "AIzaSyDd8DVD7LzbkEm3esLHEOWgUwIdruqONIA");
         placesClient = Places.createClient(this);
@@ -195,60 +210,131 @@ public class schedule_activity extends AppCompatActivity implements OnMapReadyCa
         });
     }
 
+
     private void savePlaceToDatabase(List<PlaceData> placeList) {
         // Firebase Realtime Database 인스턴스 가져오기
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String currentUserId = user.getUid(); // 현재 사용자의 UID 가져오기
+
+        // 'trips' 노드에 대한 참조 가져오기
+        DatabaseReference tripRef = database.getReference("trip");
+        Query query = tripRef.orderByChild("user_id_token").equalTo(currentUserId);
+
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot tripSnapshot : dataSnapshot.getChildren()) {
+                    String tripKey = tripSnapshot.getKey(); // 여행의 키 값을 가져옴
+                    // 이제 가져온 키 값을 사용하여 장소 데이터를 해당 여행에 저장하거나 사용할 수 있음
+                    savePlaceToDatabaseForTrip(placeList, tripKey);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // 에러 처리
+            }
+        });
+    }
+    private void savePlaceToDatabaseForTrip(List<PlaceData> placeList, String tripKey) {
+        // Firebase Realtime Database 인스턴스 가져오기
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String userEmail = user.getEmail();
+        String currentUserId = user.getUid(); // 현재 사용자의 UID 가져오기
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
 
+
+        DatabaseReference user_account_database;
+        user_account_database = FirebaseDatabase.getInstance().getReference("UserAccount");
+
+
+
         // 'places' 노드에 대한 참조 가져오기
-        DatabaseReference placesRef = database.getReference("places");
+        DatabaseReference tripRef = database.getReference("trip"); // trips 노드에 대한 참조 가져오기
+
         for (int i = 0; i < placeList.size(); i++) {
+            final int index = i; // effectively final로 사용될 새로운 변수
             PlaceData placeData = placeList.get(i);
-
-
-            //이미지를 STORAGE에 업로드 한 뒤 URL 받기
+            String filePath = userEmail + "/place/";
+            // 이미지를 STORAGE에 업로드 한 뒤 URL 받기
             Bitmap imageBitmap = placeData.getImageBitmap();
             String imageName = "place" + (i + 1) + ".jpg"; // 이미지 파일명 설정
-            StorageReference imageRef = storageRef.child(imageName);
+            StorageReference imageRef = storageRef.child(filePath + imageName);
 
+            user_account_database.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String idToken = snapshot.child(currentUserId).child("idToken").getValue(String.class);
 
-            // 이미지를 Firebase Storage에 업로드하는 과정 (이미지를 byte 배열로 변환하여 업로드)
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] data = baos.toByteArray();
-            UploadTask uploadTask = imageRef.putBytes(data);
-            final int index = i;
-            uploadTask.addOnSuccessListener(taskSnapshot -> {
-                // 업로드가 성공적으로 완료되었을 때 이미지의 URL 받아오기
-                imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
-                    String imageUrl = uri.toString();
+                    if (idToken != null) {
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        byte[] data = baos.toByteArray();
+                        UploadTask uploadTask = imageRef.putBytes(data);
 
-                    // 이미지 URL을 포함하여 PlaceData 객체 생성
-                    PlaceDatabase newPlaceData = new PlaceDatabase(placeData.getName(), imageUrl, placeData.getTime());
+                        uploadTask.addOnSuccessListener(taskSnapshot -> {
+                            // 업로드가 성공적으로 완료되었을 때 이미지의 URL 받아오기
+                            imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                                String imageUrl = uri.toString();
 
-                    // Firebase Realtime Database에 PlaceData 객체 저장
-                    placesRef.child("place" + (index + 1)).setValue(newPlaceData);
-                }).addOnFailureListener(e -> {
-                    // 이미지 URL을 받아오는데 실패한 경우
-                    Log.e(TAG, "Failed to get image URL: " + e.getMessage());
-                });
-            }).addOnFailureListener(e -> {
-                // 이미지 업로드에 실패한 경우
-                Log.e(TAG, "Failed to upload image: " + e.getMessage());
+                                // 이미지 URL을 포함하여 PlaceData 객체 생성
+                                Map<String, Object> placeMap = new HashMap<>();
+                                placeMap.put("name", placeData.getName());
+                                placeMap.put("time", placeData.getTime());
+                                placeMap.put("imageUrl", imageUrl); // 이미지 URL은 Firebase Storage에 업로드 후 얻은 값
+                                placeMap.put("user_id", idToken); // idToken 추가
+
+                                // 각 일정에 일차 정보 추가
+                                placeMap.put("day", selectedDay); // 여기서 dayNumber는 해당 일정이 속하는 일차를 나타내는 값
+
+                                // Map 형태로 저장할 장소 데이터 추가
+                                String dayNode = (index + 1) + " "; //
+                                tripRef.child(tripKey).child("place").child(selectedDay).child(dayNode).setValue(placeMap)
+                                        .addOnSuccessListener(aVoid -> {
+                                            Log.d("DataInsertion", "Data inserted successfully: " + placeMap.toString());
+
+                                            // 모든 장소 데이터 추가가 완료되면 Firebase Realtime Database에 저장
+                                            if (index == placeList.size() - 1) {
+                                                Intent intent = new Intent();
+                                                intent.putExtra("selectedDay", selectedDay);
+                                                setResult(RESULT_OK, intent);
+                                                finish();
+                                            }
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            // 데이터 삽입에 실패한 경우
+                                            Log.e("DataInsertion", "Failed to insert data: " + e.getMessage());
+                                        });
+                            }).addOnFailureListener(e -> {
+                                // 이미지 URL을 받아오는데 실패한 경우
+                                Log.e(TAG, "Failed to get image URL: " + e.getMessage());
+                            });
+                        }).addOnFailureListener(e -> {
+                            // 이미지 업로드에 실패한 경우
+                            Log.e(TAG, "Failed to upload image: " + e.getMessage());
+                        });
+                    } else {
+                        // 로그인한 사용자의 ID 토큰이 데이터베이스에 없음
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // onCancelled 처리
+                }
             });
-
-
-//            Map<String, Object> placeValues = new HashMap<>();
-//            placeValues.put("name", placeData.getName());
-//            placeValues.put("time", placeData.getTime());
-//                placeValues.put("image",placeData.getImageBitmap());
-            // 이미지를 Firebase에서 처리 가능한 형태로 변환하여 저장
-//            // 예시: placeValues.put("image_url", placeData.getImageUrl());
-//
-//            placesRef.child("place" + (i + 1)).setValue(placeValues);
         }
+
     }
+
+
 
     // 오늘 날짜에 맞는 오픈 시간 보여주기
     private String getOpeningHoursForToday(Place place) {

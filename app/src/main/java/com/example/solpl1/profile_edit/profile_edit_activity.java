@@ -145,6 +145,7 @@ public class profile_edit_activity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("UserAccount").child(user.getUid());
         userRef.child("name").setValue(newName)
+
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

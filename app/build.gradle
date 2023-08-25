@@ -82,4 +82,5 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils:2.2.0'
 
     implementation 'androidx.cardview:cardview:1.0.0'
+
 }

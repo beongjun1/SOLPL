@@ -5,40 +5,73 @@ import android.graphics.Bitmap;
 import java.util.List;
 
 public class calendar_item {
-//    private String calendarId;
     private String name;
-    private String imageUrl; // 이미지를 비트맵 형태로 저장할 필드
+    private String imageUrl;
     private String time;
+    private boolean expanded = false; // 접혀있는 상태로 초기화
 
 
-
-    public String getName() {
-        return name;
-    }
+    private String date;
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
-    public String getTime() {
-        return time;
-    }
-
     public void setTime(String time) {
         this.time = time;
     }
 
-    public calendar_item( String name, String imageUrl, String time) {
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public calendar_item(String name, String imageUrl, String time, String date) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.time = time;
+        this.date = date;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public String getTime() {
+        return time;
+    }
+//    private String date;
+//    private List<Place> placeList;
+//
+//    public calendar_item(String date, List<Place> placeList) {
+//        this.date = date;
+//        this.placeList = placeList;
+//    }
+//
+//    public String getDate() {
+//        return date;
+//    }
+//
+//    public List<Place> getPlaceList() {
+//        return placeList;
+//    }
+//
+//    public void setDate(String date) {
+//        this.date = date;
+//    }
+//
+//    public void setPlaceList(List<Place> placeList) {
+//        this.placeList = placeList;
+//    }
 }

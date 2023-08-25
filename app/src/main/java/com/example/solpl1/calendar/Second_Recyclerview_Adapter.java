@@ -2,6 +2,7 @@ package com.example.solpl1.calendar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.solpl1.MainActivity;
 import com.example.solpl1.R;
+import com.example.solpl1.post_management.post_management_item;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -29,11 +33,14 @@ public class Second_Recyclerview_Adapter extends RecyclerView.Adapter<Second_Rec
     private List<calendar_item> items;  //리사이클러뷰 안에 들어갈 값 저장
 
     public Second_Recyclerview_Adapter(List<calendar_item> items) {
-        this.items =  items;
+        this.items = items;
 
+        notifyDataSetChanged();
     }
-    public void setData(List<calendar_item> placeDatabases) {
-        this.items = placeDatabases;
+
+    public void setData(List<calendar_item> items) {
+        this.items = items;
+        Log.d("Second_Recyclerview", "setData: " + items.toString()); // Debug log
         notifyDataSetChanged();
     }
 
@@ -48,8 +55,15 @@ public class Second_Recyclerview_Adapter extends RecyclerView.Adapter<Second_Rec
     @Override
     public void onBindViewHolder(@NonNull Second_Recyclerview_Adapter.ViewHolder holder, int position) {
         holder.time.setText(items.get(position).getTime());
+        Log.d("Second_Recyclerview", "Time: " + items.get(position).getTime());
         holder.name.setText(items.get(position).getName());
-//        holder.placeImageView.set(items.get(position).getImageUrl());
+        Log.d("Second_Recyclerview", "Time: " + items.get(position).getName());
+        Log.d("Second_Recyclerview", "Time: " + items.get(position).getImageUrl());
+
+        String imageUrl = items.get(position).getImageUrl();
+
+        Picasso.get().load(imageUrl).into(holder.placeImageView);
+
     }
 
     @Override
@@ -61,25 +75,12 @@ public class Second_Recyclerview_Adapter extends RecyclerView.Adapter<Second_Rec
         ImageView placeImageView;
         TextView time;
         TextView name;
-//        Button edit_schedule;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.editPlaceNameTextView);
             placeImageView = itemView.findViewById(R.id.editPlaceImageView);
             time = itemView.findViewById(R.id.editPlaceTimeTextView);
-//            edit_schedule = itemView.findViewById(R.id.add_loc);
-//
-//            edit_schedule.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    int position = getAdapterPosition();
-//                    if(position != RecyclerView.NO_POSITION){
-//                        Intent intent = new Intent(itemView.getContext(), schedule_activity.class);
-//                        itemView.getContext().startActivity(intent);
-//
-//                    }
-//                }
-//            });
+
 
         }
     }

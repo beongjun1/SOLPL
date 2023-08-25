@@ -8,10 +8,16 @@
     tools:context=".MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/main_recyclerView"
+       android:id="@+id/main_recyclerView"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"/>
+    <Button
+        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
+        android:layout_height="wrap_content"
+        android:text="일정 생성"
+        android:id="@+id/calendar_create"/>
 
 
 </RelativeLayout>

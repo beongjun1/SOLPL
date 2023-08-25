@@ -38,14 +38,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-                <!--                            <ImageView-->
-                <!--                                android:background="@color/white"-->
-                <!--                                android:id="@+id/placeIconView"-->
-                <!--                                android:layout_width="30dp"-->
-                <!--                                android:layout_height="30dp"-->
-                <!--                                android:scaleType="centerCrop"-->
-                <!--                                android:layout_marginStart="10dp"-->
-                <!--                                android:src="@drawable/solpl_icon"/>-->
                 <TextView
                     android:id="@+id/editPlaceTimeTextView"
                     android:layout_width="wrap_content"
