@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.solpl1.MainActivity;
 import com.example.solpl1.R;
 import com.example.solpl1.post_management.post_management_item;
@@ -62,7 +64,11 @@ public class Second_Recyclerview_Adapter extends RecyclerView.Adapter<Second_Rec
 
         String imageUrl = items.get(position).getImageUrl();
 
-        Picasso.get().load(imageUrl).into(holder.placeImageView);
+        Glide.with(context)
+                .load(imageUrl)
+                .skipMemoryCache(true) // 메모리 캐시 비우기
+                .diskCacheStrategy(DiskCacheStrategy.NONE) // 디스크 캐시 비우기
+                .into(holder.placeImageView);
 
     }
 

@@ -3,6 +3,7 @@ package com.example.solpl1.calendar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 
 import java.time.LocalDate;
@@ -50,14 +51,12 @@ public class EditCalendar extends AppCompatActivity {
         calendar_create = findViewById(R.id.calendar_create);
 
         RecyclerView recyclerView = findViewById(R.id.main_recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CalendarEditAdapter(name, items);
-        recyclerView.setAdapter(adapter);
 
         Intent intent = getIntent();
         String startDay = intent.getStringExtra("startDay");
         String endDay = intent.getStringExtra("endDay");
         key = intent.getStringExtra("key");
+        Log.d("EditCalendar Key", "key: "+ key);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     // 날짜를 파싱하여 LocalDate 객체로 변환
@@ -71,6 +70,17 @@ public class EditCalendar extends AppCompatActivity {
             String dayString = startDate.plusDays(i).format(formatter); // 날짜 포맷팅
             name.add(dayString);
         }
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new CalendarEditAdapter(name, items,key);
+        recyclerView.setAdapter(adapter);
+
+        calendar_create.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
 
@@ -79,12 +89,16 @@ public class EditCalendar extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             String day = data.getStringExtra("selectedDay");
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            String userEmail = user.getEmail();
+            String convertedPath = convertToValidPath(userEmail);
 
             Log.d("day", "day: " + day);
             Log.d("key", "key: " + key);
 
             trip_db = FirebaseDatabase.getInstance().getReference("trip");
-            trip_db.child(key).child("place").child(day).addListenerForSingleValueEvent(new ValueEventListener() {
+            trip_db.child(convertedPath).child(key).child("place").child(day).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
@@ -139,6 +153,16 @@ public class EditCalendar extends AppCompatActivity {
             });
         }
 
+    }
+    //문자열을 데이터베이스 경로에 사용 가능한 형식으로 변환
+    public static String convertToValidPath(String input) {
+        // 허용되는 문자: 알파벳 소문자, 숫자, 밑줄(_)
+        String validCharacters = "abcdefghijklmnopqrstuvwxyz0123456789_";
+
+        // 입력된 문자열을 소문자로 변환하고 허용되지 않는 문자를 밑줄로 대체
+        String converted = input.toLowerCase().replaceAll("[^" + validCharacters + "]", "_");
+
+        return converted;
     }
 }
 

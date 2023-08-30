@@ -3,12 +3,12 @@ package com.example.solpl1;
 public class my_page_item {
     String date;
     String loc;
-    int resourceId;
+    String img;
 
-    public my_page_item(int resourceId, String date, String loc) {
+    public my_page_item(String date, String loc, String img) {
         this.date = date;
-        this.loc= loc;
-        this.resourceId = resourceId;
+        this.loc = loc;
+        this.img = img;
     }
 
     public String getDate() {
@@ -27,11 +27,11 @@ public class my_page_item {
         this.loc = loc;
     }
 
-    public int getResourceId() {
-        return resourceId;
+    public String getImg() {
+        return img;
     }
 
-    public void setResourceId(int resourceId) {
-        this.resourceId = resourceId;
+    public void setImg(String img) {
+        this.img = img;
     }
 }

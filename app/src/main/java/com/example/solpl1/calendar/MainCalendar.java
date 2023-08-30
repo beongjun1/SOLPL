@@ -200,7 +200,7 @@ public class MainCalendar extends AppCompatActivity {
                     tripInfo.put("user_id_token",idToken);
 
                     // 데이터베이스 경로 설정 및 저장
-                    DatabaseReference tripRef = FirebaseDatabase.getInstance().getReference("trip");
+                    DatabaseReference tripRef = FirebaseDatabase.getInstance().getReference("trip").child(convertedPath);
                     String tripId = tripRef.push().getKey(); // 새로운 여행에 대한 고유 ID 생성
                     String key = convertedPath+tripId;
                     tripRef.child(key).setValue(tripInfo);
@@ -213,6 +213,7 @@ public class MainCalendar extends AppCompatActivity {
                     intent.putExtra("key",key);
                     Log.d("key","key : "+key);
                     startActivity(intent);
+                    finish();
                     Toast.makeText(getApplicationContext(), startDay + " ~ "+endDay, Toast.LENGTH_LONG).show();
 
                 }

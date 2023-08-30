@@ -13,9 +13,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.solpl1.R;
 import com.example.solpl1.ClickableRecyclerAdapter;
 import com.example.solpl1.my_page_item;
+import com.example.solpl1.post_management.post_management_item;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -24,7 +28,6 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
     protected ArrayList<my_page_item> PageList;
     private boolean hideButton; // 버튼 숨김 여부를 저장하는 변수
 
-    private ClickableRecyclerAdapter.OnItemClickListener itemClickListener;
 
     @NonNull
     @Override
@@ -112,7 +115,19 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
 
         public void onBind(my_page_item item) {
             if (item != null) {
-                trip_picture.setImageResource(item.getResourceId());
+//                trip_picture.setImageResource(item.getResourceId());
+                String trip_img = item.getImg();
+                if (trip_img != null && !trip_img.isEmpty()) {
+                    // 이미지 리사이징을 위한 크기 지정 (원하는 크기로 변경하세요)
+                    int targetWidth = 1000;
+                    int targetHeight = 1000;
+
+                    Glide.with(itemView.getContext())
+                            .load(trip_img)
+                            .override(targetWidth, targetHeight) // 리사이징 크기 지정
+                            .transition(DrawableTransitionOptions.withCrossFade()) // 페이드 효과
+                            .into(trip_picture);
+                }
                 trip_date.setText(item.getDate());
                 trip_loc.setText(item.getLoc());
             }

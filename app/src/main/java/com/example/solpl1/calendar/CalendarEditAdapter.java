@@ -1,5 +1,7 @@
 package com.example.solpl1.calendar;
 
+import static android.content.ContentValues.TAG;
+
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
@@ -32,10 +34,12 @@ public class CalendarEditAdapter extends RecyclerView.Adapter<CalendarEditAdapte
     private String randomKey; // 랜덤 키 값을 저장할 변수
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
     private int prePosition = -1;
+    private String editCalendarKey; // EditCalendar로부터 전달받은 key 값을 저장할 변수
 
-    public CalendarEditAdapter(ArrayList<String> data, List<calendar_item> items) {
+    public CalendarEditAdapter(ArrayList<String> data, List<calendar_item> items, String key) {
         this.listData = data;
         this.items = items;
+        this.editCalendarKey = key; // EditCalendar로부터 전달받은 key 값을 저장
     }
 
     @NonNull
@@ -72,20 +76,20 @@ public class CalendarEditAdapter extends RecyclerView.Adapter<CalendarEditAdapte
         private int position;
         private Second_Recyclerview_Adapter adapter;
 
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textView1 = itemView.findViewById(R.id.main_item_day);
             recyclerView = itemView.findViewById(R.id.second_recyclerview);
 
             edit_schedule = itemView.findViewById(R.id.add_loc);
-
             // 두 번째 리사이클러뷰 어댑터 초기화
             adapter = new Second_Recyclerview_Adapter(new ArrayList<>());
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
             // 랜덤 키 값 생성 및 저장
-            randomKey = generateRandomKey();
+//            randomKey = generateRandomKey();
             edit_schedule.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -94,8 +98,13 @@ public class CalendarEditAdapter extends RecyclerView.Adapter<CalendarEditAdapte
                         String selectedDay = listData.get(position);
 
                         Intent intent = new Intent(itemView.getContext(), schedule_activity.class);
-                        intent.putExtra("random_key", randomKey); // 랜덤 키 값을 전달
+//                        intent.putExtra("random_key", randomKey); // 랜덤 키 값을 전달
+
                         intent.putExtra("selected_day", selectedDay);
+
+                        intent.putExtra("key", editCalendarKey); // EditCalendar로부터 받은 key 값을 전달
+                        Log.d("editCalendarKey", "adapter key: " + editCalendarKey);
+
                         ((Activity) itemView.getContext()).startActivityForResult(intent, REQUEST_CODE);
                     }
                 }
@@ -121,10 +130,10 @@ public class CalendarEditAdapter extends RecyclerView.Adapter<CalendarEditAdapte
         }
         return filteredItems;
     }
-    private String generateRandomKey() {
-        // 랜덤 키 값을 생성하는 로직 구현
-        // 예를 들어 UUID 라이브러리를 사용하여 랜덤 키 값을 생성할 수 있음
-        // 이 키 값을 장소 데이터를 저장할 때 사용
-        return UUID.randomUUID().toString();
-    }
+//    private String generateRandomKey() {
+//        // 랜덤 키 값을 생성하는 로직 구현
+//        // 예를 들어 UUID 라이브러리를 사용하여 랜덤 키 값을 생성할 수 있음
+//        // 이 키 값을 장소 데이터를 저장할 때 사용
+//        return UUID.randomUUID().toString();
+//    }
 }
