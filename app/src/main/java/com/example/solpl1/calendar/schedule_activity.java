@@ -165,7 +165,7 @@ public class schedule_activity extends AppCompatActivity implements OnMapReadyCa
     }
 
 
-    private void fetchPlacePhoto(Place place, String placeName) {
+    private void fetchPlacePhoto(@NonNull Place place, String placeName) {
 
         // Define a Place ID.
         final String placeId = place.getId();
@@ -191,8 +191,8 @@ public class schedule_activity extends AppCompatActivity implements OnMapReadyCa
 
             // FetchPhotoRequest 생성
             FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
-                    .setMaxWidth(50)
-                    .setMaxHeight(50)
+                    .setMaxWidth(300)
+                    .setMaxHeight(300)
                     .build();
             placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
                 Bitmap bitmap = fetchPhotoResponse.getBitmap();
@@ -215,34 +215,6 @@ public class schedule_activity extends AppCompatActivity implements OnMapReadyCa
         });
     }
 
-
-//    private void savePlaceToDatabase(List<PlaceData> placeList) {
-//        // Firebase Realtime Database 인스턴스 가져오기
-//        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        FirebaseUser user = firebaseAuth.getCurrentUser();
-//        String currentUserId = user.getUid(); // 현재 사용자의 UID 가져오기
-//
-//        // 'trips' 노드에 대한 참조 가져오기
-//        DatabaseReference tripRef = database.getReference("trip");
-//        Query query = tripRef.orderByChild("user_id_token").equalTo(currentUserId);
-//
-//        query.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot tripSnapshot : dataSnapshot.getChildren()) {
-//                    String tripKey = tripSnapshot.getKey(); // 여행의 키 값을 가져옴
-//                    // 이제 가져온 키 값을 사용하여 장소 데이터를 해당 여행에 저장하거나 사용할 수 있음
-//                    savePlaceToDatabaseForTrip(placeList, tripKey);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                // 에러 처리
-//            }
-//        });
-//    }
 private void uploadImagesAndSaveToDatabase(List<PlaceData> placeList) {
     // Firebase 인스턴스 가져오기
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();

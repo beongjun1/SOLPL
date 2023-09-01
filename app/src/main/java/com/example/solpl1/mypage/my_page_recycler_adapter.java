@@ -26,7 +26,6 @@ import java.util.ArrayList;
 public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recycler_adapter.ViewHolder> {
 
     protected ArrayList<my_page_item> PageList;
-    private boolean hideButton; // 버튼 숨김 여부를 저장하는 변수
 
 
     @NonNull
@@ -40,7 +39,6 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (PageList != null) {
             holder.onBind(PageList.get(position));
-            holder.setButtonVisibility(hideButton); // 버튼의 숨김 여부 설정
 
         }
     }
@@ -64,10 +62,6 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
     public int getItemViewType(int position) {
         return position;
     }
-    // 버튼 숨김 여부를 설정하는 메소드
-    public void setHideButton(boolean hide) {
-        this.hideButton = hide;
-    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -84,34 +78,9 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
             trip_picture = (ImageView) itemView.findViewById(R.id.trip_picture);
             trip_date = (TextView) itemView.findViewById(R.id.trip_date);
             trip_loc = (TextView) itemView.findViewById(R.id.trip_loc);
-            mypageAuthButton = itemView.findViewById(R.id.mypage_auth);
 
 
-            mypageAuthButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        // 해당 위치의 myPageItem을 가져옵니다.
-                        my_page_item clickedItem = PageList.get(position);
-
-                        // trip_date와 trip_loc의 값을 가져옵니다.
-                        String date = clickedItem.getDate();
-                        String loc = clickedItem.getLoc();
-
-                        // 가져온 값을 다음 액티비티로 전달하거나 사용할 수 있습니다.
-                        // 여기에서는 Toast 메시지로 출력하는 예시를 보여드립니다.
-                        Toast.makeText(itemView.getContext(), "Date: " + date + ", Loc: " + loc, Toast.LENGTH_SHORT).show();
-
-                        // 다음 액티비티로 이동하는 코드를 작성합니다.
-                        Intent intent = new Intent(itemView.getContext(), mypage_auth_activity.class);
-                        intent.putExtra("date", date);
-                        intent.putExtra("loc", loc);
-                        itemView.getContext().startActivity(intent);
-                    }
-                }
-            });
-        }
+               }
 
         public void onBind(my_page_item item) {
             if (item != null) {
@@ -133,12 +102,5 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
             }
         }
         // 버튼의 숨김 여부를 설정하는 메소드
-        public void setButtonVisibility(boolean hide) {
-            if (hide) {
-                mypageAuthButton.setVisibility(View.GONE);
-            } else {
-                mypageAuthButton.setVisibility(View.VISIBLE);
-            }
-        }
     }
 }

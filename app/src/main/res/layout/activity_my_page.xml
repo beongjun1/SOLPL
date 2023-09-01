@@ -123,7 +123,7 @@
                     android:layout_marginLeft="5dp"
                     android:textStyle="bold|italic"
                     android:textColor="@color/black"
-                    android:text="+3400"
+                    android:text="0"
                     android:textSize="20sp" />
 
                 <Button

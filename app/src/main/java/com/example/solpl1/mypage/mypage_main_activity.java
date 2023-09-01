@@ -88,7 +88,6 @@ public class mypage_main_activity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL,false));
 
 
-        updatePostCount(); //포스트 숫자에 맞게 count늘어나는 코드
 
         setUserNameFromDatabase(); // 데이터베이스에서 userName가져오기
 
@@ -124,7 +123,9 @@ public class mypage_main_activity extends AppCompatActivity {
                     // 가져온 값으로 my_page_item 생성
                     my_page_item tripItem = new my_page_item(tripDate, tripTitle, tripImageUrl);
                     tripList.add(tripItem);
+
                 }
+                updatePostCount(); //포스트 숫자에 맞게 count늘어나는 코드
 
                 mRecyclerAdapter.setTripList(tripList); // 어댑터에 데이터 설정
             }
@@ -135,17 +136,6 @@ public class mypage_main_activity extends AppCompatActivity {
             }
         });
 
-
-//        tripList.add(new my_page_item(R.drawable.ex1,"2023.03.12 ~ 2023.03.15","수원 여행"));
-//        tripList.add(new my_page_item(R.drawable.activity_post_picture,"2023.03.11 ~ 2023.03.14","수원 여행"));
-//        tripList.add(new my_page_item(R.drawable.activity_post_picture,"2023.03.09 ~ 2023.03.12","수원 여행"));
-//        tripList.add(new my_page_item(R.drawable.activity_post_picture,"2023.03.08 ~ 2023.03.11","수원 여행"));
-//        tripList.add(new my_page_item(R.drawable.activity_post_picture,"2023.03.07 ~ 2023.03.10","수원 여행"));
-//        tripList.add(new my_page_item(R.drawable.activity_post_picture,"2023.03.06 ~ 2023.03.09","수원 여행"));
-//        tripList.add(new my_page_item(R.drawable.activity_post_picture,"2023.03.10 ~ 2023.03.13","수원 여행"));
-//
-//        my_page_item item = tripList.get(0); // 0번 인덱스에 저장된 데이터 가져오기
-//        mRecyclerAdapter.setTripList(tripList);
 
 //        //Intent를 받고 평균 값을 추출합니다.
 //        Intent intent = getIntent();
