@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.solpl1.MainActivity;
 import com.example.solpl1.calendar.MainCalendar;
+import com.example.solpl1.chat.ChatActivity;
 import com.example.solpl1.chat.chat_activity;
 import com.example.solpl1.mainPost.MainPostFragment;
 import com.example.solpl1.map.MainMap;
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                         finish();
                         break;
                     case R.id.nav_chat:
-                        Intent intent2 = new Intent(MainActivity.this, chat_activity.class);
+                        Intent intent2 = new Intent(MainActivity.this, ChatActivity.class);
                         startActivity(intent2);
                         finish();
                         break;
