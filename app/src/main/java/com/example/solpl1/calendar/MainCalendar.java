@@ -184,13 +184,14 @@ public class MainCalendar extends AppCompatActivity {
         String convertedPath = convertToValidPath(userEmail);
 
         user_account_database = FirebaseDatabase.getInstance().getReference("UserAccount");
-
+        Log.e("캡스톤", user_account_database.toString());
         user_account_database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String idToken = snapshot.child(currentUserId).child("idToken").getValue(String.class);
 
                 if (idToken != null) {
+
                     // 여행 정보를 준비
                     String tripTitle = trip_title.getText().toString();
                     Map<String, Object> tripInfo = new HashMap<>();
@@ -204,7 +205,6 @@ public class MainCalendar extends AppCompatActivity {
                     String tripId = tripRef.push().getKey(); // 새로운 여행에 대한 고유 ID 생성
                     String key = convertedPath+tripId;
                     tripRef.child(key).setValue(tripInfo);
-
 
                     //첫 날과 마지막 날 보내기
                     Intent intent = new Intent(MainCalendar.this, EditCalendar.class);
