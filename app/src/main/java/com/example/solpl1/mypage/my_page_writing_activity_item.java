@@ -1,8 +1,6 @@
 package com.example.solpl1.mypage;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class my_page_writing_activity_item {
         private String cost;
@@ -11,7 +9,7 @@ public class my_page_writing_activity_item {
         private String content;
         private String hashtag;
         private ArrayList<String> urlList;
-    private String post_id;
+        private String post_id;
 
 
     public my_page_writing_activity_item() {

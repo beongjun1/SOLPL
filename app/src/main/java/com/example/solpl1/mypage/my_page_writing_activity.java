@@ -67,7 +67,7 @@ public class my_page_writing_activity extends AppCompatActivity {
     TextView post_date;
     Button writing_btn_attach_photo;
     ArrayList<Uri> uriList = new ArrayList<>();     // 이미지의 uri를 담을 ArrayList 객체
-    DatabaseReference user_account_database; //실시간 데이터베이스
+    private DatabaseReference user_account_database; //실시간 데이터베이스
     DecimalFormat myFormatter = new DecimalFormat("###,###"); //비용을 처리할 때 쉼표를 표시하기 위한 객체
     String result1 = "";
     TextInputEditText writing_editTextPrice;

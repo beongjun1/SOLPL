@@ -38,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -80,34 +81,71 @@ public class mypage_main_activity extends AppCompatActivity {
 
         trip_current=findViewById(R.id.trip_current);
 
+
+        tripList = new ArrayList<>();
         mRecyclerView.setAdapter(mRecyclerAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL,false));
 
-        tripList = new ArrayList<>();
-        tripList.add(new my_page_item(R.drawable.ex1,"2023.03.12 ~ 2023.03.15","수원 여행"));
-        tripList.add(new my_page_item(R.drawable.activity_post_picture,"2023.03.11 ~ 2023.03.14","수원 여행"));
-        tripList.add(new my_page_item(R.drawable.activity_post_picture,"2023.03.10 ~ 2023.03.13","수원 여행"));
-        tripList.add(new my_page_item(R.drawable.activity_post_picture,"2023.03.09 ~ 2023.03.12","수원 여행"));
-        tripList.add(new my_page_item(R.drawable.activity_post_picture,"2023.03.08 ~ 2023.03.11","수원 여행"));
-        tripList.add(new my_page_item(R.drawable.activity_post_picture,"2023.03.07 ~ 2023.03.10","수원 여행"));
-        tripList.add(new my_page_item(R.drawable.activity_post_picture,"2023.03.06 ~ 2023.03.09","수원 여행"));
 
-        my_page_item item = tripList.get(0); // 0번 인덱스에 저장된 데이터 가져오기
-        mRecyclerAdapter.setTripList(tripList);
-
-        //Intent를 받고 평균 값을 추출합니다.
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("average_rating")) {
-            float avg_rating = intent.getFloatExtra("average_rating", 0f);
-            //평균값을 rating_bar에 넣는다
-            ratingBar.setRating(avg_rating);
-        }
-
-
-        updatePostCount(); //포스트 숫자에 맞게 count늘어나는 코드
 
         setUserNameFromDatabase(); // 데이터베이스에서 userName가져오기
+
+
+
+
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String userEmail = user.getEmail();
+        String convertedPath = convertToValidPath(userEmail);
+        DatabaseReference userTripsRef = FirebaseDatabase.getInstance().getReference("trip").child(convertedPath);
+
+
+        userTripsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+           public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                tripList.clear(); // 기존 데이터 초기화
+
+                for (DataSnapshot tripSnapshot : dataSnapshot.getChildren()) {
+                    String tripTitle = tripSnapshot.child("title").getValue(String.class);
+                    String tripStart = tripSnapshot.child("startDay").getValue(String.class);
+                    String tripEnd = tripSnapshot.child("endDay").getValue(String.class);
+                    String firstPlaceKey = tripSnapshot.child("place").child(tripStart).getChildren().iterator().next().getKey();
+
+                    // 첫 번째 자식의 키로 이미지 URL 가져오기
+                    String tripImageUrl = tripSnapshot.child("place").child(tripStart).child(firstPlaceKey).child("imageUrl").getValue(String.class);
+                    Log.d("tripImageUrl1", "trip Url : " + tripImageUrl);
+
+
+
+                    String tripDate = (tripStart + " ~ " + tripEnd);
+                    // 가져온 값으로 my_page_item 생성
+                    my_page_item tripItem = new my_page_item(tripDate, tripTitle, tripImageUrl);
+                    tripList.add(tripItem);
+
+                }
+                updatePostCount(); //포스트 숫자에 맞게 count늘어나는 코드
+
+                mRecyclerAdapter.setTripList(tripList); // 어댑터에 데이터 설정
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // 에러 처리
+            }
+        });
+
+
+//        //Intent를 받고 평균 값을 추출합니다.
+//        Intent intent = getIntent();
+//        if (intent != null && intent.hasExtra("average_rating")) {
+//            float avg_rating = intent.getFloatExtra("average_rating", 0f);
+//            //평균값을 rating_bar에 넣는다
+//            ratingBar.setRating(avg_rating);
+//        }
+
+
 
         my_page_writing.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,6 +250,18 @@ public class mypage_main_activity extends AppCompatActivity {
             }
         }
     }
+
+    //문자열을 데이터베이스 경로에 사용 가능한 형식으로 변환
+    public static String convertToValidPath(String input) {
+        // 허용되는 문자: 알파벳 소문자, 숫자, 밑줄(_)
+        String validCharacters = "abcdefghijklmnopqrstuvwxyz0123456789_";
+
+        // 입력된 문자열을 소문자로 변환하고 허용되지 않는 문자를 밑줄로 대체
+        String converted = input.toLowerCase().replaceAll("[^" + validCharacters + "]", "_");
+
+        return converted;
+    }
+
 
     private void updatePostCount() {
         int postCount = tripList.size();

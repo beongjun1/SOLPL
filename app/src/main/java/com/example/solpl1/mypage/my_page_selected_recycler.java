@@ -1,14 +1,11 @@
 package com.example.solpl1.mypage;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,22 +13,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.example.solpl1.R;
-import com.example.solpl1.ClickableRecyclerAdapter;
 import com.example.solpl1.my_page_item;
-import com.example.solpl1.post_management.post_management_item;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recycler_adapter.ViewHolder> {
+public class my_page_selected_recycler extends RecyclerView.Adapter<my_page_selected_recycler.ViewHolder> {
 
-    protected ArrayList<my_page_item> PageList;
+    private ArrayList<my_page_item> PageList;
+    private OnItemClickListener itemClickListener;
 
+    public interface OnItemClickListener {
+        void onItemClick(my_page_item item);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.itemClickListener = listener;
+    }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_page_recycler, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.selected_day_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -39,7 +41,6 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (PageList != null) {
             holder.onBind(PageList.get(position));
-
         }
     }
 
@@ -58,15 +59,7 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
-
     public class ViewHolder extends RecyclerView.ViewHolder {
-
-        Button mypageAuthButton;
 
         ImageView trip_picture;
         TextView trip_date;
@@ -74,17 +67,23 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            trip_picture = itemView.findViewById(R.id.select_picture);
+            trip_date = itemView.findViewById(R.id.select_date);
+            trip_loc = itemView.findViewById(R.id.select_loc);
 
-            trip_picture = (ImageView) itemView.findViewById(R.id.trip_picture);
-            trip_date = (TextView) itemView.findViewById(R.id.trip_date);
-            trip_loc = (TextView) itemView.findViewById(R.id.trip_loc);
-
-
-               }
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION && itemClickListener != null) {
+                        itemClickListener.onItemClick(PageList.get(position));
+                    }
+                }
+            });
+        }
 
         public void onBind(my_page_item item) {
             if (item != null) {
-//                trip_picture.setImageResource(item.getResourceId());
                 String trip_img = item.getImg();
                 if (trip_img != null && !trip_img.isEmpty()) {
                     // 이미지 리사이징을 위한 크기 지정 (원하는 크기로 변경하세요)
@@ -101,6 +100,5 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
                 trip_loc.setText(item.getLoc());
             }
         }
-        // 버튼의 숨김 여부를 설정하는 메소드
     }
 }

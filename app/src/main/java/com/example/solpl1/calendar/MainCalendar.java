@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,8 +24,16 @@ import com.example.solpl1.R;
 import com.example.solpl1.MainActivity;
 import com.example.solpl1.chat.chat_activity;
 import com.example.solpl1.map.MainMap;
+import com.example.solpl1.mypage.my_page_writing_activity;
 import com.example.solpl1.mypage.mypage_main_activity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
@@ -38,7 +47,9 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.DayOfWeek;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainCalendar extends AppCompatActivity {
@@ -48,6 +59,7 @@ public class MainCalendar extends AppCompatActivity {
     private List<CalendarDay> selectedDates;  // 선택된 날짜 리스트 변수
 
     private MaterialCalendarView calendarView;
+    EditText trip_title;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +74,7 @@ public class MainCalendar extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarview);
         bottomNavigationView = findViewById(R.id.bottomNavi);
         select_btn = findViewById(R.id.calendar_select_btn);
-
+        trip_title = findViewById(R.id.calendar_title);
         // 첫 시작 요일이 월요일이 되도록 설정
         calendarView.state()
                 .edit()
@@ -115,16 +127,17 @@ public class MainCalendar extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (selectedDates != null && !selectedDates.isEmpty()) {
-                    String startDay = selectedDates.get(0).getDate().toString();
-                    String endDay = selectedDates.get(selectedDates.size() - 1).getDate().toString();
-                    Log.e(TAG, "선택된 시작일 : " + startDay + ", 종료일 : " + endDay);
+                    if (isEditTextEmpty(trip_title)) {
+                        Toast.makeText(MainCalendar.this, "여행의 이름을 입력하세요", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        String startDay = selectedDates.get(0).getDate().toString();
+                        String endDay = selectedDates.get(selectedDates.size() - 1).getDate().toString();
+                        Log.e(TAG, "선택된 시작일 : " + startDay + ", 종료일 : " + endDay);
 
-                    // TODO: 선택된 시작일과 종료일을 다음 페이지로 전달하거나 처리하는 로직 작성
-                    Intent intent = new Intent(MainCalendar.this, Search.class);
-                    intent.putExtra(startDay,"startDay");
-                    intent.putExtra(endDay,"endDay");
-                    startActivity(intent);
-                    Toast.makeText(getApplicationContext(),startDay+endDay,Toast.LENGTH_LONG).show();
+                        //데이터베이스에 날짜들과 제목 저장
+                        save_to_database(startDay,endDay);
+                    }
                 }
             }
         });
@@ -161,7 +174,69 @@ public class MainCalendar extends AppCompatActivity {
 
     }
 
+    private void save_to_database(String startDay, String endDay) {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String userEmail = user.getEmail();
+        String currentUserId = user.getUid(); // 현재 사용자의 UID 가져오기
+        DatabaseReference user_account_database;
+        String convertedPath = convertToValidPath(userEmail);
 
+        user_account_database = FirebaseDatabase.getInstance().getReference("UserAccount");
+        Log.e("캡스톤", user_account_database.toString());
+        user_account_database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String idToken = snapshot.child(currentUserId).child("idToken").getValue(String.class);
+
+                if (idToken != null) {
+
+                    // 여행 정보를 준비
+                    String tripTitle = trip_title.getText().toString();
+                    Map<String, Object> tripInfo = new HashMap<>();
+                    tripInfo.put("startDay", startDay);
+                    tripInfo.put("endDay", endDay);
+                    tripInfo.put("title", tripTitle);
+                    tripInfo.put("user_id_token",idToken);
+
+                    // 데이터베이스 경로 설정 및 저장
+                    DatabaseReference tripRef = FirebaseDatabase.getInstance().getReference("trip").child(convertedPath);
+                    String tripId = tripRef.push().getKey(); // 새로운 여행에 대한 고유 ID 생성
+                    String key = convertedPath+tripId;
+                    tripRef.child(key).setValue(tripInfo);
+
+                    //첫 날과 마지막 날 보내기
+                    Intent intent = new Intent(MainCalendar.this, EditCalendar.class);
+                    intent.putExtra("startDay", startDay); // "startDay"라는 키로 시작일 전달
+                    intent.putExtra("endDay", endDay); // "endDay"라는 키로 종료일 전달
+                    intent.putExtra("key",key);
+                    Log.d("key","key : "+key);
+                    startActivity(intent);
+                    finish();
+                    Toast.makeText(getApplicationContext(), startDay + " ~ "+endDay, Toast.LENGTH_LONG).show();
+
+                }
+
+            }
+
+                @Override
+                public void onCancelled (@NonNull DatabaseError error){
+
+
+            }
+     });
+    }
+    //문자열을 데이터베이스 경로에 사용 가능한 형식으로 변환
+    public static String convertToValidPath(String input) {
+        // 허용되는 문자: 알파벳 소문자, 숫자, 밑줄(_)
+        String validCharacters = "abcdefghijklmnopqrstuvwxyz0123456789_";
+
+        // 입력된 문자열을 소문자로 변환하고 허용되지 않는 문자를 밑줄로 대체
+        String converted = input.toLowerCase().replaceAll("[^" + validCharacters + "]", "_");
+
+        return converted;
+    }
 
     /* 선택된 요일의 background를 설정하는 Decorator 클래스 */
     private static class DayDecorator implements DayViewDecorator {
@@ -186,4 +261,7 @@ public class MainCalendar extends AppCompatActivity {
 
     }
 
+    private boolean isEditTextEmpty(EditText editText) {
+        return editText.getText().toString().trim().length() == 0;
+    }
 }

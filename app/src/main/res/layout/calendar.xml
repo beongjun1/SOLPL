@@ -5,7 +5,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <EditText
+        android:layout_marginTop="20dp"
+        android:hint="여행지를 적어주세요"
+        android:id="@+id/calendar_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:textSize="20sp"
+        />
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:layout_below="@id/calendar_title"
         android:id="@+id/calendarview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
