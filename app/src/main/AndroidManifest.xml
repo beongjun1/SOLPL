@@ -23,6 +23,9 @@
         android:theme="@style/Theme.Solpl"
         tools:targetApi="31">
         <activity
+            android:name=".ChatDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".chat.ChatActivity"
             android:exported="false" />
         <activity
@@ -58,7 +61,7 @@
             android:name="com.example.solpl1.MainActivity"
             android:exported="false" />
         <activity android:name=".map.MainMap"/>
-        <activity android:name=".map.Place_page"/>
+        <!--<activity android:name=".map.Place_page"/>-->
         <activity android:name=".calendar.MainCalendar"/>
         <activity android:name=".chat.chat_activity" />
         <activity android:name=".chat.chat_room_activity" />

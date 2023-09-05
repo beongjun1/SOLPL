@@ -49,9 +49,9 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
             public boolean onMarkerClick(@NonNull Marker marker) {
                 String markerId = marker.getTitle();
                 Toast.makeText(MainMap.this,markerId+"클릭",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainMap.this,Place_page.class);
-                intent.putExtra("title",markerId);
-                startActivity(intent);
+                //Intent intent = new Intent(MainMap.this,Place_page.class);
+                //intent.putExtra("title",markerId);
+                //startActivity(intent);
                 return false;
             }
         });
