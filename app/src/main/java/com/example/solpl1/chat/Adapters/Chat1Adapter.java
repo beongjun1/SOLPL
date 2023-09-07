@@ -9,13 +9,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.solpl1.ChatDetailActivity;
+import com.example.solpl1.chat.Activity.ChatDetailActivity;
 import com.example.solpl1.R;
 import com.example.solpl1.UserAccount;
 import com.example.solpl1.chat.Models.ChatItem;
 import com.example.solpl1.databinding.ChatRoomSampleBinding;
-import com.example.solpl1.mainPost.Comment;
-import com.example.solpl1.mainPost.CommentAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;

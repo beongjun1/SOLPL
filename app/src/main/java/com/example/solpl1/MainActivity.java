@@ -10,10 +10,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.solpl1.MainActivity;
 import com.example.solpl1.calendar.MainCalendar;
-import com.example.solpl1.chat.ChatActivity;
-import com.example.solpl1.chat.chat_activity;
+import com.example.solpl1.chat.Activity.ChatActivity;
 import com.example.solpl1.mainPost.MainPostFragment;
 import com.example.solpl1.map.MainMap;
 import com.example.solpl1.mypage.mypage_main_activity;

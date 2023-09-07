@@ -1,4 +1,4 @@
-package com.example.solpl1.chat;
+package com.example.solpl1.chat.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
