@@ -184,7 +184,7 @@ public class MainCalendar extends AppCompatActivity {
         String convertedPath = convertToValidPath(userEmail);
 
         user_account_database = FirebaseDatabase.getInstance().getReference("UserAccount");
-
+        Log.e("캡스톤", user_account_database.toString());
         user_account_database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -208,7 +208,6 @@ public class MainCalendar extends AppCompatActivity {
 
 
                     tripRef.child(key).setValue(tripInfo);
-
 
 
                     //첫 날과 마지막 날 보내기

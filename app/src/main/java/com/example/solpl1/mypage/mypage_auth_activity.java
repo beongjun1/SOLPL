@@ -20,9 +20,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import com.example.solpl1.R;
+import com.example.solpl1.UserAccount;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
@@ -48,6 +53,8 @@ public class mypage_auth_activity extends AppCompatActivity {
     TextRecognizer recognizer; //텍스트 인식에 사용될 모델
     public String text;
     public static Context context_main;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("UserAccount").child(firebaseAuth.getUid());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +103,7 @@ public class mypage_auth_activity extends AppCompatActivity {
                         // Task completed successfully
                         String resultText = visionText.getText();
                         text=resultText;  // 인식한 텍스트를 text에 저장
+                        databaseReference.child("reco_text").setValue(text);
                     }
                 })
                 // 이미지 인식에 실패하면 실행되는 리스너

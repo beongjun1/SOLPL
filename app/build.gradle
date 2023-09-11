@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.solpl1"
-        minSdk 26
+        minSdk 21
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -25,7 +25,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     namespace 'com.example.solpl1'
+
+    // 바인딩을 사용해서 xml id를 찾기위해
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -36,6 +42,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:22.0.0'
     implementation 'com.google.firebase:firebase-auth-ktx:22.0.0'
     implementation 'com.google.firebase:firebase-database:20.2.1'
+    implementation 'com.google.firebase:firebase-messaging:23.1.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.2.1'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.7.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -78,6 +87,13 @@ dependencies {
     //캘린더
     implementation 'com.github.prolificinteractive:material-calendarview:2.0.1'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
+
+    //박정연
+    implementation 'com.github.MrNouri:DynamicSizes:1.0'    // 화면 스크린에 맞게 사진 띄우기
+    implementation 'com.makeramen:roundedimageview:2.3.0'   // 이미지 라운드 뷰
+    implementation 'com.github.marlonlom:timeago:4.0.3'     // 시간 표시(ex) 1 day ago)
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'   // viewPager2
+    implementation 'com.google.android.material:material:1.9.0'
     //구글맵 유틸리티
     implementation 'com.google.maps.android:android-maps-utils:2.2.0'
 

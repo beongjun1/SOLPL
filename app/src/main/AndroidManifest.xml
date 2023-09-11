@@ -7,7 +7,10 @@
 
     <!-- 파일 저장 권한 추가 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 채팅기능 -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -18,20 +21,35 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Solpl"
-        tools:targetApi="31"
-        android:hardwareAccelerated="false"
-        android:enableOnBackInvokedCallback="true">
+        tools:targetApi="31">
+        <activity
+            android:name=".ChatDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".chat.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mainPost.NowPostCommentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mainPost.AddNowPostActivity"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="ocr" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDd8DVD7LzbkEm3esLHEOWgUwIdruqONIA"/>
+            android:value="AIzaSyDd8DVD7LzbkEm3esLHEOWgUwIdruqONIA" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
         <activity
-            android:name="com.example.solpl1.RegisterActivity"
+            android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.solpl1.LoginActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,11 +61,13 @@
             android:name="com.example.solpl1.MainActivity"
             android:exported="false" />
         <activity android:name=".map.MainMap"/>
+        <!--<activity android:name=".map.Place_page"/>-->
         <activity android:name=".calendar.MainCalendar"/>
         <activity android:name=".chat.chat_activity" />
         <activity android:name=".chat.chat_room_activity" />
-        <activity android:name=".mypage.my_page_writing_activity"
-                  android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".mypage.my_page_writing_activity"
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".mypage.my_page_writing_date_select_activity" />
         <activity android:name=".mypage.mypage_auth_activity" />
         <activity android:name=".mypage.mypage_main_activity" />
@@ -68,7 +88,14 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-        </provider>
+        </provider> <!-- 채팅기능 -->
+        <service
+            android:name=".chat.MessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
