@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.solpl1.ClickableRecyclerAdapter;
+//import com.example.solpl1.ClickableRecyclerAdapter;
 import com.example.solpl1.R;
 import com.example.solpl1.my_page_item;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,14 +58,15 @@ public class my_page_writing_date_select_activity extends AppCompatActivity {
                         String tripStart = tripSnapshot.child("startDay").getValue(String.class);
                         String tripEnd = tripSnapshot.child("endDay").getValue(String.class);
                         String firstPlaceKey = tripSnapshot.child("place").child(tripStart).getChildren().iterator().next().getKey();
-
+                        String key = tripSnapshot.child("key").getValue(String.class);
+                        Log.d("tripImageUrl1", "key : " + key);
                         // 첫 번째 자식의 키로 이미지 URL 가져오기
                         String tripImageUrl = tripSnapshot.child("place").child(tripStart).child(firstPlaceKey).child("imageUrl").getValue(String.class);
                         Log.d("tripImageUrl1", "trip Url : " + tripImageUrl);
 
                         String tripDate = (tripStart + " ~ " + tripEnd);
                         // 가져온 값으로 my_page_item 생성
-                        my_page_item tripItem = new my_page_item(tripDate, tripTitle, tripImageUrl);
+                        my_page_item tripItem = new my_page_item(tripDate, tripTitle, tripImageUrl,key);
                         tripList.add(tripItem);
                     }
 
@@ -92,20 +93,6 @@ public class my_page_writing_date_select_activity extends AppCompatActivity {
             });
         }
     }
-
-            // RecyclerView 아이템 클릭 리스너 설정
-//            adapter.setOnItemClickListener(new ClickableRecyclerAdapter.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(my_page_item item) {
-//                    String selectedDate = item.getDate(); // 선택한 아이템의 date 값을 가져옴
-//
-//                    Intent resultIntent = new Intent();
-//                    resultIntent.putExtra("selectedDate", selectedDate); // 선택한 아이템의 date를 "selectedDate"라는 키로 전달
-//                    setResult(RESULT_OK, resultIntent);
-//                    finish();
-//                }
-//            });
-
 
 
     // 이메일 주소를 Firebase 경로로 변환하는 함수 (예시)

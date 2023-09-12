@@ -53,13 +53,17 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class schedule_activity extends AppCompatActivity implements OnMapReadyCallback{
@@ -77,6 +81,7 @@ public class schedule_activity extends AppCompatActivity implements OnMapReadyCa
     private Button edit_btn;
     private SupportMapFragment mapFragment;
     private PlacesClient placesClient;
+    private Date selectedDate;
 
     String selectedDay;
     private String key;
@@ -95,6 +100,15 @@ public class schedule_activity extends AppCompatActivity implements OnMapReadyCa
 
             // 이제 selectedDay를 사용하여 해당 일차에 맞는 일정 데이터를 표시하면 됨
         }
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        try {
+            selectedDate = sdf.parse(selectedDay);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
 
         Places.initialize(getApplicationContext(), "AIzaSyDd8DVD7LzbkEm3esLHEOWgUwIdruqONIA");
         placesClient = Places.createClient(this);
@@ -167,6 +181,7 @@ public class schedule_activity extends AppCompatActivity implements OnMapReadyCa
 
     private void fetchPlacePhoto(@NonNull Place place, String placeName) {
 
+
         // Define a Place ID.
         final String placeId = place.getId();
 
@@ -196,7 +211,7 @@ public class schedule_activity extends AppCompatActivity implements OnMapReadyCa
                     .build();
             placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
                 Bitmap bitmap = fetchPhotoResponse.getBitmap();
-                String openingHours = getOpeningHoursForToday(detailedPlace);
+                String openingHours = getOpeningHoursForSelectedDay(detailedPlace, selectedDate);
 //                String imageUrl = detailedPlace.getIconUrl();
                 PlaceData placeData = new PlaceData(placeName, bitmap, openingHours);
                 placeList.add(placeData);
@@ -214,7 +229,25 @@ public class schedule_activity extends AppCompatActivity implements OnMapReadyCa
             }
         });
     }
+    private String getOpeningHoursForSelectedDay(Place place, Date selectedDate) {
+        if (place.getOpeningHours() != null && place.getOpeningHours().getWeekdayText() != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(selectedDate);
+            String selectedDayString = new SimpleDateFormat("EEEE", Locale.getDefault()).format(calendar.getTime());
 
+            for (String weekdayText : place.getOpeningHours().getWeekdayText()) {
+                if (weekdayText.startsWith(selectedDayString)) {
+                    // weekdayText는 예: "Monday: 8:00 AM – 6:00 PM" 형식일 수 있습니다.
+                    String[] parts = weekdayText.split(": ");
+                    if (parts.length == 2) {
+                        String openingHours = parts[1].trim();
+                        return openingHours;
+                    }
+                }
+            }
+        }
+        return "";
+    }
 private void uploadImagesAndSaveToDatabase(List<PlaceData> placeList) {
     // Firebase 인스턴스 가져오기
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();

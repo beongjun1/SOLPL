@@ -55,9 +55,6 @@ public class CalendarEditAdapter extends RecyclerView.Adapter<CalendarEditAdapte
         holder.textView1.setText(listData.get(position));
         holder.onBind(position); // 초기화 및 애니메이션 설정
 
-        // 항상 펼쳐진 상태로 변경
-        holder.recyclerView.setVisibility(View.VISIBLE);
-
         // 데이터 필터링 및 두 번째 리사이클러뷰 어댑터에 데이터 전달
         String selectedDay = listData.get(position);
         List<calendar_item> filteredItems = filterItemsByDate(selectedDay);

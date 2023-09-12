@@ -1,10 +1,6 @@
-package com.example.solpl1.calendar;
+package com.example.solpl1.mypage;
 
-import android.graphics.Bitmap;
-
-import java.util.List;
-
-public class calendar_item {
+public class my_page_calendar_item {
     private String name;
     private String imageUrl;
     private String time;
@@ -30,7 +26,7 @@ public class calendar_item {
         this.date = date;
     }
 
-    public calendar_item(String name, String imageUrl, String time, String date) {
+    public my_page_calendar_item(String name, String imageUrl, String time, String date) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.time = time;
@@ -48,27 +44,4 @@ public class calendar_item {
     public String getTime() {
         return time;
     }
-//    private String date;
-//    private List<Place> placeList;
-//
-//    public calendar_item(String date, List<Place> placeList) {
-//        this.date = date;
-//        this.placeList = placeList;
-//    }
-//
-//    public String getDate() {
-//        return date;
-//    }
-//
-//    public List<Place> getPlaceList() {
-//        return placeList;
-//    }
-//
-//    public void setDate(String date) {
-//        this.date = date;
-//    }
-//
-//    public void setPlaceList(List<Place> placeList) {
-//        this.placeList = placeList;
-//    }
 }

@@ -13,4 +13,7 @@
     <item
         android:id="@+id/my_page_review_management"
         android:title="리뷰 관리"/>
+    <item
+        android:id="@+id/my_page_badge"
+        android:title="뱃지"/>
 </menu>

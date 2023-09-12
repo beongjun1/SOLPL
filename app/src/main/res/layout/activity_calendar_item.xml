@@ -12,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#EFEFEF"
-        android:text="이름"
+        android:text="2023-09-09"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         android:gravity="center_vertical"/>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -30,6 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/chat_background_border"
             android:text="추가" />
 
     </LinearLayout>

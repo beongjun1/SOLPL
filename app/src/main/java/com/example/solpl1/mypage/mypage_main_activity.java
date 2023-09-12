@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.target.Target;
+import com.example.solpl1.Badge.Badge_Activity;
 import com.example.solpl1.R;
 import com.example.solpl1.MainActivity;
 import com.example.solpl1.calendar.MainCalendar;
@@ -73,7 +74,7 @@ public class mypage_main_activity extends AppCompatActivity {
 
         mRecyclerView = findViewById(R.id.recyclerView);
 
-        mRecyclerAdapter = new my_page_recycler_adapter();
+        mRecyclerAdapter = new my_page_recycler_adapter(this);
 
         postCountTextView = findViewById(R.id.post_count_textview);
 
@@ -112,6 +113,8 @@ public class mypage_main_activity extends AppCompatActivity {
                     String tripStart = tripSnapshot.child("startDay").getValue(String.class);
                     String tripEnd = tripSnapshot.child("endDay").getValue(String.class);
                     String firstPlaceKey = tripSnapshot.child("place").child(tripStart).getChildren().iterator().next().getKey();
+                    String key = tripSnapshot.child("key").getValue(String.class);
+                    Log.d("tripImageUrl1", "key : " + key);
 
                     // 첫 번째 자식의 키로 이미지 URL 가져오기
                     String tripImageUrl = tripSnapshot.child("place").child(tripStart).child(firstPlaceKey).child("imageUrl").getValue(String.class);
@@ -121,7 +124,7 @@ public class mypage_main_activity extends AppCompatActivity {
 
                     String tripDate = (tripStart + " ~ " + tripEnd);
                     // 가져온 값으로 my_page_item 생성
-                    my_page_item tripItem = new my_page_item(tripDate, tripTitle, tripImageUrl);
+                    my_page_item tripItem = new my_page_item(tripDate, tripTitle, tripImageUrl,key);
                     tripList.add(tripItem);
 
                 }
@@ -137,13 +140,6 @@ public class mypage_main_activity extends AppCompatActivity {
         });
 
 
-//        //Intent를 받고 평균 값을 추출합니다.
-//        Intent intent = getIntent();
-//        if (intent != null && intent.hasExtra("average_rating")) {
-//            float avg_rating = intent.getFloatExtra("average_rating", 0f);
-//            //평균값을 rating_bar에 넣는다
-//            ratingBar.setRating(avg_rating);
-//        }
 
 
 
@@ -184,7 +180,10 @@ public class mypage_main_activity extends AppCompatActivity {
                                 Intent reviewManagementIntent = new Intent(mypage_main_activity.this, review_management_activity.class);
                                 startActivity(reviewManagementIntent);
                                 break;
-
+                            case R.id.my_page_badge:
+                                Intent badge = new Intent(mypage_main_activity.this, Badge_Activity.class);
+                                startActivity(badge);
+                                break;
 
                         }
                        return false;
@@ -292,7 +291,11 @@ public class mypage_main_activity extends AppCompatActivity {
                             for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                                 String userName = childSnapshot.child("name").getValue(String.class);
                                 String imageUrl = childSnapshot.child("imageUrl").getValue(String.class);
-
+//                                String point = childSnapshot.child("point").getValue(String.class);
+//                                int rating = (int) childSnapshot.child("rating").getValue(int.class);
+//
+//                                RatingBar ratingBar = findViewById(R.id.my_page_rating_bar);
+//                                ratingBar.setRating(rating);
                                 if (userName != null && !userName.isEmpty()) {
                                     TextView userNameTextView = findViewById(R.id.my_page_user_name);
                                     userNameTextView.setText(userName);
@@ -302,7 +305,8 @@ public class mypage_main_activity extends AppCompatActivity {
                                             .load(imageUrl)
                                             .into(profile_img);
                                 }
-
+//                                TextView point_text = findViewById(R.id.point);
+//                                point_text.setText(point);
                             }
                         }
                     }
