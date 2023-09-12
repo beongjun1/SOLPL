@@ -9,6 +9,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,14 +26,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
+import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Picasso;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -40,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth mFireBaseAuth;     // 파이어베이스 인증
     private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
+    private FirebaseStorage storage;
     private EditText mEtEmail, mEtPwd;
     private Button mBtnRegister, mBtnLogin;
     private SignInButton mBtnGoogleLogin;
@@ -56,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mFireBaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        storage = FirebaseStorage.getInstance();
 
         mEtEmail = findViewById(R.id.email_edit);
         mEtPwd = findViewById(R.id.password_edit);
@@ -124,13 +134,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onActivityResult(ActivityResult result) {
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
                 try{
-                    //구글 로그인이 성공했을때,
+                    //구글 로그인이 성공했을때
                     GoogleSignInAccount account = task.getResult(ApiException.class);
                     firebaseAuthWithGoogle(account.getIdToken());
-                    Intent intent = new Intent(LoginActivity.this,PhoneAuth.class);
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                     startActivity(intent);
                     Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                     finish();
+
                 } catch (ApiException e) {
                     Toast.makeText(LoginActivity.this,"로그인 실패",Toast.LENGTH_SHORT).show();
                     throw new RuntimeException(e);
@@ -153,6 +164,16 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mFireBaseAuth.getCurrentUser();
+                            UserAccount userAccount = new UserAccount();
+                            userAccount.setName(user.getDisplayName());
+                            userAccount.setEmailId(user.getEmail());
+                            userAccount.setIdToken(user.getUid());
+                            String imageUrl = storage.getReference().child("박정연_test")
+                                    .child("default_profile.jpg")
+                                    .getDownloadUrl().toString();
+                            userAccount.setImageUrl(imageUrl);
+                            mDatabaseRef.child("UserAccount").child(user.getUid()).setValue(userAccount);
+
                             // ...
                         } else {
                             // If sign in fails, display a message to the user.

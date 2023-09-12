@@ -36,7 +36,6 @@ public class Second_Recyclerview_Adapter extends RecyclerView.Adapter<Second_Rec
 
     public Second_Recyclerview_Adapter(List<calendar_item> items) {
         this.items = items;
-
         notifyDataSetChanged();
     }
 

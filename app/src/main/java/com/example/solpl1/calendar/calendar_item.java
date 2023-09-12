@@ -8,9 +8,6 @@ public class calendar_item {
     private String name;
     private String imageUrl;
     private String time;
-    private boolean expanded = false; // 접혀있는 상태로 초기화
-
-
     private String date;
 
     public void setName(String name) {
