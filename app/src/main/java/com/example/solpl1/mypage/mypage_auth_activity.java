@@ -26,8 +26,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
@@ -103,7 +106,26 @@ public class mypage_auth_activity extends AppCompatActivity {
                         // Task completed successfully
                         String resultText = visionText.getText();
                         text=resultText;  // 인식한 텍스트를 text에 저장
-                        databaseReference.child("reco_text").setValue(text);
+                        databaseReference.child("reco_text").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String value=snapshot.getValue(String.class);
+                                String DBtext=value;
+                                if(DBtext.contains(text)){
+                                    Toast.makeText(mypage_auth_activity.this,"이미 인증한 영수증입니다.",Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    DBtext.concat(text);
+                                    databaseReference.child("reco_text").setValue(DBtext); // 인식한 텍스트 실시간 DB 저장
+                                    //textExtraction(text); // 텍스트에서 지역명 추출
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
                 })
                 // 이미지 인식에 실패하면 실행되는 리스너
@@ -159,4 +181,9 @@ public class mypage_auth_activity extends AppCompatActivity {
         return resizeBitmap;
     }
 
+    private void textExtraction(String text){
+
+
+        databaseReference.child("reco_text").setValue(text);
+    }
 }
