@@ -12,16 +12,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_sender"
-        android:padding="@dimen/_12mdp"
+        android:padding="@dimen/_10mdp"
         android:textColor="@color/white"
-        android:textSize="@dimen/_13mdp"
-        android:text="안녕하세요!"
+        android:textSize="@dimen/_12mdp"
+        android:text="안녕하세요."
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.8"/>
+        app:layout_constraintWidth_percent="0.7"/>
 
     <TextView
-        android:id="@+id/chatDateTime"
+        android:id="@+id/timestamp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_4mdp"

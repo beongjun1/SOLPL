@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- 카메라 권한 추가 -->
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <!-- 파일 저장 권한 추가 -->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 파일 저장 권한 추가 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 채팅기능 -->
     <uses-feature
@@ -23,7 +20,11 @@
         android:theme="@style/Theme.Solpl"
         tools:targetApi="31">
         <activity
+            android:name=".chat.Activity.AddChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".chat.Activity.ChatDetailActivity"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".chat.Activity.ChatActivity"
@@ -53,16 +54,15 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.example.solpl1.MainActivity"
+            android:name=".MainActivity"
             android:exported="false" />
-        <activity android:name=".map.MainMap"/>
-        <!--<activity android:name=".map.Place_page"/>-->
-        <activity android:name=".calendar.MainCalendar"/>
+        <activity android:name=".map.MainMap" /> <!-- <activity android:name=".map.Place_page"/> -->
+        <activity android:name=".calendar.MainCalendar" />
         <activity android:name=".chat.chat_activity" />
         <activity android:name=".chat.chat_room_activity" />
         <activity
@@ -73,13 +73,11 @@
         <activity android:name=".mypage.mypage_main_activity" />
         <activity android:name=".post_management.post_management_activity" />
         <activity android:name=".profile_edit.profile_edit_activity" />
-        <activity android:name=".PhoneAuth"/>
-        <activity android:name=".mypage.my_page_achievement"/>
-        <activity android:name="com.example.solpl1.calendar.schedule_activity" />
-        <activity android:name="com.example.solpl1.calendar.Search" />
-        <activity android:name="com.example.solpl1.calendar.EditCalendar" />
-
-        <!-- 카메라 사용하는 API -->
+        <activity android:name=".PhoneAuth" />
+        <activity android:name=".mypage.my_page_achievement" />
+        <activity android:name=".calendar.schedule_activity" />
+        <activity android:name=".calendar.Search" />
+        <activity android:name=".calendar.EditCalendar" /> <!-- 카메라 사용하는 API -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.solpl1.profile_edit.fileprovider"

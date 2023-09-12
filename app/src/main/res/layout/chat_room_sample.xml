@@ -73,7 +73,7 @@
         android:id="@+id/join"
         android:layout_width="60dp"
         android:layout_height="50dp"
-        android:background="#B22EE8"
+        android:background="@drawable/chat_join_btn_border"
         android:text="join"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/profile_image"

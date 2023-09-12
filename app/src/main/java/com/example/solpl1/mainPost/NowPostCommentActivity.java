@@ -48,6 +48,7 @@ public class NowPostCommentActivity extends AppCompatActivity {
         postId = intent.getStringExtra("postId");
         postedBy = intent.getStringExtra("postedBy");
 
+
         // 포스트 정보
         database.getReference()
                 .child("nowPosts")
@@ -75,12 +76,18 @@ public class NowPostCommentActivity extends AppCompatActivity {
                 .child(postedBy).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        UserAccount user = snapshot.getValue(UserAccount.class);
-                        Picasso.get()
-                                .load(user.getImageUrl())
-                                .placeholder(R.drawable.solpl_icon)
-                                .into(binding.profile);
-                        binding.name.setText(user.getName());
+                        UserAccount userAccount = snapshot.getValue(UserAccount.class);
+                        if(userAccount.getImageUrl()== null){                                       // 기본 프로필 이미지 설정
+                            Picasso.get()                                                           //유저 프로필
+                                    .load(R.drawable.default_profile)
+                                    .into(binding.profile);
+                        } else {
+                            Picasso.get()                                                           //유저 프로필
+                                    .load(userAccount.getImageUrl())
+                                    .placeholder(R.drawable.default_profile)
+                                    .into(binding.profile);
+                        }
+                        binding.name.setText(userAccount.getName());
                     }
 
                     @Override
@@ -140,6 +147,7 @@ public class NowPostCommentActivity extends AppCompatActivity {
 
             }
         });
+
 
         CommentAdapter adapter = new CommentAdapter(this,list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);

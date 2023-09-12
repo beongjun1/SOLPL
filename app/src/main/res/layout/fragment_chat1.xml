@@ -32,7 +32,6 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4">
 
         <androidx.recyclerview.widget.RecyclerView
-
             android:id="@+id/chat_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,6 +41,21 @@
             android:paddingTop="8dp"
             android:paddingBottom="10dp" />
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/chat_add_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_24mdp"
+        android:layout_marginRight="@dimen/_24mdp"
+        android:layout_marginBottom="@dimen/_24mdp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_add"
+        android:backgroundTint="#022E62"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:tint="@color/white"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

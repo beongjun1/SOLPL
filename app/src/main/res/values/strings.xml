@@ -63,4 +63,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="message">message</string>
     <string name="text_a_message">text a message</string>
+
+    <string name="select">Select item</string>
 </resources>

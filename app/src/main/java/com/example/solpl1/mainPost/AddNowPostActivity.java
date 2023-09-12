@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.solpl1.R;
+import com.example.solpl1.UserAccount;
 import com.example.solpl1.databinding.ActivityAddNowPostBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.Date;
 
@@ -63,6 +65,33 @@ public class AddNowPostActivity extends AppCompatActivity {
 
             }
         });
+        // 프로필, 이름
+        database.getReference().child("UserAccount")
+                .child(auth.getCurrentUser()
+                        .getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        UserAccount userAccount = snapshot.getValue(UserAccount.class);
+                        if(userAccount.getImageUrl()== null){                                       // 기본 프로필 이미지 설정
+                            Picasso.get()                                                           //유저 프로필
+                                    .load(R.drawable.default_profile)
+                                    .into(binding.profile);
+                        } else {
+                            Picasso.get()                                                           //유저 프로필
+                                    .load(userAccount.getImageUrl())
+                                    .placeholder(R.drawable.default_profile)
+                                    .into(binding.profile);
+                        }
+                        String text = userAccount.getName() + "(" + userAccount.getEmailId() + ")";
+                        binding.name.setText(text);              // 유저이름
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
 
         binding.nowpostNewAddPostImage.setOnClickListener(new View.OnClickListener() {
             @Override

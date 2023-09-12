@@ -15,18 +15,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.solpl1.R;
+import com.example.solpl1.UserAccount;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class MainPostFragment extends Fragment {
 
-    Button nowpost_addBtn;
+
+    CircleImageView profile;
+    FloatingActionButton nowpost_addBtn;
     RecyclerView dashboardRecyclerView;
     ArrayList<NowPost> nowPostList;
     FirebaseDatabase database;
@@ -50,8 +57,35 @@ public class MainPostFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
+        profile = view.findViewById(R.id.profile);
+        // 프로필 이미지
+        FirebaseDatabase.getInstance().getReference().child("UserAccount")
+                .child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        UserAccount userAccount = snapshot.getValue(UserAccount.class);
+                        if(userAccount.getImageUrl()== null){                                       // 기본 프로필 이미지 설정
+                            Picasso.get()                                                           //유저 프로필
+                                    .load(R.drawable.default_profile)
+                                    .into(profile);
+                        } else {
+                            Picasso.get()                                                           //유저 프로필
+                                    .load(userAccount.getImageUrl())
+                                    .placeholder(R.drawable.default_profile)
+                                    .into(profile);
+                        }
+
+                        //holder.binding.name.setText(userAccount.getName());              // 유저이름
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
         // addPostBtn을 누르면************  transaction. replace ????
-        nowpost_addBtn = view.findViewById(R.id.nowpost_addNew);
+        nowpost_addBtn = view.findViewById(R.id.nowpost_new_addBtn);
         nowpost_addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".mainPost.MainPostFragment">
 
-
-
-            <Button
-                android:id="@+id/nowpost_addNew"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:contentDescription="nowpost 등록 버튼"
-                android:drawableLeft="@drawable/ic_add_circle"
-                android:text="게시글 작성"
-                app:layout_constraintEnd_toEndOf="@+id/nowpost_recyclerView"
-                app:layout_constraintTop_toBottomOf="@+id/button2" />
-
             <Button
                 android:id="@+id/button2"
                 android:layout_width="@dimen/_140mdp"
@@ -120,9 +107,18 @@
             </androidx.recyclerview.widget.RecyclerView>
 
 
-
-
-
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/nowpost_new_addBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_24mdp"
+        android:layout_marginRight="@dimen/_24mdp"
+        android:layout_marginBottom="@dimen/_24mdp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_add"
+        android:backgroundTint="#022E62"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:tint="@color/white"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

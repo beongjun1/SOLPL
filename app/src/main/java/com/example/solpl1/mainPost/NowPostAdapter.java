@@ -65,11 +65,14 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         UserAccount userAccount = snapshot.getValue(UserAccount.class);
-                        if(userAccount.getImageUrl()== null){                           // 기본 프로필 이미지 설정
+                        if(userAccount.getImageUrl()== null){                                       // 기본 프로필 이미지 설정
+                            Picasso.get()                                                           //유저 프로필
+                                    .load(R.drawable.default_profile)
+                                    .into(holder.binding.profile);
                         } else {
                             Picasso.get()                                                           //유저 프로필
                                     .load(userAccount.getImageUrl())
-                                    .placeholder(R.drawable.solpl_icon)
+                                    .placeholder(R.drawable.default_profile)
                                     .into(holder.binding.profile);
                         }
 

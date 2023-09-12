@@ -51,11 +51,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         UserAccount user = snapshot.getValue(UserAccount.class);
-                        Picasso.get()
-                                .load(user.getImageUrl())
-                                .placeholder(R.drawable.solpl_icon)
-                                .into(holder.binding.profile);
-                        holder.binding.name.setText(user.getName());
+                        if(user.getImageUrl()== null){                                       // 기본 프로필 이미지 설정
+                            Picasso.get()                                                           //유저 프로필
+                                    .load(R.drawable.default_profile)
+                                    .into(holder.binding.profile);
+                        } else {
+                            Picasso.get()                                                           //유저 프로필
+                                    .load(user.getImageUrl())
+                                    .placeholder(R.drawable.default_profile)
+                                    .into(holder.binding.profile);
+                        }
                     }
 
                     @Override
