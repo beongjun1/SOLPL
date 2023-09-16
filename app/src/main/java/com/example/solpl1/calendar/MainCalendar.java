@@ -221,7 +221,6 @@ public class MainCalendar extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), startDay + " ~ "+endDay, Toast.LENGTH_LONG).show();
 
                 }
-
             }
 
                 @Override

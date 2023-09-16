@@ -12,6 +12,8 @@ public class UserAccount {
 
     private String imageUrl;            //프로필 이미지
 
+    private String reco_text;
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -60,4 +62,13 @@ public class UserAccount {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getReco_text() {
+        return reco_text;
+    }
+
+    public void setReco_text(String reco_text) {
+        this.reco_text = reco_text;
+    }
+
 }

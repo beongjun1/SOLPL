@@ -109,7 +109,6 @@ public class my_page_calendar_Activity extends AppCompatActivity {
                     adapter.setDates(dateList);
                     Log.d("dateList", "dateList: " + dateList);
 
-
                 }
 
                 @Override
