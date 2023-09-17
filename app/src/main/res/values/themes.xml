@@ -50,6 +50,11 @@
     <!-- Progressbar 스타일-->
     <style name="PBarTheme">
         <item name="colorSecondary">#0B0377</item>
-        
     </style>
+
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
 </resources>

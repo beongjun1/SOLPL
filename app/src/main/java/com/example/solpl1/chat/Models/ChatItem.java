@@ -9,14 +9,6 @@ public class ChatItem {
     private int userCountCurrent;   // 인원수 현재
     private int userCountMax;       // 인원수 최대
 
-    public String getChatRoomId() {
-        return chatRoomId;
-    }
-
-    public void setChatRoomId(String chatRoomId) {
-        this.chatRoomId = chatRoomId;
-    }
-
     public ChatItem(String chatRoomId, String title, String chatRoomBy, String description, long time, int userCountCurrent, int userCountMax) {
         this.chatRoomId = chatRoomId;
         this.title = title;
@@ -26,6 +18,16 @@ public class ChatItem {
         this.userCountCurrent = userCountCurrent;
         this.userCountMax = userCountMax;
     }
+
+
+    public String getChatRoomId() {
+        return chatRoomId;
+    }
+
+    public void setChatRoomId(String chatRoomId) {
+        this.chatRoomId = chatRoomId;
+    }
+
 
     public  ChatItem(){}
 

@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.solpl1.chat.Activity.ChatDetailActivity;
 import com.example.solpl1.R;
 import com.example.solpl1.UserAccount;
+import com.example.solpl1.chat.Activity.ChatDetailActivity;
 import com.example.solpl1.chat.Models.ChatItem;
 import com.example.solpl1.databinding.ChatRoomSampleBinding;
 import com.google.firebase.database.DataSnapshot;
@@ -22,31 +22,29 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class Chat1Adapter extends RecyclerView.Adapter<Chat1Adapter.ViewHolder>{
+public class Chat3Adapter extends RecyclerView.Adapter<Chat3Adapter.ViewHolder>{
 
     Context context;
     ArrayList<ChatItem> list;
 
-    public Chat1Adapter(Context context, ArrayList<ChatItem> list) {
+    public Chat3Adapter(Context context, ArrayList<ChatItem> list) {
         this.context = context;
         this.list = list;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Chat3Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.chat_room_sample,parent,false);
-        return new ViewHolder(view);
+        return new Chat3Adapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Chat3Adapter.ViewHolder holder, int position) {
         ChatItem chatItem = list.get(position);
         holder.binding.chatTitle.setText(chatItem.getTitle());
 
-        String text1 = Integer.toString(chatItem.getUserCountCurrent());    //현재 인원수
-        String text2 = Integer.toString(chatItem.getUserCountMax());        //최대 인원수
-        String text = text1 + "/" + text2;      // ex) 3/5
+        String text = Integer.toString(chatItem.getUserCountCurrent());    //현재 인원수
         holder.binding.count.setText(text);
         holder.binding.description.setText(chatItem.getDescription());
 
@@ -56,7 +54,7 @@ public class Chat1Adapter extends RecyclerView.Adapter<Chat1Adapter.ViewHolder>{
                 Intent intent = new Intent(context, ChatDetailActivity.class);
                 intent.putExtra("chatRoomId", chatItem.getChatRoomId());
                 intent.putExtra("title", chatItem.getTitle());
-                intent.putExtra("chatType", "chat_guide");
+                intent.putExtra("chatType", "chat_local");
 
 
                 context.startActivity(intent);

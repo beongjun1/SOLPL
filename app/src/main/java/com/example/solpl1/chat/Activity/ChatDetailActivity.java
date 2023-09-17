@@ -47,6 +47,9 @@ public class ChatDetailActivity extends AppCompatActivity {
 
         String senderId = auth.getUid();
         String chatRoomId = getIntent().getStringExtra("chatRoomId");
+        String chatType = getIntent().getStringExtra("chatType");
+        String title = getIntent().getStringExtra("title");
+        binding.textName.setText(title);
 
 
         MessageAdapter adapter = new MessageAdapter(messageModels, this);
@@ -55,22 +58,22 @@ public class ChatDetailActivity extends AppCompatActivity {
         binding.chatRecyclerView.setLayoutManager(layoutManager);
 
 
-        //채팅방 이름
-       database.getReference()
-               .child("chat")
-               .child(chatRoomId).addValueEventListener(new ValueEventListener() {
-                   @Override
-                   public void onDataChange(@NonNull DataSnapshot snapshot) {
-                       ChatItem chatItem = snapshot.getValue(ChatItem.class);
-                       binding.textName.setText(chatItem.getTitle());
-                   }
-                   @Override
-                   public void onCancelled(@NonNull DatabaseError error) {
-
-                   }
-               });
+//        //채팅방 이름
+//       database.getReference()
+//               .child("chat")
+//               .child(chatRoomId).addValueEventListener(new ValueEventListener() {
+//                   @Override
+//                   public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                       ChatItem chatItem = snapshot.getValue(ChatItem.class);
+//                       binding.textName.setText(chatItem.getTitle());
+//                   }
+//                   @Override
+//                   public void onCancelled(@NonNull DatabaseError error) {
+//
+//                   }
+//               });
        //채팅방  메세지 보여주기
-        database.getReference().child("chat")
+        database.getReference().child("chat").child(chatType)
                 .child(chatRoomId).child("chatMessage").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -102,6 +105,7 @@ public class ChatDetailActivity extends AppCompatActivity {
                     binding.etMessage.setText("");
 
                     database.getReference().child("chat")
+                            .child(chatType)
                             .child(chatRoomId)
                             .child("chatMessage")
                             .push()

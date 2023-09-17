@@ -56,7 +56,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="가이드 채팅방"
+            android:text="내 주변 채팅.."
             android:textColor="@color/sopl_basic"
             android:layout_marginLeft="10dp"
             android:textSize="16sp"/>
@@ -132,14 +132,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="최대 인원"
+            android:text="위치"
             android:textColor="@color/sopl_basic"
             android:layout_marginLeft="30dp"
             android:textSize="16sp"/>
 
-        <EditText
-            android:id="@+id/chat_count_max"
-            android:layout_width="100dp"
+        <TextView
+            android:id="@+id/chat_add_location"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_10mdp"
             android:background="@drawable/view_border"
@@ -150,12 +150,7 @@
             android:lines="1"
             android:inputType="text"
             android:textColorHint="#818181" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginLeft="10dp"
-            android:text="명"/>
+
 
     </LinearLayout>
 

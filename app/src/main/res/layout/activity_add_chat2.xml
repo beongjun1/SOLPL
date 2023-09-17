@@ -56,7 +56,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="가이드 채팅방"
+            android:text="함께 여행하기"
             android:textColor="@color/sopl_basic"
             android:layout_marginLeft="10dp"
             android:textSize="16sp"/>

@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.solpl1.chat.Activity.ChatDetailActivity;
 import com.example.solpl1.R;
 import com.example.solpl1.UserAccount;
+import com.example.solpl1.chat.Activity.ChatDetailActivity;
 import com.example.solpl1.chat.Models.ChatItem;
 import com.example.solpl1.databinding.ChatRoomSampleBinding;
 import com.google.firebase.database.DataSnapshot;
@@ -22,25 +22,25 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class Chat1Adapter extends RecyclerView.Adapter<Chat1Adapter.ViewHolder>{
+public class Chat2Adapter extends RecyclerView.Adapter<Chat2Adapter.ViewHolder>{
 
     Context context;
     ArrayList<ChatItem> list;
 
-    public Chat1Adapter(Context context, ArrayList<ChatItem> list) {
+    public Chat2Adapter(Context context, ArrayList<ChatItem> list) {
         this.context = context;
         this.list = list;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Chat2Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.chat_room_sample,parent,false);
-        return new ViewHolder(view);
+        return new Chat2Adapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Chat2Adapter.ViewHolder holder, int position) {
         ChatItem chatItem = list.get(position);
         holder.binding.chatTitle.setText(chatItem.getTitle());
 
@@ -56,9 +56,7 @@ public class Chat1Adapter extends RecyclerView.Adapter<Chat1Adapter.ViewHolder>{
                 Intent intent = new Intent(context, ChatDetailActivity.class);
                 intent.putExtra("chatRoomId", chatItem.getChatRoomId());
                 intent.putExtra("title", chatItem.getTitle());
-                intent.putExtra("chatType", "chat_guide");
-
-
+                intent.putExtra("chatType", "chat_together");
                 context.startActivity(intent);
             }
         });
