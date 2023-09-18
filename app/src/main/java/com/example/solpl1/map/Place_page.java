@@ -20,8 +20,8 @@ public class Place_page extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        Intent intent = getIntent();
-        place_title=findViewById(R.id.place_title);
-        place_title.setText(intent.getStringExtra("title"));
+        //Intent intent = getIntent();
+        //place_title=findViewById(R.id.place_title);
+        //place_title.setText(intent.getStringExtra("title"));
     }
 }

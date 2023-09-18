@@ -119,6 +119,7 @@ public class mypage_auth_activity extends AppCompatActivity {
                                         flag = 1;
                                         databaseReference.child("reco_text").setValue(value.concat(resultText));
                                         textExtraction(resultText);
+                                        Toast.makeText(mypage_auth_activity.this, "인증완료", Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
@@ -185,7 +186,6 @@ public class mypage_auth_activity extends AppCompatActivity {
     }
 
     private void textExtraction(String text){
-        Toast.makeText(mypage_auth_activity.this, "지역명추출 실행",Toast.LENGTH_SHORT).show();
         databaseReference.child("reco_resion").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -206,7 +206,6 @@ public class mypage_auth_activity extends AppCompatActivity {
 
             }
         });
-        Toast.makeText(mypage_auth_activity.this,String.valueOf(reco_resion.get순천()),Toast.LENGTH_SHORT).show();
         for(int i=0;i<resionArr.length;i++){
             if(text.contains(resionArr[i])){
                 switch (resionArr[i]) {
