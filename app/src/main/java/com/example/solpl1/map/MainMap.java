@@ -2,12 +2,15 @@ package com.example.solpl1.map;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.example.solpl1.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,6 +24,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private LinearLayout cardView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,9 +32,18 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
         setContentView(R.layout.map);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+        cardView= (LinearLayout) findViewById(R.id.card_view);
+        cardView.setVisibility(View.GONE);
 
         SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainMap.this,Place_page.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -49,10 +62,15 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
             public boolean onMarkerClick(@NonNull Marker marker) {
                 String markerId = marker.getTitle();
                 Toast.makeText(MainMap.this,markerId+"클릭",Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(MainMap.this,Place_page.class);
-                //intent.putExtra("title",markerId);
-                //startActivity(intent);
+                cardView.setVisibility(View.VISIBLE);
                 return false;
+            }
+        });
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(@NonNull LatLng latLng) {
+                cardView.setVisibility(View.GONE);
             }
         });
 
