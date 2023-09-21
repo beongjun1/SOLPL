@@ -78,6 +78,8 @@
         <activity android:name="com.example.solpl1.calendar.schedule_activity" />
         <activity android:name="com.example.solpl1.calendar.Search" />
         <activity android:name="com.example.solpl1.calendar.EditCalendar" />
+        <activity android:name="com.example.solpl1.mypage.my_page_calendar_Activity" />
+        <activity android:name="com.example.solpl1.Badge.Badge_Activity" />
 
         <!-- 카메라 사용하는 API -->
         <provider

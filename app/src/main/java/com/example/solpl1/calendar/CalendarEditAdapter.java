@@ -31,7 +31,6 @@ public class CalendarEditAdapter extends RecyclerView.Adapter<CalendarEditAdapte
     private List<calendar_item> items;
     private ArrayList<String> listData;
     private Context context;
-    private String randomKey; // 랜덤 키 값을 저장할 변수
     private SparseBooleanArray selectedItems = new SparseBooleanArray();
     private int prePosition = -1;
     private String editCalendarKey; // EditCalendar로부터 전달받은 key 값을 저장할 변수
@@ -95,10 +94,7 @@ public class CalendarEditAdapter extends RecyclerView.Adapter<CalendarEditAdapte
                         String selectedDay = listData.get(position);
 
                         Intent intent = new Intent(itemView.getContext(), schedule_activity.class);
-//                        intent.putExtra("random_key", randomKey); // 랜덤 키 값을 전달
-
                         intent.putExtra("selected_day", selectedDay);
-
                         intent.putExtra("key", editCalendarKey); // EditCalendar로부터 받은 key 값을 전달
                         Log.d("editCalendarKey", "adapter key: " + editCalendarKey);
 
@@ -127,10 +123,4 @@ public class CalendarEditAdapter extends RecyclerView.Adapter<CalendarEditAdapte
         }
         return filteredItems;
     }
-//    private String generateRandomKey() {
-//        // 랜덤 키 값을 생성하는 로직 구현
-//        // 예를 들어 UUID 라이브러리를 사용하여 랜덤 키 값을 생성할 수 있음
-//        // 이 키 값을 장소 데이터를 저장할 때 사용
-//        return UUID.randomUUID().toString();
-//    }
 }

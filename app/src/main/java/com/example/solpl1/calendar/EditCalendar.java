@@ -1,6 +1,7 @@
 package com.example.solpl1.calendar;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -57,15 +58,26 @@ public class EditCalendar extends AppCompatActivity {
         String endDay = intent.getStringExtra("endDay");
         key = intent.getStringExtra("key");
         Log.d("EditCalendar Key", "key: "+ key);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        }
 
-    // 날짜를 파싱하여 LocalDate 객체로 변환
-        LocalDate startDate = LocalDate.parse(startDay, formatter);
-        LocalDate endDate = LocalDate.parse(endDay, formatter);
+        // 날짜를 LocalDate 객체로 변환
+        LocalDate startDate = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            startDate = LocalDate.parse(startDay, formatter);
+        }
+        LocalDate endDate = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            endDate = LocalDate.parse(endDay, formatter);
+        }
 
-        tripDuration = (int) (ChronoUnit.DAYS.between(startDate, endDate) + 1); // 여행 기간 계산
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            tripDuration = (int) (ChronoUnit.DAYS.between(startDate, endDate) + 1); // 여행 기간 계산
+        }
 
-    // 리사이클러뷰 헤더에 날짜 형식을 추가
+        // 헤더에 날짜 형식을 추가
         for (int i = 0; i < tripDuration; i++) {
             String dayString = startDate.plusDays(i).format(formatter); // 날짜 포맷팅
             name.add(dayString);
