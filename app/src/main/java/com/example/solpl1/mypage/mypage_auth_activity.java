@@ -119,7 +119,7 @@ public class mypage_auth_activity extends AppCompatActivity {
                                         flag = 1;
                                         databaseReference.child("reco_text").setValue(value.concat(resultText));
                                         textExtraction(resultText);
-                                        Toast.makeText(mypage_auth_activity.this, "인증완료", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(mypage_auth_activity.this, "인증 완료되었습니다.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
