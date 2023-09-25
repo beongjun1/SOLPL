@@ -62,6 +62,7 @@
             android:exported="false" />
         <activity android:name=".map.MainMap"/>
         <activity android:name=".map.Place_page"/>
+        <activity android:name=".map.Place_review"/>
         <activity android:name=".calendar.MainCalendar"/>
         <activity android:name=".chat.chat_activity" />
         <activity android:name=".chat.chat_room_activity" />

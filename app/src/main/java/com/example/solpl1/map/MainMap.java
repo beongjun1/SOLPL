@@ -56,6 +56,11 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
             public void onClick(View view) {
                 Intent intent = new Intent(MainMap.this,Place_page.class);
                 intent.putExtra("place_title",place_title.getText());
+                intent.putExtra("place_address",place_address.getText());
+                intent.putExtra("place_tel",place_tel.getText());
+                intent.putExtra("place_rating",place.getRating());
+                intent.putExtra("place_image",R.drawable.suncheonman);
+                intent.putExtra("resion",place.getResion());
                 startActivity(intent);
             }
         });
@@ -84,7 +89,7 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         place = snapshot.getValue(PLACE.class);
                         place_address.setText("주소:"+place.getAddress());
-                        place_tel.setText("연락처:"+place.getTel());
+                        place_tel.setText("번호:"+place.getTel());
                         if(place.getRating()==0)place_rating.setText("평점:리뷰 수집중입니다.");
                         else{
                             place_rating.setText("평점:" + String.valueOf(place.getRating()));

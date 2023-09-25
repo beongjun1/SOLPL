@@ -6,6 +6,7 @@ public class PLACE {
     private String address;
     private String tel;
     private Double rating;
+    private String resion;
 
     public String getAddress() {
         return address;
@@ -29,5 +30,13 @@ public class PLACE {
 
     public void setRating(Double rating) {
         this.rating = rating;
+    }
+
+    public String getResion() {
+        return resion;
+    }
+
+    public void setResion(String resion) {
+        this.resion = resion;
     }
 }
