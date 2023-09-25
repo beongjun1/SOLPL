@@ -343,6 +343,12 @@ private void uploadImagesAndSaveToDatabase(List<PlaceData> placeList) {
         if (googleMap == null) {
             return;
         }
+        gMap = googleMap;
+
+        LatLng SEOUL = new LatLng(37.556, 126.97);
+
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SEOUL, 10));
+
 
         googleMap.clear(); // 이전 마커 제거
 
@@ -353,12 +359,12 @@ private void uploadImagesAndSaveToDatabase(List<PlaceData> placeList) {
             String markerNumber = (i + 1) + "."; // 번호를 설정합니다.
 
             // 마커 옵션을 설정합니다.
-            MarkerOptions markerOptions = new MarkerOptions()
+            MarkerOptions markerOptions2 = new MarkerOptions()
                     .position(inputLatLng)
                     .title(markerNumber)
                     .snippet(placeName);
 
-            googleMap.addMarker(markerOptions);
+            googleMap.addMarker(markerOptions2);
         }
 
         // 마지막 장소로 카메라 이동
