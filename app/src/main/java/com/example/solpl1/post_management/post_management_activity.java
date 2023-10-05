@@ -40,8 +40,8 @@ public class post_management_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_management);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.hide();
         TextView emptyTextView = findViewById(R.id.post_text);
         post_management_recycler = findViewById(R.id.post_management_recycler_view);
 

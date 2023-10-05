@@ -1,4 +1,4 @@
-package com.example.solpl1.mainPost;
+package com.example.solpl1.mainPost.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.solpl1.R;
 import com.example.solpl1.UserAccount;
+import com.example.solpl1.mainPost.Activities.AddNowPostActivity;
+import com.example.solpl1.mainPost.Adapters.NowPostAdapter;
+import com.example.solpl1.mainPost.Models.NowPost;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -29,8 +31,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class MainPostFragment extends Fragment {
-
+public class NowPostFragment extends Fragment {
 
     CircleImageView profile;
     FloatingActionButton nowpost_addBtn;
@@ -39,10 +40,9 @@ public class MainPostFragment extends Fragment {
     FirebaseDatabase database;
     FirebaseAuth auth;
 
-    public MainPostFragment() {
+    public NowPostFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,38 +53,12 @@ public class MainPostFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main_post, container, false);
+        View view = inflater.inflate(R.layout.fragment_now_post, container, false);
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
-        profile = view.findViewById(R.id.profile);
-        // 프로필 이미지
-        FirebaseDatabase.getInstance().getReference().child("UserAccount")
-                .child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        UserAccount userAccount = snapshot.getValue(UserAccount.class);
-                        if(userAccount.getImageUrl()== null){                                       // 기본 프로필 이미지 설정
-                            Picasso.get()                                                           //유저 프로필
-                                    .load(R.drawable.default_profile)
-                                    .into(profile);
-                        } else {
-                            Picasso.get()                                                           //유저 프로필
-                                    .load(userAccount.getImageUrl())
-                                    .placeholder(R.drawable.default_profile)
-                                    .into(profile);
-                        }
 
-                        //holder.binding.name.setText(userAccount.getName());              // 유저이름
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-        // addPostBtn을 누르면************  transaction. replace ????
+        // addPostBtn을 누르면************
         nowpost_addBtn = view.findViewById(R.id.nowpost_new_addBtn);
         nowpost_addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,8 +78,8 @@ public class MainPostFragment extends Fragment {
         NowPostAdapter nowPostAdapter = new NowPostAdapter(nowPostList,getContext());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         dashboardRecyclerView.setLayoutManager(layoutManager);
-        dashboardRecyclerView.addItemDecoration(new DividerItemDecoration(dashboardRecyclerView.getContext(),DividerItemDecoration.VERTICAL));
-        dashboardRecyclerView.setNestedScrollingEnabled(false);
+        //dashboardRecyclerView.addItemDecoration(new DividerItemDecoration(dashboardRecyclerView.getContext(),DividerItemDecoration.VERTICAL));
+        //dashboardRecyclerView.setNestedScrollingEnabled(false);
         dashboardRecyclerView.setAdapter(nowPostAdapter);
 
         database.getReference().child("nowPosts").addValueEventListener(new ValueEventListener() {

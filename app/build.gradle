@@ -93,6 +93,7 @@ dependencies {
     implementation 'com.makeramen:roundedimageview:2.3.0'   // 이미지 라운드 뷰
     implementation 'com.github.marlonlom:timeago:4.0.3'     // 시간 표시(ex) 1 day ago)
     implementation 'androidx.viewpager2:viewpager2:1.0.0'   // viewPager2
+    implementation 'io.github.ShawnLin013:number-picker:2.4.13' // number picker
     //구글맵 유틸리티
     implementation 'com.google.maps.android:android-maps-utils:2.2.0'
 

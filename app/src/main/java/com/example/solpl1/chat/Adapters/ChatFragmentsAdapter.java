@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.solpl1.chat.Fragments.ChatFragment1;
@@ -13,10 +11,10 @@ import com.example.solpl1.chat.Fragments.ChatFragment2;
 import com.example.solpl1.chat.Fragments.ChatFragment3;
 
 
-public class FragmentsAdapter extends FragmentStateAdapter {
+public class ChatFragmentsAdapter extends FragmentStateAdapter {
 
 
-    public FragmentsAdapter(@NonNull FragmentActivity fragmentActivity) {
+    public ChatFragmentsAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 
@@ -35,8 +33,5 @@ public class FragmentsAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return 3;
     }
-
-
-
 
 }

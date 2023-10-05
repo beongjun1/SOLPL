@@ -26,7 +26,7 @@ import com.example.solpl1.chat.Activity.ChatDetailActivity;
 import com.example.solpl1.chat.Adapters.Chat1Adapter;
 import com.example.solpl1.chat.Models.ChatItem;
 
-import com.example.solpl1.chat.RecyclerViewDecoration;
+import com.example.solpl1.chat.Utils.RecyclerViewDecoration;
 import com.example.solpl1.databinding.FragmentChat1Binding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -119,6 +119,7 @@ public class ChatFragment1 extends Fragment {
                     chatItem.setTitle(title.getText().toString());
                     int count = Integer.parseInt(countMax.getText().toString());
                     chatItem.setUserCountMax(count);
+                    chatItem.setUserCountCurrent(1);
 
                     DatabaseReference pushedChatRef = database.getReference().child("chat").child("chat_guide").push();
                     String chatRoomId = pushedChatRef.getKey();
@@ -126,12 +127,22 @@ public class ChatFragment1 extends Fragment {
                     pushedChatRef.setValue(chatItem).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    Intent intent = new Intent(getContext(), ChatDetailActivity.class);
-                                    intent.putExtra("chatRoomId", chatItem.getChatRoomId());
-                                    intent.putExtra("chatType", "chat_guide");
-                                    intent.putExtra("title", chatItem.getTitle());
-                                    startActivity(intent);
-                                    Toast.makeText(getContext(), "채팅방 생성", Toast.LENGTH_SHORT).show();
+                                    // chatUser DB에 방장 추가
+                                    pushedChatRef.child("chatUser")
+                                            .child(auth.getCurrentUser().getUid()).setValue(true)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Intent intent = new Intent(getContext(), ChatDetailActivity.class);
+                                            intent.putExtra("chatRoomId", chatItem.getChatRoomId());
+                                            intent.putExtra("chatType", "chat_guide");
+                                            intent.putExtra("title", chatItem.getTitle());
+                                            startActivity(intent);
+                                            Toast.makeText(getContext(), "채팅방 생성", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+
                                 }
                             });
                 } else{

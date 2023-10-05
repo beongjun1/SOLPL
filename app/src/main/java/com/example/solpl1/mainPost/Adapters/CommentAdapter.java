@@ -1,4 +1,4 @@
-package com.example.solpl1.mainPost;
+package com.example.solpl1.mainPost.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.solpl1.R;
 import com.example.solpl1.UserAccount;
 import com.example.solpl1.databinding.NowpostCommentRecyclerviewBinding;
+import com.example.solpl1.mainPost.Models.Comment;
 import com.github.marlonlom.utilities.timeago.TimeAgo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

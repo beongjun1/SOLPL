@@ -1,19 +1,19 @@
-package com.example.solpl1.mainPost;
+package com.example.solpl1.mainPost.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.solpl1.R;
 import com.example.solpl1.UserAccount;
-import com.example.solpl1.databinding.DashboardRecyclerviewBinding;
+import com.example.solpl1.databinding.RecyclerviewNowPostBinding;
+import com.example.solpl1.mainPost.Models.NowPost;
+import com.example.solpl1.mainPost.Activities.NowPostCommentActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,8 +22,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
+
+/** nowPost recyclereview 어댑터**/
 public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHolder>{
 
     ArrayList<NowPost> list;
@@ -37,7 +41,7 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.dashboard_recyclerview,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.recyclerview_now_post,parent,false);
         return new ViewHolder(view);
     }
 
@@ -49,6 +53,7 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
                 .load(model.getPostImage())
                 .placeholder(R.drawable.solpl_icon)
                 .into(holder.binding.nowpostImage);
+        holder.binding.nowPostDate.setText(getReadableDataTime(model.getPostedAt()));        // 게시글 날짜
         holder.binding.nowpostLike.setText(model.getPostLike()+"");
         holder.binding.nowpostComment.setText(model.getCommentCount()+"");
         String content = model.getPostDescription();
@@ -133,6 +138,9 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
                             }
                         });
 
+
+
+
         // 댓글 버튼 누를때
         holder.binding.nowpostComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +158,10 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
 
     }
 
+    private String getReadableDataTime(Long date){
+        return new SimpleDateFormat("yyyy.MM.dd a HH:mm", Locale.KOREA).format(date);
+    }
+
     @Override
     public int getItemCount() {
         return list.size();
@@ -157,11 +169,11 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        DashboardRecyclerviewBinding binding;
+        RecyclerviewNowPostBinding binding;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            binding = DashboardRecyclerviewBinding.bind(itemView);
+            binding = RecyclerviewNowPostBinding.bind(itemView);
 
 
         }

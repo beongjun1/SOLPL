@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,9 @@ import com.example.solpl1.R;
 import com.example.solpl1.UserAccount;
 import com.example.solpl1.chat.Models.ChatItem;
 import com.example.solpl1.databinding.ChatRoomSampleBinding;
+import com.example.solpl1.mainPost.Activities.AddNowPostActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,6 +30,8 @@ public class Chat1Adapter extends RecyclerView.Adapter<Chat1Adapter.ViewHolder>{
 
     Context context;
     ArrayList<ChatItem> list;
+    FirebaseDatabase database;
+    FirebaseAuth auth;
 
     public Chat1Adapter(Context context, ArrayList<ChatItem> list) {
         this.context = context;
@@ -42,24 +48,100 @@ public class Chat1Adapter extends RecyclerView.Adapter<Chat1Adapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChatItem chatItem = list.get(position);
+        database = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
+
         holder.binding.chatTitle.setText(chatItem.getTitle());
 
-        String text1 = Integer.toString(chatItem.getUserCountCurrent());    //현재 인원수
-        String text2 = Integer.toString(chatItem.getUserCountMax());        //최대 인원수
-        String text = text1 + "/" + text2;      // ex) 3/5
-        holder.binding.count.setText(text);
+
+
+        //현재 인원수
+        String count = String.valueOf(chatItem.getUserCountCurrent());
+        String maxCount = String.valueOf(chatItem.getUserCountMax());
+        holder.binding.count.setText(count + "/" + maxCount);
         holder.binding.description.setText(chatItem.getDescription());
 
+
+        // join 버튼을 누르면
         holder.binding.join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ChatDetailActivity.class);
-                intent.putExtra("chatRoomId", chatItem.getChatRoomId());
-                intent.putExtra("title", chatItem.getTitle());
-                intent.putExtra("chatType", "chat_guide");
+                // chat_guide에 유저정보 확인
+                database.getReference().child("chat").child("chat_guide")
+                        .child(chatItem.getChatRoomId())
+                        .child("chatUser")
+                        .child(auth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                // 이미 들어왔던 유저
+                                if(snapshot.exists()){
+                                    Intent intent = new Intent(context, ChatDetailActivity.class);
+                                    intent.putExtra("chatRoomId", chatItem.getChatRoomId());
+                                    intent.putExtra("title", chatItem.getTitle());
+                                    intent.putExtra("chatType", "chat_guide");
+                                    context.startActivity(intent);
+                                }
+                                else {  // 신규 유저일때
+                                    //  채팅방인원이 최대 인원일때 =>  못들어감
+                                    database.getReference().child("chat").child("chat_guide")
+                                            .child(chatItem.getChatRoomId()).child("userCountMax")
+                                            .addValueEventListener(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    int maxCount = snapshot.getValue(Integer.class);
+                                                    database.getReference().child("chat").child("chat_guide")
+                                                            .child(chatItem.getChatRoomId()).child("userCountCurrent")
+                                                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                    int currentCount = snapshot.getValue(Integer.class);
+                                                                    if(maxCount > currentCount){
+                                                                        //  채팅방 참여가능할때
+                                                                        database.getReference().child("chat").child("chat_guide")
+                                                                                .child(chatItem.getChatRoomId())
+                                                                                .child("chatUser")
+                                                                                .child(auth.getCurrentUser().getUid())
+                                                                                .setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                    @Override
+                                                                                    public void onSuccess(Void unused) {
+                                                                                        // 현재 채팅방 유저 수  + 1
+                                                                                        database.getReference().child("chat").child("chat_guide")
+                                                                                                .child(chatItem.getChatRoomId())
+                                                                                                .child("userCountCurrent").setValue(chatItem.getUserCountCurrent() + 1);
+                                                                                    }
+                                                                                });
 
 
-                context.startActivity(intent);
+                                                                        Intent intent = new Intent(context, ChatDetailActivity.class);
+                                                                        intent.putExtra("chatRoomId", chatItem.getChatRoomId());
+                                                                        intent.putExtra("title", chatItem.getTitle());
+                                                                        intent.putExtra("chatType", "chat_guide");
+                                                                        context.startActivity(intent);
+                                                                    }
+                                                                    else {
+                                                                        Toast.makeText(context, "방이 최대 인원 입니다.", Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                }
+
+                                                                @Override
+                                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                                }
+                                                            });
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
             }
         });
 
@@ -82,6 +164,8 @@ public class Chat1Adapter extends RecyclerView.Adapter<Chat1Adapter.ViewHolder>{
                     }
                 });
     }
+
+
 
     @Override
     public int getItemCount() {

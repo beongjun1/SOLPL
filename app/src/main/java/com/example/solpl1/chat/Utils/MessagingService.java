@@ -1,4 +1,4 @@
-package com.example.solpl1.chat;
+package com.example.solpl1.chat.Utils;
 
 import android.util.Log;
 

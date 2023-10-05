@@ -80,8 +80,8 @@ public class my_page_writing_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.hide();
         post_date = findViewById(R.id.post_travel_date_btn);
         writing_btn_attach_photo = findViewById(R.id.writing_btn_attach_photo);
 

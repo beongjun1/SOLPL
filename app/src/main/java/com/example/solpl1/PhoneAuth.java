@@ -34,8 +34,8 @@ public class PhoneAuth extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.hide();
 
         mAuth = FirebaseAuth.getInstance();
         mAuth.setLanguageCode("ko");

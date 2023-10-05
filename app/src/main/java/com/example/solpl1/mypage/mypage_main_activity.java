@@ -1,7 +1,6 @@
 package com.example.solpl1.mypage;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,14 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.target.Target;
 import com.example.solpl1.Badge.Badge_Activity;
 import com.example.solpl1.R;
 import com.example.solpl1.MainActivity;
 import com.example.solpl1.calendar.MainCalendar;
-import com.example.solpl1.chat.chat_activity;
+import com.example.solpl1.chat.Activity.ChatActivity;
 import com.example.solpl1.chat.chat_room_activity;
 import com.example.solpl1.map.MainMap;
 import com.example.solpl1.my_page_item;
@@ -64,8 +60,8 @@ public class mypage_main_activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_page);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.hide();
 
         RatingBar ratingBar = findViewById(R.id.my_page_rating_bar);
 
@@ -209,7 +205,7 @@ public class mypage_main_activity extends AppCompatActivity {
                         finish();
                         break;
                     case R.id.nav_chat:
-                        Intent intent2 = new Intent(mypage_main_activity.this, chat_activity.class);
+                        Intent intent2 = new Intent(mypage_main_activity.this, ChatActivity.class);
                         startActivity(intent2);
                         finish();
                         break;

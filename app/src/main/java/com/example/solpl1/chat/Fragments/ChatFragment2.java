@@ -23,11 +23,9 @@ import android.widget.Toast;
 
 import com.example.solpl1.R;
 import com.example.solpl1.chat.Activity.ChatDetailActivity;
-import com.example.solpl1.chat.Adapters.Chat1Adapter;
 import com.example.solpl1.chat.Adapters.Chat2Adapter;
 import com.example.solpl1.chat.Models.ChatItem;
-import com.example.solpl1.chat.RecyclerViewDecoration;
-import com.example.solpl1.databinding.FragmentChat1Binding;
+import com.example.solpl1.chat.Utils.RecyclerViewDecoration;
 import com.example.solpl1.databinding.FragmentChat2Binding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;

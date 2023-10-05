@@ -12,7 +12,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.solpl1.calendar.MainCalendar;
 import com.example.solpl1.chat.Activity.ChatActivity;
-import com.example.solpl1.mainPost.MainPostFragment;
+import com.example.solpl1.mainPost.Activities.PostActivity;
+import com.example.solpl1.mainPost.Fragments.NowPostFragment;
 import com.example.solpl1.map.MainMap;
 import com.example.solpl1.mypage.mypage_main_activity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -33,13 +34,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.hide();
 
-        // 시작하자마자 MainPostFragment로 가기
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, new MainPostFragment());
-        transaction.commit();
+        Intent intent1 = new Intent(MainActivity.this, PostActivity.class);
+        startActivity(intent1);
+        finish();
 
         mAuth = FirebaseAuth.getInstance();
         // 구글 로그인 클라이언트 설정
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()){
                     case R.id.nav_main:
-                        transaction.replace(R.id.container, new MainPostFragment());
+
                         break;
                     case R.id.nav_calendar:
                         Intent intent1 = new Intent(MainActivity.this, MainCalendar.class);

@@ -96,11 +96,18 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
         android:text="내용입니다."
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/nowpost_image"
         app:layout_constraintTop_toBottomOf="@+id/nowpost_like" />
+
+    <TextView
+        android:id="@+id/nowPost_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2023.9.9"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@+id/nowpost_like"
+        app:layout_constraintTop_toBottomOf="@+id/nowpost_content" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

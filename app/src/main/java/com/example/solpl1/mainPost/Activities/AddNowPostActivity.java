@@ -1,22 +1,21 @@
-package com.example.solpl1.mainPost;
+package com.example.solpl1.mainPost.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.accounts.Account;
 import android.app.Dialog;
-import android.app.Presentation;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.solpl1.R;
 import com.example.solpl1.UserAccount;
 import com.example.solpl1.databinding.ActivityAddNowPostBinding;
+import com.example.solpl1.mainPost.Models.NowPost;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

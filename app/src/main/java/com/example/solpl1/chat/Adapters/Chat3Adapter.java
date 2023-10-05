@@ -56,7 +56,6 @@ public class Chat3Adapter extends RecyclerView.Adapter<Chat3Adapter.ViewHolder>{
                 intent.putExtra("title", chatItem.getTitle());
                 intent.putExtra("chatType", "chat_local");
 
-
                 context.startActivity(intent);
             }
         });

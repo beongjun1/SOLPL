@@ -1,4 +1,4 @@
-package com.example.solpl1.mainPost;
+package com.example.solpl1.mainPost.Models;
 
 public class NowPost {
     private String postId;

@@ -9,12 +9,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.solpl1.MainActivity;
 import com.example.solpl1.R;
 import com.example.solpl1.calendar.MainCalendar;
-import com.example.solpl1.chat.Adapters.FragmentsAdapter;
+import com.example.solpl1.chat.Adapters.ChatFragmentsAdapter;
 import com.example.solpl1.databinding.ActivityChat2Binding;
-import com.example.solpl1.mainPost.MainPostFragment;
+import com.example.solpl1.mainPost.Activities.PostActivity;
+import com.example.solpl1.mainPost.Fragments.NowPostFragment;
 import com.example.solpl1.map.MainMap;
 import com.example.solpl1.mypage.mypage_main_activity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,7 +33,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
         ViewPager2 viewPager2 = binding.pager;
-        viewPager2.setAdapter(new FragmentsAdapter(this));
+        viewPager2.setAdapter(new ChatFragmentsAdapter(this));
 
         TabLayout tabLayout = binding.tabLayout;
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(
@@ -69,7 +69,9 @@ public class ChatActivity extends AppCompatActivity {
 
                 switch (item.getItemId()){
                     case R.id.nav_main:
-                        transaction.replace(R.id.container, new MainPostFragment());
+                        Intent intent = new Intent(ChatActivity.this, PostActivity.class);
+                        startActivity(intent);
+                        finish();
                         break;
                     case R.id.nav_calendar:
                         Intent intent1 = new Intent(ChatActivity.this, MainCalendar.class);

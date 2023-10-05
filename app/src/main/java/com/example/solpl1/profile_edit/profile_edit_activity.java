@@ -68,8 +68,8 @@ public class profile_edit_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_edit);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.hide();
 
         TextView edit_cancel = findViewById(R.id.edit_cancel);
         TextView edit_success = findViewById(R.id.edit_success);

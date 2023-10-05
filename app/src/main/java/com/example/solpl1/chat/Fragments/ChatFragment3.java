@@ -1,7 +1,5 @@
 package com.example.solpl1.chat.Fragments;
 
-import static androidx.constraintlayout.motion.widget.Debug.getLocation;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -20,7 +18,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,28 +36,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.solpl1.LoginActivity;
 import com.example.solpl1.R;
 import com.example.solpl1.chat.Activity.ChatDetailActivity;
-import com.example.solpl1.chat.Adapters.Chat1Adapter;
 import com.example.solpl1.chat.Adapters.Chat3Adapter;
 import com.example.solpl1.chat.Models.ChatItem;
-import com.example.solpl1.chat.RecyclerViewDecoration;
+import com.example.solpl1.chat.Utils.RecyclerViewDecoration;
 import com.example.solpl1.databinding.FragmentChat3Binding;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
-import org.checkerframework.checker.units.qual.C;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -71,10 +61,10 @@ public class ChatFragment3 extends Fragment {
     FragmentChat3Binding binding;
     ArrayList<ChatItem> list = new ArrayList<>();
     FirebaseDatabase database;
+    FirebaseStorage storage;
     FirebaseAuth auth;
-    FusedLocationProviderClient fusedLocationProviderClient;
     LocationManager locationManager;
-    String userLongitude, userLatitude, address;
+    String userLongitude, userLatitude, address1, address2, address3, address4;
     String userLocation;
 
     private final static int REQUEST_LOCATION=1;
@@ -88,6 +78,8 @@ public class ChatFragment3 extends Fragment {
         binding = FragmentChat3Binding.inflate(inflater,container,false);
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
+        binding.chatRvBackground.setVisibility(View.GONE);
 
 
 
@@ -103,6 +95,36 @@ public class ChatFragment3 extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 CheckedLocationPermission();
                 binding.chatLocation.setText(userLocation);
+
+                database.getReference().child("chat").child("chat_local")
+                        .child(address1).child(address2).child(address3).child(address4);
+
+                // 어댑터에 데이터 넣기
+                database.getReference().child("chat").child("chat_local")
+                        .child(address1).child(address2).child(address3).child(address4).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.exists()){
+                                    binding.chatRvBackground.setVisibility(View.VISIBLE);
+                                    list.clear();
+                                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                                        ChatItem chatItem = dataSnapshot.getValue(ChatItem.class);
+                                        chatItem.setChatRoomId(dataSnapshot.getKey());
+                                        list.add(chatItem);
+                                    }
+                                    adapter.notifyDataSetChanged();
+                                } else {
+                                    binding.chatRvBackground.setVisibility(View.GONE);
+                                    binding.textView6.setVisibility(View.VISIBLE);
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
             }
         });
 
@@ -118,26 +140,6 @@ public class ChatFragment3 extends Fragment {
                     return;
                 }
                 else showBottomDialog(userLatitude, userLongitude);
-            }
-        });
-
-
-        // 어댑터에 데이터 넣기
-        database.getReference().child("chat").child("chat_local").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                list.clear();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    ChatItem chatItem = dataSnapshot.getValue(ChatItem.class);
-                    chatItem.setChatRoomId(dataSnapshot.getKey());
-                    list.add(chatItem);
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
@@ -168,6 +170,7 @@ public class ChatFragment3 extends Fragment {
         } else {
             Location GpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             Log.w("checkSelfPermission", "Granted");
+            // GPS 보다 Network가 더 나은듯??
             if(GpsLocation != null){
                 double latitude = GpsLocation.getLatitude();
                 double Longitude = GpsLocation.getLongitude();
@@ -183,7 +186,6 @@ public class ChatFragment3 extends Fragment {
                 Location NetworkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                 double latitude = NetworkLocation.getLatitude();
                 double Longitude = NetworkLocation.getLongitude();
-
                 userLatitude = String.valueOf(latitude);
                 userLongitude = String.valueOf(Longitude);
 
@@ -220,13 +222,13 @@ public class ChatFragment3 extends Fragment {
             // 주소를 위한 list
             List<Address> addresses = geocoder.getFromLocation(LATITUDE,LONGITUDE,1);
             if(addresses != null && addresses.size()>0){
-                String address1 = addresses.get(0).getAdminArea();     // 경기도
-                String address2 = addresses.get(0).getLocality();      // 안양시
-                String address3 = addresses.get(0).getSubLocality();   // 동안구
-                String address4 = addresses.get(0).getThoroughfare();  // 부흥동
+                address1 = addresses.get(0).getAdminArea();     // 경기도
+                address2 = addresses.get(0).getLocality();      // 안양시
+                address3 = addresses.get(0).getSubLocality();   // 동안구
+                address4 = addresses.get(0).getThoroughfare();  // 부흥동
                 // AdminArea => 경기도 , Locality => 안양시,subLocality => 동안구, Thoroughfare : 부흥동
 
-                userLocation = address2 +" " + address3 + " " + address4;
+                userLocation = address1 + " " + address2 +" " + address3 + " " + address4;
                 return userLocation;
             }
         } catch (Exception e){
@@ -249,8 +251,7 @@ public class ChatFragment3 extends Fragment {
         Button chatAddNewBtn = dialog.findViewById(R.id.chat_add_new_btn);
         ImageView cancelBtn = dialog.findViewById(R.id.cancelButton);
         TextView city = dialog.findViewById(R.id.chat_add_location);
-        String tmp = getAddressFromLatLong(getContext(),Double.parseDouble(mLatitude), Double.parseDouble(mLongitude));
-        city.setText(tmp);
+        city.setText(userLocation);
 
         // 방 만들기 버튼을 누르면
         chatAddNewBtn.setOnClickListener(new View.OnClickListener() {
@@ -262,8 +263,8 @@ public class ChatFragment3 extends Fragment {
                     chatItem.setDescription(description.getText().toString());
                     chatItem.setTitle(title.getText().toString());
 
-
-                    DatabaseReference pushedChatRef = database.getReference().child("chat").child("chat_local").push();
+                    DatabaseReference pushedChatRef = database.getReference().child("chat").child("chat_local")
+                            .child(address1).child(address2).child(address3).child(address4).push();
                     String chatRoomId = pushedChatRef.getKey();
                     chatItem.setChatRoomId(chatRoomId);
                     pushedChatRef.setValue(chatItem).addOnSuccessListener(new OnSuccessListener<Void>() {

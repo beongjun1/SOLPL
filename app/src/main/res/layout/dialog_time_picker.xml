@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <com.shawnlin.numberpicker.NumberPicker
+        android:id="@+id/hour_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="88dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:np_dividerColor="#CFCDCD"
+        app:np_dividerLength="40dp"
+        app:np_height="180dp"
+        app:np_itemSpacing="5dp"
+        app:np_max="24"
+        app:np_min="0"
+        app:np_selectedTextColor="@color/black"
+        app:np_selectedTextSize="25dp"
+        app:np_textColor="#777373"
+        app:np_textSize="20dp"
+        app:np_value="3"
+        app:np_wheelItemCount="3"
+        app:np_width="64dp" />
+
+    <com.shawnlin.numberpicker.NumberPicker
+        android:id="@+id/minute_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="84dp"
+        app:layout_constraintBottom_toBottomOf="@+id/hour_picker"
+        app:layout_constraintStart_toEndOf="@+id/hour_picker"
+        app:layout_constraintTop_toTopOf="@+id/hour_picker"
+        app:layout_constraintVertical_bias="0.0"
+        app:np_dividerColor="#CFCDCD"
+        app:np_dividerLength="40dp"
+        app:np_height="180dp"
+        app:np_itemSpacing="5dp"
+        app:np_max="60"
+        app:np_min="0"
+        app:np_selectedTextColor="@color/black"
+        app:np_selectedTextSize="25dp"
+        app:np_textColor="#777373"
+        app:np_textSize="20dp"
+        app:np_value="3"
+        app:np_wheelItemCount="3"
+        app:np_width="64dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

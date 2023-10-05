@@ -2,7 +2,6 @@ package com.example.solpl1.calendar;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -22,9 +21,8 @@ import androidx.core.content.ContextCompat;
 
 import com.example.solpl1.R;
 import com.example.solpl1.MainActivity;
-import com.example.solpl1.chat.chat_activity;
+import com.example.solpl1.chat.Activity.ChatActivity;
 import com.example.solpl1.map.MainMap;
-import com.example.solpl1.mypage.my_page_writing_activity;
 import com.example.solpl1.mypage.mypage_main_activity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,8 +63,8 @@ public class MainCalendar extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.hide();
 
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
@@ -154,7 +152,7 @@ public class MainCalendar extends AppCompatActivity {
                     case R.id.nav_calendar:
                         break;
                     case R.id.nav_chat:
-                        Intent intent2 = new Intent(MainCalendar.this, chat_activity.class);
+                        Intent intent2 = new Intent(MainCalendar.this, ChatActivity.class);
                         startActivity(intent2);
                         finish();
                         break;
