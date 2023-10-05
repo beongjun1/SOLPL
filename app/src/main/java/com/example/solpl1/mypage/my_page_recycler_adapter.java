@@ -53,11 +53,9 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
             public void onClick(View v) {
                 // 선택한 아이템의 정보 가져오기
                 my_page_item selectedItem = PageList.get(itemPosition);
-
                 // 다음 화면으로 정보를 전달하는 Intent 생성
                 Intent intent = new Intent(context, my_page_calendar_Activity.class);
                 intent.putExtra("key", selectedItem.getKey());
-
                 // Intent를 사용하여 다음 화면으로 이동
                 context.startActivity(intent);
             }
@@ -86,23 +84,18 @@ public class my_page_recycler_adapter extends RecyclerView.Adapter<my_page_recyc
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         Button mypageAuthButton;
-
         ImageView trip_picture;
         TextView trip_date;
         TextView trip_loc;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             trip_picture = (ImageView) itemView.findViewById(R.id.trip_picture);
             trip_date = (TextView) itemView.findViewById(R.id.trip_date);
             trip_loc = (TextView) itemView.findViewById(R.id.trip_loc);
             mypageAuthButton = itemView.findViewById(R.id.mypage_auth);
-
                }
-
         public void onBind(my_page_item item) {
             if (item != null) {
 //                trip_picture.setImageResource(item.getResourceId());

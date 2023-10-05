@@ -79,15 +79,14 @@ public class MainCalendar extends AppCompatActivity {
                 .setFirstDayOfWeek(DayOfWeek.of(Calendar.MONDAY))
                 .commit();
 
-        // 월, 요일을 한글로 보이게 설정 (MonthArrayTitleFormatter의 작동을 확인하려면 밑의 setTitleFormatter()를 지운다)
+        // 월, 요일을 한글로 보이게 설정
         calendarView.setTitleFormatter(new MonthArrayTitleFormatter(getResources().getTextArray(R.array.custom_months)));
         calendarView.setWeekDayFormatter(new ArrayWeekDayFormatter(getResources().getTextArray(R.array.custom_weekdays)));
 
         // 좌우 화살표 사이 연, 월의 폰트 스타일 설정
         calendarView.setHeaderTextAppearance(R.style.CalendarWidgetHeader);
 
-        // 요일 선택 시 내가 정의한 드로어블이 적용되도록 함
-
+        // 요일 선택 시 정의한 drawable 적용 되도록 함
         calendarView.setOnRangeSelectedListener(new OnRangeSelectedListener() {
             @Override
             public void onRangeSelected(@NonNull MaterialCalendarView widget, @NonNull List<CalendarDay> dates) {
@@ -194,7 +193,6 @@ public class MainCalendar extends AppCompatActivity {
                     String tripId = tripRef.push().getKey(); // 새로운 여행에 대한 고유 ID 생성
                     String key = convertedPath+tripId;
 
-
                     // 여행 정보를 준비
                     String tripTitle = trip_title.getText().toString();
                     Map<String, Object> tripInfo = new HashMap<>();
@@ -204,9 +202,7 @@ public class MainCalendar extends AppCompatActivity {
                     tripInfo.put("user_id_token",idToken);
                     tripInfo.put("key",key);
 
-
                     tripRef.child(key).setValue(tripInfo);
-
 
                     //첫 날과 마지막 날 보내기
                     Intent intent = new Intent(MainCalendar.this, EditCalendar.class);
@@ -219,7 +215,6 @@ public class MainCalendar extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), startDay + " ~ "+endDay, Toast.LENGTH_LONG).show();
 
                 }
-
             }
 
                 @Override
@@ -233,22 +228,19 @@ public class MainCalendar extends AppCompatActivity {
     public static String convertToValidPath(String input) {
         // 허용되는 문자: 알파벳 소문자, 숫자, 밑줄(_)
         String validCharacters = "abcdefghijklmnopqrstuvwxyz0123456789_";
-
         // 입력된 문자열을 소문자로 변환하고 허용되지 않는 문자를 밑줄로 대체
         String converted = input.toLowerCase().replaceAll("[^" + validCharacters + "]", "_");
-
         return converted;
     }
 
     /* 선택된 요일의 background를 설정하는 Decorator 클래스 */
     private static class DayDecorator implements DayViewDecorator {
-
         private final Drawable drawable;
 
         public DayDecorator(Context context) {
             drawable = ContextCompat.getDrawable(context, R.drawable.calendar_selector);
         }
-        // true를 리턴 시 모든 요일에 내가 설정한 드로어블이 적용된다
+        // true 리턴 시 모든 요일에 내가 설정한 drawable 적용된다
         @Override
         public boolean shouldDecorate(CalendarDay day) {
             return true;

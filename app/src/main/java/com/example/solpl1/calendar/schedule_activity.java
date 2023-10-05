@@ -127,14 +127,6 @@ public class schedule_activity extends AppCompatActivity implements OnMapReadyCa
         autocompleteFragment.setTypeFilter(TypeFilter.ESTABLISHMENT);
         autocompleteFragment.setCountries("KR");
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
-
-        // 원하는 방식으로 day와 tripDuration을 비교하여 검색 로직을 구현하세요.
-        // 예시: 특정 일차를 클릭했을 때 검색을 수행하고 결과를 표시4
-
-        // day에 해당하는 일차를 클릭했을 때의 검색 로직을 구현하세요.
-        // 실제 장소 정보를 검색하여 RecyclerView와 지도에 추가하는 메서드 호출
-
-        //검색 및 마커
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
@@ -180,30 +172,22 @@ public class schedule_activity extends AppCompatActivity implements OnMapReadyCa
 
 
     private void fetchPlacePhoto(@NonNull Place place, String placeName) {
-
-
         // Define a Place ID.
         final String placeId = place.getId();
-
         // Specify fields. Requests for photos must always have the PHOTO_METADATAS field.
         final List<Place.Field> fields = Arrays.asList(Place.Field.PHOTO_METADATAS, Place.Field.OPENING_HOURS );
-
         // Get a Place object (this example uses fetchPlace(), but you can also use findCurrentPlace())
         final FetchPlaceRequest placeRequest = FetchPlaceRequest.newInstance(placeId, fields);
-
         placesClient.fetchPlace(placeRequest).addOnSuccessListener((response) -> {
             Place detailedPlace = response.getPlace();
-
             // 장소의 사진 메타데이터 가져오기
             List<PhotoMetadata> photoMetadataList = detailedPlace.getPhotoMetadatas();
             if (photoMetadataList == null || photoMetadataList.isEmpty()) {
                 Log.w(TAG, "No photo metadata.");
                 return;
             }
-
             // 첫 번째 사진 메타데이터 가져오기
             PhotoMetadata photoMetadata = photoMetadataList.get(0);
-
             // FetchPhotoRequest 생성
             FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata)
                     .setMaxWidth(300)
@@ -256,7 +240,6 @@ private void uploadImagesAndSaveToDatabase(List<PlaceData> placeList) {
     String currentUserId = user.getUid();
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
-
     DatabaseReference tripRef = database.getReference("trip");
 
     for (int i = 0; i < placeList.size(); i++) {
@@ -265,13 +248,12 @@ private void uploadImagesAndSaveToDatabase(List<PlaceData> placeList) {
         Bitmap imageBitmap = placeData.getImageBitmap();
         String imageName = "place_image_" + System.currentTimeMillis() + "_" + i + ".jpg";
         StorageReference imageRef = storageRef.child(filePath + imageName);
-
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
         UploadTask uploadTask = imageRef.putBytes(data);
 
-        int finalI = i; // Effective final variable for the listener
+        int finalI = i;
 
         uploadTask.addOnSuccessListener(taskSnapshot -> {
             imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
@@ -284,7 +266,6 @@ private void uploadImagesAndSaveToDatabase(List<PlaceData> placeList) {
                 placeMap.put("time", placeData.getTime());
                 placeMap.put("imageUrl", imageUrl);
                 placeMap.put("user_id", currentUserId);
-//                placeMap.put("place_key", place_key);
                 placeMap.put("day", selectedDay);
 
                 // 추가 작업: Firebase Realtime Database에 데이터 저장
@@ -362,6 +343,12 @@ private void uploadImagesAndSaveToDatabase(List<PlaceData> placeList) {
         if (googleMap == null) {
             return;
         }
+        gMap = googleMap;
+
+        LatLng SEOUL = new LatLng(37.556, 126.97);
+
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SEOUL, 10));
+
 
         googleMap.clear(); // 이전 마커 제거
 
@@ -372,12 +359,12 @@ private void uploadImagesAndSaveToDatabase(List<PlaceData> placeList) {
             String markerNumber = (i + 1) + "."; // 번호를 설정합니다.
 
             // 마커 옵션을 설정합니다.
-            MarkerOptions markerOptions = new MarkerOptions()
+            MarkerOptions markerOptions2 = new MarkerOptions()
                     .position(inputLatLng)
                     .title(markerNumber)
                     .snippet(placeName);
 
-            googleMap.addMarker(markerOptions);
+            googleMap.addMarker(markerOptions2);
         }
 
         // 마지막 장소로 카메라 이동

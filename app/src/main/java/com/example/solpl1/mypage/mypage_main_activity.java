@@ -84,26 +84,17 @@ public class mypage_main_activity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL,false));
 
-
-
         setUserNameFromDatabase(); // 데이터베이스에서 userName가져오기
-
-
-
-
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String userEmail = user.getEmail();
         String convertedPath = convertToValidPath(userEmail);
         DatabaseReference userTripsRef = FirebaseDatabase.getInstance().getReference("trip").child(convertedPath);
-
-
         userTripsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 tripList.clear(); // 기존 데이터 초기화
-
                 for (DataSnapshot tripSnapshot : dataSnapshot.getChildren()) {
                     String tripTitle = tripSnapshot.child("title").getValue(String.class);
                     String tripStart = tripSnapshot.child("startDay").getValue(String.class);
@@ -111,18 +102,13 @@ public class mypage_main_activity extends AppCompatActivity {
                     String firstPlaceKey = tripSnapshot.child("place").child(tripStart).getChildren().iterator().next().getKey();
                     String key = tripSnapshot.child("key").getValue(String.class);
                     Log.d("tripImageUrl1", "key : " + key);
-
                     // 첫 번째 자식의 키로 이미지 URL 가져오기
                     String tripImageUrl = tripSnapshot.child("place").child(tripStart).child(firstPlaceKey).child("imageUrl").getValue(String.class);
                     Log.d("tripImageUrl1", "trip Url : " + tripImageUrl);
-
-
-
                     String tripDate = (tripStart + " ~ " + tripEnd);
                     // 가져온 값으로 my_page_item 생성
                     my_page_item tripItem = new my_page_item(tripDate, tripTitle, tripImageUrl,key);
                     tripList.add(tripItem);
-
                 }
                 updatePostCount(); //포스트 숫자에 맞게 count늘어나는 코드
 
@@ -134,11 +120,6 @@ public class mypage_main_activity extends AppCompatActivity {
                 // 에러 처리
             }
         });
-
-
-
-
-
         my_page_writing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +127,6 @@ public class mypage_main_activity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,8 +168,6 @@ public class mypage_main_activity extends AppCompatActivity {
                 popup.show();
             }
         });
-
-
         bottomNavigationView = findViewById(R.id.bottomNavi);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -219,7 +197,6 @@ public class mypage_main_activity extends AppCompatActivity {
                 return true;
             }
         });
-
         trip_current.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -232,7 +209,6 @@ public class mypage_main_activity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == PROFILE_EDIT_REQUEST_CODE && resultCode == RESULT_OK) {
             if (data != null && data.hasExtra("imageUri")) {
                 String imageUri = data.getStringExtra("imageUri");

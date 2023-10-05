@@ -156,6 +156,7 @@ public class Chat1Adapter extends RecyclerView.Adapter<Chat1Adapter.ViewHolder>{
                                 .placeholder(R.drawable.default_profile)
                                 .into(holder.binding.profileImage);
                         holder.binding.name.setText(user.getName());
+
                     }
 
                     @Override

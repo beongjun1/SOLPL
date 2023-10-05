@@ -67,11 +67,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.solpl1.MainActivity"
             android:exported="false" />
         <activity android:name=".map.MainMap" /> <!-- <activity android:name=".map.Place_page"/> -->
         <activity android:name=".calendar.MainCalendar" />
+        <activity android:name=".map.Place_page"/>
+        <activity android:name=".map.Place_review"/>
+
+
         <activity
             android:name=".mypage.my_page_writing_activity"
             android:windowSoftInputMode="adjustResize" />
@@ -80,12 +85,18 @@
         <activity android:name=".mypage.mypage_main_activity" />
         <activity android:name=".post_management.post_management_activity" />
         <activity android:name=".profile_edit.profile_edit_activity" />
-        <activity android:name=".PhoneAuth" />
-        <activity android:name=".mypage.my_page_achievement" />
-        <activity android:name=".calendar.schedule_activity" />
-        <activity android:name=".calendar.Search" />
-        <activity android:name=".calendar.EditCalendar" />
-        <activity android:name=".mypage.my_page_calendar_Activity" /> <!-- 카메라 사용하는 API -->
+        <activity android:name=".PhoneAuth"/>
+        <activity android:name=".mypage.my_page_achievement"/>
+        <activity android:name="com.example.solpl1.calendar.schedule_activity" />
+        <activity android:name="com.example.solpl1.calendar.Search" />
+        <activity android:name="com.example.solpl1.calendar.EditCalendar" />
+        <activity android:name="com.example.solpl1.mypage.my_page_calendar_Activity" />
+<!--        <activity android:name="com.example.solpl1.Badge.Badge_Activity" />-->
+        <activity android:name=".Badge.Touch_Resion"/>
+        <activity android:name="com.example.solpl1.PointShop.pointShopActivity" />
+        <activity android:name="com.example.solpl1.PointShop.category.activity.activity_store" />
+
+        <!-- 카메라 사용하는 API -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.solpl1.profile_edit.fileprovider"

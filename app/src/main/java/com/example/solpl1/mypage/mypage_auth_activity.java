@@ -26,8 +26,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
@@ -51,10 +54,12 @@ public class mypage_auth_activity extends AppCompatActivity {
     Bitmap bitmap;          //갤러리에서 가져온 이미지를 담을 비트맵
     InputImage image;       //ML 모델이 인식할 인풋 이미지
     TextRecognizer recognizer; //텍스트 인식에 사용될 모델
-    public String text;
     public static Context context_main;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("UserAccount").child(firebaseAuth.getUid());
+    int flag;
+    String[] resionArr={"용인","고양","오산","시흥","순천","제주","진주","수원","화성"};
+    RECO_RESION reco_resion = new RECO_RESION();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +107,29 @@ public class mypage_auth_activity extends AppCompatActivity {
                         Log.e("텍스트 인식", "성공");
                         // Task completed successfully
                         String resultText = visionText.getText();
-                        text=resultText;  // 인식한 텍스트를 text에 저장
-                        databaseReference.child("reco_text").setValue(text);
+                        flag=0;
+                        databaseReference.child("reco_text").addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(flag==0) {
+                                    String value = snapshot.getValue(String.class);
+                                    if (value.contains(resultText)) {
+                                        Toast.makeText(mypage_auth_activity.this, "이미 인증한 영수증입니다.", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        flag = 1;
+                                        databaseReference.child("reco_text").setValue(value.concat(resultText));
+                                        textExtraction(resultText);
+                                        Toast.makeText(mypage_auth_activity.this, "인증 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
                     }
                 })
                 // 이미지 인식에 실패하면 실행되는 리스너
@@ -159,4 +185,59 @@ public class mypage_auth_activity extends AppCompatActivity {
         return resizeBitmap;
     }
 
+    private void textExtraction(String text){
+        databaseReference.child("reco_resion").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                RECO_RESION DB_RESION = snapshot.getValue(RECO_RESION.class);
+                reco_resion.set고양(DB_RESION.get고양());
+                reco_resion.set순천(DB_RESION.get순천());
+                reco_resion.set용인(DB_RESION.get용인());
+                reco_resion.set시흥(DB_RESION.get시흥());
+                reco_resion.set진주(DB_RESION.get진주());
+                reco_resion.set제주(DB_RESION.get제주());
+                reco_resion.set화성(DB_RESION.get화성());
+                reco_resion.set수원(DB_RESION.get수원());
+                reco_resion.set오산(DB_RESION.get오산());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        for(int i=0;i<resionArr.length;i++){
+            if(text.contains(resionArr[i])){
+                switch (resionArr[i]) {
+                    case "용인":
+                        databaseReference.child("reco_resion").child(resionArr[i]).setValue(reco_resion.get용인() + 1);
+                        break;
+                    case "고양":
+                        databaseReference.child("reco_resion").child(resionArr[i]).setValue(reco_resion.get고양() + 1);
+                        break;
+                    case "순천":
+                        databaseReference.child("reco_resion").child(resionArr[i]).setValue(reco_resion.get순천() + 1);
+                        break;
+                    case "제주":
+                        databaseReference.child("reco_resion").child(resionArr[i]).setValue(reco_resion.get제주() + 1);
+                        break;
+                    case "진주":
+                        databaseReference.child("reco_resion").child(resionArr[i]).setValue(reco_resion.get진주() + 1);
+                        break;
+                    case "화성":
+                        databaseReference.child("reco_resion").child(resionArr[i]).setValue(reco_resion.get화성() + 1);
+                        break;
+                    case "수원":
+                        databaseReference.child("reco_resion").child(resionArr[i]).setValue(reco_resion.get수원() + 1);
+                        break;
+                    case "시흥":
+                        databaseReference.child("reco_resion").child(resionArr[i]).setValue(reco_resion.get시흥() + 1);
+                        break;
+                    case "오산":
+                        databaseReference.child("reco_resion").child(resionArr[i]).setValue(reco_resion.get오산() + 1);
+                        break;
+                }
+            }
+        }
+    }
 }

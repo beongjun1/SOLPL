@@ -5,57 +5,100 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.devs.vectorchildfinder.VectorChildFinder;
 import com.devs.vectorchildfinder.VectorDrawableCompat;
 import com.example.solpl1.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class my_page_achievement extends AppCompatActivity
 {
-    String reco_text;
     FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
     DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("UserAccount").child(firebaseAuth.getUid());
+    RECO_RESION reco_resion = new RECO_RESION();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
         setContentView(R.layout.achievement_map);
 
         ImageView imageView = (ImageView) findViewById(R.id.achiv_korea);
 
-        VectorChildFinder vector = new VectorChildFinder(this, R.drawable.map_of_south_korea, imageView);
-        reco_text="1";
-        Toast.makeText(this,reco_text,Toast.LENGTH_SHORT).show();
-        if(reco_text.contains("오산")) {
-            VectorDrawableCompat.VFullPath path = vector.findPathByName("오산");
-            path.setFillColor(Color.RED);
-        }
-        if(reco_text.contains("광명")) {
-            VectorDrawableCompat.VFullPath path1 = vector.findPathByName("광명");
-            path1.setFillColor(Color.BLUE);
-        }
-        if(reco_text.contains("안산")) {
-            VectorDrawableCompat.VFullPath path1 = vector.findPathByName("안산");
-            path1.setFillColor(Color.BLACK);
-        }
-        if(reco_text.contains("안양")) {
-            VectorDrawableCompat.VFullPath path1 = vector.findPathByName("안양");
-            path1.setFillColor(Color.YELLOW);
-        }
-        if(reco_text.contains("순천")) {
-            VectorDrawableCompat.VFullPath path1 = vector.findPathByName("순천");
-            path1.setFillColor(Color.GREEN);
-        }
-        if(reco_text.contains("종로")) {
-            VectorDrawableCompat.VFullPath path1 = vector.findPathByName("종로구");
-            path1.setFillColor(Color.MAGENTA);
-        }
 
-        imageView.invalidate();
+        databaseReference.child("reco_resion").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                RECO_RESION DB_RESION = snapshot.getValue(RECO_RESION.class);
+                reco_resion.set고양(DB_RESION.get고양());
+                reco_resion.set순천(DB_RESION.get순천());
+                reco_resion.set용인(DB_RESION.get용인());
+                reco_resion.set시흥(DB_RESION.get시흥());
+                reco_resion.set진주(DB_RESION.get진주());
+                reco_resion.set제주(DB_RESION.get제주());
+                reco_resion.set화성(DB_RESION.get화성());
+                reco_resion.set수원(DB_RESION.get수원());
+                reco_resion.set오산(DB_RESION.get오산());
+
+                VectorChildFinder vector = new VectorChildFinder(my_page_achievement.this, R.drawable.map_of_south_korea, imageView);
+
+                if(reco_resion.get오산()>0) {
+                    VectorDrawableCompat.VFullPath path = vector.findPathByName("오산");
+                    path.setFillColor(Color.BLUE);
+                }
+                if(reco_resion.get용인()>0) {
+                    VectorDrawableCompat.VFullPath path = vector.findPathByName("용인");
+                    path.setFillColor(Color.BLUE);
+                }
+                if(reco_resion.get고양()>0) {
+                    VectorDrawableCompat.VFullPath path = vector.findPathByName("고양");
+                    path.setFillColor(Color.BLUE);
+                }
+                if(reco_resion.get시흥()>0) {
+                    VectorDrawableCompat.VFullPath path = vector.findPathByName("시흥");
+                    path.setFillColor(Color.BLUE);
+                }
+                if(reco_resion.get수원()>0) {
+                    VectorDrawableCompat.VFullPath path = vector.findPathByName("수원");
+                    path.setFillColor(Color.BLUE);
+                }
+                if(reco_resion.get화성()>0) {
+                    VectorDrawableCompat.VFullPath path = vector.findPathByName("화성");
+                    path.setFillColor(Color.BLUE);
+                }
+                if(reco_resion.get제주()>0) {
+                    VectorDrawableCompat.VFullPath path = vector.findPathByName("제주");
+                    path.setFillColor(Color.BLUE);
+                }
+                if(reco_resion.get진주()>0) {
+                    VectorDrawableCompat.VFullPath path = vector.findPathByName("진주");
+                    path.setFillColor(Color.BLUE);
+                }
+                if(reco_resion.get순천()>0) {
+                    VectorDrawableCompat.VFullPath path = vector.findPathByName("순천");
+                    path.setFillColor(Color.BLUE);
+                }
+
+                imageView.invalidate();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
 
     }
 }
