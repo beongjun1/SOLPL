@@ -24,6 +24,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.target.Target;
 import com.example.solpl1.Badge.Badge_Activity;
+import com.example.solpl1.PointShop.pointShopActivity;
 import com.example.solpl1.R;
 import com.example.solpl1.MainActivity;
 import com.example.solpl1.calendar.MainCalendar;
@@ -56,7 +57,7 @@ public class mypage_main_activity extends AppCompatActivity {
     private ArrayList<my_page_item> tripList;
     private my_page_recycler_adapter mRecyclerAdapter;
     private TextView postCountTextView;
-    Button my_page_writing,trip_current;
+    Button my_page_writing,trip_current,pointShop;
     CircleImageView profile_img;
     ImageView menu;
     BottomNavigationView bottomNavigationView;
@@ -66,6 +67,8 @@ public class mypage_main_activity extends AppCompatActivity {
         setContentView(R.layout.activity_my_page);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
+
+        pointShop = findViewById(R.id.point_shop);
 
         RatingBar ratingBar = findViewById(R.id.my_page_rating_bar);
 
@@ -128,6 +131,14 @@ public class mypage_main_activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mypage_main_activity.this, my_page_writing_activity.class);
+                startActivity(intent);
+            }
+        });
+
+        pointShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mypage_main_activity.this, pointShopActivity.class);
                 startActivity(intent);
             }
         });
