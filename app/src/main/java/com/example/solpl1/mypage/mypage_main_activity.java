@@ -24,6 +24,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.target.Target;
 import com.example.solpl1.Badge.Badge_Activity;
+import com.example.solpl1.PointShop.pointItem;
 import com.example.solpl1.PointShop.pointShopActivity;
 import com.example.solpl1.R;
 import com.example.solpl1.MainActivity;
@@ -61,6 +62,7 @@ public class mypage_main_activity extends AppCompatActivity {
     CircleImageView profile_img;
     ImageView menu;
     BottomNavigationView bottomNavigationView;
+    RatingBar ratingBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +72,7 @@ public class mypage_main_activity extends AppCompatActivity {
 
         pointShop = findViewById(R.id.point_shop);
 
-        RatingBar ratingBar = findViewById(R.id.my_page_rating_bar);
+        ratingBar = findViewById(R.id.my_page_rating_bar);
 
         profile_img= findViewById(R.id.mypage_profile_img);
         menu = findViewById(R.id.my_page_menu);
@@ -266,6 +268,8 @@ public class mypage_main_activity extends AppCompatActivity {
     private void setUserNameFromDatabase() {
         // 현재 로그인한 사용자의 이메일을 가져오는 코드 (Firebase Authentication을 사용한다고 가정)
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userIdToken = currentUser.getUid();
+        Log.d("userIdToken", "currentUser Id Token" + userIdToken);
         String userEmail = currentUser.getEmail();
 
         // 데이터베이스에서 사용자의 이메일을 기준으로 이름을 가져오는 쿼리 수행
@@ -278,11 +282,19 @@ public class mypage_main_activity extends AppCompatActivity {
                             for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
                                 String userName = childSnapshot.child("name").getValue(String.class);
                                 String imageUrl = childSnapshot.child("imageUrl").getValue(String.class);
-//                                String point = childSnapshot.child("point").getValue(String.class);
-//                                int rating = (int) childSnapshot.child("rating").getValue(int.class);
-//
-//                                RatingBar ratingBar = findViewById(R.id.my_page_rating_bar);
-//                                ratingBar.setRating(rating);
+                                String idToken = childSnapshot.child("idToken").getValue(String.class);
+                                Log.d("idToken", "idToken: " + userIdToken);
+                                int point = childSnapshot.child("point").getValue(int.class);
+                                Log.d("sundayPoint: ", "point :" + point);
+                                float rating = childSnapshot.child("userRating").getValue(float.class);
+                                Log.d("rating", "rating: "+rating);
+
+                                if(idToken.equals(userIdToken)){
+                                    ratingBar.setVisibility(View.GONE);
+                                }
+                                else{
+                                    ratingBar.setRating(rating);
+                                }
                                 if (userName != null && !userName.isEmpty()) {
                                     TextView userNameTextView = findViewById(R.id.my_page_user_name);
                                     userNameTextView.setText(userName);
@@ -292,8 +304,9 @@ public class mypage_main_activity extends AppCompatActivity {
                                             .load(imageUrl)
                                             .into(profile_img);
                                 }
-//                                TextView point_text = findViewById(R.id.point);
-//                                point_text.setText(point);
+                                TextView point_text = findViewById(R.id.point);
+                                point_text.setText(Integer.toString(point));
+
                             }
                         }
                     }
