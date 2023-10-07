@@ -18,8 +18,8 @@ public class Touch_Resion extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.achievement_map);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.hide();
 
         ImageView imageView = (ImageView) findViewById(R.id.achiv_korea);
         Intent intent=getIntent();
