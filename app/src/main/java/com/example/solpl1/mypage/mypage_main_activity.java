@@ -197,7 +197,6 @@ public class mypage_main_activity extends AppCompatActivity {
                     case R.id.nav_calendar:
                         Intent intent1 = new Intent(mypage_main_activity.this, MainCalendar.class);
                         startActivity(intent1);
-                        finish();
                         break;
                     case R.id.nav_chat:
                         Intent intent2 = new Intent(mypage_main_activity.this, chat_activity.class);
