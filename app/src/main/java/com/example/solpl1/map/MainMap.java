@@ -2,6 +2,10 @@ package com.example.solpl1.map;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,8 +42,6 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
         setContentView(R.layout.map);
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.hide();
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
         cardView= (LinearLayout) findViewById(R.id.card_view);
         cardView.setVisibility(View.GONE);
         place_image=findViewById(R.id.place_image);

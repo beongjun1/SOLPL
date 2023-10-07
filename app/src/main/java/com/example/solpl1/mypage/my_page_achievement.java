@@ -28,8 +28,8 @@ public class my_page_achievement extends AppCompatActivity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.hide();
         setContentView(R.layout.achievement_map);
 
         ImageView imageView = (ImageView) findViewById(R.id.achiv_korea);

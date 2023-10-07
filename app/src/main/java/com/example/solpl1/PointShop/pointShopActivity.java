@@ -1,7 +1,5 @@
 package com.example.solpl1.PointShop;
 
-import static com.google.android.material.color.utilities.MaterialDynamicColors.error;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,8 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.solpl1.PointShop.category.activity.activity_store;
-import com.example.solpl1.PointShop.category.adapter.convenience_store_adapter;
-import com.example.solpl1.PointShop.category.item.category_item;
 import com.example.solpl1.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
