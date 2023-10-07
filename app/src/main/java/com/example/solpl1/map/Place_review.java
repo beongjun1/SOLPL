@@ -12,7 +12,7 @@ public class Place_review extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_review);
+        setContentView(R.layout.activity_rating_review);
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 

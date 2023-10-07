@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_calendar:
                         Intent intent1 = new Intent(MainActivity.this, MainCalendar.class);
                         startActivity(intent1);
-                        finish();
                         break;
                     case R.id.nav_chat:
                         Intent intent2 = new Intent(MainActivity.this, ChatActivity.class);
