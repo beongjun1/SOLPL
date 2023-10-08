@@ -2,6 +2,7 @@ package com.example.solpl1.map;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,9 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.solpl1.R;
+import com.example.solpl1.my_page_item;
 import com.example.solpl1.mypage.RECO_RESION;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,17 +26,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.checkerframework.checker.units.qual.A;
+
+import java.util.ArrayList;
+
 public class Place_page extends AppCompatActivity {
 
     private TextView place_title;
     private ImageView place_image;
     private TextView place_address,place_tel,place_rating;
     private RecyclerView recyclerView;
+    private place_review_recycler_adapter recycler_adapter;
     private Button btn_review;
     RECO_RESION reco_resion;
+    private ArrayList<my_page_item> reviewList;
 
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     DatabaseReference databaseReference=FirebaseDatabase.getInstance().getReference("UserAccount").child(firebaseAuth.getUid()).child("reco_resion");
+    DatabaseReference placeReference,ratingReference;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,8 +57,47 @@ public class Place_page extends AppCompatActivity {
         place_tel=findViewById(R.id.place_tel);
         place_rating=findViewById(R.id.place_rating);
         recyclerView=findViewById(R.id.review_recyclerview);
+        recycler_adapter=new place_review_recycler_adapter(this);
         btn_review=findViewById(R.id.btn_review);
+        reviewList=new ArrayList<>();
         Intent intent = getIntent();
+
+        recyclerView.setAdapter(recycler_adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
+
+        placeReference=FirebaseDatabase.getInstance().getReference("places").child(intent.getStringExtra("place_title")).child("reviews");
+        ratingReference=FirebaseDatabase.getInstance().getReference("places").child(intent.getStringExtra("place_title")).child("rating");
+
+        placeReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                reviewList.clear();
+                float frating=0;
+                int cnt=0;
+                for(DataSnapshot reviewSnapshot : snapshot.getChildren()){
+                    cnt++;
+                    String name=reviewSnapshot.child("name").getValue(String.class);
+                    String rating=reviewSnapshot.child("rating").getValue(String.class);
+                    frating+=Float.parseFloat(rating);
+                    rating="평점:"+reviewSnapshot.child("rating").getValue(String.class);
+                    String content=reviewSnapshot.child("content").getValue(String.class);
+                    String reviewImageUri=reviewSnapshot.child("review_image").getValue(String.class);
+                    Log.e("리뷰이미지 주소",reviewImageUri);
+                    my_page_item tripItem = new my_page_item(name, rating, reviewImageUri,content);
+                    reviewList.add(tripItem);
+                }
+                frating/=cnt;
+                ratingReference.setValue(frating);
+
+                recycler_adapter.setReviewList(reviewList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override

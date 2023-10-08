@@ -22,10 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.solpl1.R;
 import com.example.solpl1.mypage.my_page_post_image_adpater;
-import com.example.solpl1.mypage.my_page_writing_activity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,10 +41,8 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Place_review extends AppCompatActivity {
     RatingBar ratingBar;
@@ -218,6 +214,7 @@ public class Place_review extends AppCompatActivity {
         reviewValues.put("review_date", currentTime);
         reviewValues.put("title", title);
         reviewValues.put("review_id", key);
+        reviewValues.put("review_image", urlList.get(0));
 
         Map<String, Object> imageValues = new HashMap<>();
         for (String imageUrl : urlList) {
@@ -232,9 +229,11 @@ public class Place_review extends AppCompatActivity {
                     if (currentUser != null) {
                         String currentUserId = currentUser.getUid();
                         String idToken = snapshot.child(currentUserId).child("idToken").getValue(String.class);
+                        String name = snapshot.child(currentUserId).child("name").getValue(String.class);
 
                         if (idToken != null) {
                             reviewValues.put("id_token", idToken);
+                            reviewValues.put("name",name);
                             mDatabaseRef.child(key).setValue(reviewValues); // post 노드에 레코드 추가
                             mDatabaseRef.child(key).child("images").updateChildren(imageValues);
                             Toast.makeText(getApplicationContext(), "업로드 되었습니다.", Toast.LENGTH_LONG).show();
