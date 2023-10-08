@@ -11,5 +11,45 @@
         android:text="평점 리뷰"
         android:gravity="center"
         android:layout_margin="10dp"/>
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:numStars="5"
+        android:stepSize="0.1"
+        android:rating="5"
+        android:isIndicator="false"
+        android:id="@+id/rating_review"/>
+    <EditText
+        android:gravity="top"
+        android:id="@+id/review_content"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:hint="리뷰 내용"/>
+    <Button
+        android:id="@+id/btn_review_photo"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/activity_post_picture"
+        android:text="첨부하기"
+        android:background="#00ff0000"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/review_image_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"/>
+    <Button
+        android:id="@+id/upload_review"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
+        android:text="리뷰 등록하기"/>
 
 </LinearLayout>

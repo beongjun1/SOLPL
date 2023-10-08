@@ -69,6 +69,7 @@ public class Place_page extends AppCompatActivity {
                     public void onClick(View view) {
                         if(intent.getStringExtra("resion").equals("순천")&&reco_resion.get순천()>0){
                             Intent intent1 = new Intent(Place_page.this, Place_review.class);
+                            intent1.putExtra("title",place_title.getText());
                             startActivity(intent1);
                         }
                         else{

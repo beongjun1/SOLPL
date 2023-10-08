@@ -18,7 +18,7 @@ public class my_page_post_image_adpater extends RecyclerView.Adapter<my_page_pos
     private Context mContext = null ;
 
     // 생성자에서 데이터 리스트 객체, Context를 전달받음.
-    my_page_post_image_adpater(ArrayList<Uri> list, Context context) {
+    public my_page_post_image_adpater(ArrayList<Uri> list, Context context) {
         mData = list ;
         mContext = context;
     }
