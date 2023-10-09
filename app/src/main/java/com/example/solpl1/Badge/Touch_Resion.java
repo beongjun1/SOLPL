@@ -1,9 +1,13 @@
 package com.example.solpl1.Badge;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -14,6 +18,7 @@ import com.devs.vectorchildfinder.VectorDrawableCompat;
 import com.example.solpl1.R;
 
 public class Touch_Resion extends AppCompatActivity {
+    Button select_badge;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,8 +27,12 @@ public class Touch_Resion extends AppCompatActivity {
 //        actionBar.hide();
 
         ImageView imageView = (ImageView) findViewById(R.id.achiv_korea);
+        select_badge = (Button) findViewById(R.id.select_badge);
+        select_badge.setVisibility(View.VISIBLE);
         Intent intent=getIntent();
         String resion=intent.getStringExtra("resion");
+        int count=intent.getIntExtra("count",0);
+
         VectorChildFinder vector = new VectorChildFinder(Touch_Resion.this, R.drawable.map_of_south_korea, imageView);
         VectorDrawableCompat.VFullPath path=null;
         switch (resion){
@@ -57,5 +66,18 @@ public class Touch_Resion extends AppCompatActivity {
         }
 
         path.setFillColor(Color.RED);
+
+        select_badge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(count==0){
+                    Toast.makeText(Touch_Resion.this,"뱃지가 아직 잠겨 있습니다.",Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(Touch_Resion.this,"대표 뱃지로 설정되었습니다.",Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
     }
 }

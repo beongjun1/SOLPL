@@ -24,7 +24,7 @@ public class Badge_Activity extends AppCompatActivity {
     FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
     DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference("UserAccount").child(firebaseAuth.getUid()).child("reco_resion");
     RECO_RESION reco_resion = new RECO_RESION();
-    ImageView goyang,suwon,siheung,osan,yongin,hwaseong,suncheon,jinju,jeju;
+    ImageView represent_badge,goyang,suwon,siheung,osan,yongin,hwaseong,suncheon,jinju,jeju;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +32,7 @@ public class Badge_Activity extends AppCompatActivity {
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.hide();
 
+        represent_badge=findViewById(R.id.represent_badge);
         goyang=findViewById(R.id.goyang);
         suwon=findViewById(R.id.suwon);
         siheung=findViewById(R.id.siheung);
@@ -104,6 +105,7 @@ public class Badge_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(Badge_Activity.this,Touch_Resion.class);
                 intent.putExtra("resion","goyang");
+                intent.putExtra("count",reco_resion.get고양());
                 startActivity(intent);
             }
         });
@@ -112,6 +114,7 @@ public class Badge_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(Badge_Activity.this,Touch_Resion.class);
                 intent.putExtra("resion","suwon");
+                intent.putExtra("count",reco_resion.get수원());
                 startActivity(intent);
             }
         });
@@ -120,6 +123,7 @@ public class Badge_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(Badge_Activity.this,Touch_Resion.class);
                 intent.putExtra("resion","siheung");
+                intent.putExtra("count",reco_resion.get시흥());
                 startActivity(intent);
             }
         });
@@ -128,6 +132,7 @@ public class Badge_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(Badge_Activity.this,Touch_Resion.class);
                 intent.putExtra("resion","osan");
+                intent.putExtra("count",reco_resion.get오산());
                 startActivity(intent);
             }
         });
@@ -136,6 +141,7 @@ public class Badge_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(Badge_Activity.this,Touch_Resion.class);
                 intent.putExtra("resion","yongin");
+                intent.putExtra("count",reco_resion.get용인());
                 startActivity(intent);
             }
         });
@@ -144,6 +150,7 @@ public class Badge_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(Badge_Activity.this,Touch_Resion.class);
                 intent.putExtra("resion","hwaseong");
+                intent.putExtra("count",reco_resion.get화성());
                 startActivity(intent);
             }
         });
@@ -152,6 +159,7 @@ public class Badge_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(Badge_Activity.this,Touch_Resion.class);
                 intent.putExtra("resion","suncheon");
+                intent.putExtra("count",reco_resion.get순천());
                 startActivity(intent);
             }
         });
@@ -160,6 +168,7 @@ public class Badge_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(Badge_Activity.this,Touch_Resion.class);
                 intent.putExtra("resion","jinju");
+                intent.putExtra("count",reco_resion.get진주());
                 startActivity(intent);
             }
         });
@@ -168,6 +177,7 @@ public class Badge_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(Badge_Activity.this,Touch_Resion.class);
                 intent.putExtra("resion","jeju");
+                intent.putExtra("count",reco_resion.get제주());
                 startActivity(intent);
             }
         });

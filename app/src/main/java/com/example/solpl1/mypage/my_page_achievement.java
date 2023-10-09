@@ -2,6 +2,8 @@ package com.example.solpl1.mypage;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -33,6 +35,8 @@ public class my_page_achievement extends AppCompatActivity
         setContentView(R.layout.achievement_map);
 
         ImageView imageView = (ImageView) findViewById(R.id.achiv_korea);
+        Button btn=findViewById(R.id.select_badge);
+        btn.setVisibility(View.GONE);
 
 
         databaseReference.child("reco_resion").addValueEventListener(new ValueEventListener() {
