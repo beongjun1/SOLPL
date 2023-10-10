@@ -95,6 +95,7 @@
         <activity android:name=".Badge.Touch_Resion"/>
         <activity android:name="com.example.solpl1.PointShop.pointShopActivity" />
         <activity android:name="com.example.solpl1.PointShop.category.activity.activity_store" />
+        <activity android:name="com.example.solpl1.review.reviewActivity" />
 
         <!-- 카메라 사용하는 API -->
         <provider

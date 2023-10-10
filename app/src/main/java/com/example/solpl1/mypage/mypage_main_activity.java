@@ -30,8 +30,8 @@ import com.example.solpl1.chat.chat_room_activity;
 import com.example.solpl1.map.MainMap;
 import com.example.solpl1.my_page_item;
 import com.example.solpl1.post_management.post_management_activity;
-import com.example.solpl1.post_management.review_management_activity;
 import com.example.solpl1.profile_edit.profile_edit_activity;
+import com.example.solpl1.review.reviewActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -166,7 +166,7 @@ public class mypage_main_activity extends AppCompatActivity {
                                 startActivity(postManagementIntent);
                                 break;
                             case R.id.my_page_review_management:
-                                Intent reviewManagementIntent = new Intent(mypage_main_activity.this, review_management_activity.class);
+                                Intent reviewManagementIntent = new Intent(mypage_main_activity.this, reviewActivity.class);
                                 startActivity(reviewManagementIntent);
                                 break;
                             case R.id.my_page_badge:
@@ -309,6 +309,7 @@ public class mypage_main_activity extends AppCompatActivity {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.e("DatabaseError", "Error: " + databaseError.getMessage());
+                        finish();
                     }
                 });
     }

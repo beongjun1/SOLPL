@@ -35,6 +35,8 @@ public class post_management_activity extends AppCompatActivity {
     private DatabaseReference user_account_database; // 실시간 데이터베이스
     private ArrayList<post_management_item> post_management_items;
     private RecyclerView post_management_recycler;
+    private boolean hasData = false; // 데이터가 있는지 여부를 나타내는 플래그
+
     private post_management_recycler_adapter post_management_recycler_adapter;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class post_management_activity extends AppCompatActivity {
         post_database = FirebaseDatabase.getInstance().getReference("post_database");
         user_account_database = FirebaseDatabase.getInstance().getReference("UserAccount");
 
+
         post_database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -70,8 +73,11 @@ public class post_management_activity extends AppCompatActivity {
                         String postId = postSnapshot.getKey();
                         String postUserIdToken = postSnapshot.child("id_token").getValue(String.class);
 
+
                         // 중복 확인
                         if (postUserIdToken != null && postUserIdToken.equals(currentUserIdToken) && !post_management_items.contains(postId)) {
+                            hasData = true; // 데이터가 있음을 표시
+
                             // 중복이 아닌 경우에만 추가
                             user_account_database.child(postUserIdToken).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -95,6 +101,7 @@ public class post_management_activity extends AppCompatActivity {
                                         post_management_items.add(item);
                                         post_management_recycler_adapter.setPost_management_items(post_management_items);
 
+
                                     }
                                 }
 
@@ -104,10 +111,11 @@ public class post_management_activity extends AppCompatActivity {
                                     Toast.makeText(post_management_activity.this, "idToken error", Toast.LENGTH_SHORT).show();
                                 }
                             });
-
-
                         }
                     }
+                    emptyTextView.setVisibility(hasData && post_management_items.isEmpty() ? View.GONE : View.VISIBLE);
+
+
                 }
             }
 
