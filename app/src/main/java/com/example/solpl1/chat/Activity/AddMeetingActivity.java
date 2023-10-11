@@ -33,7 +33,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.auth.User;
 import com.shawnlin.numberpicker.NumberPicker;
@@ -86,6 +88,23 @@ public class AddMeetingActivity extends AppCompatActivity {
             }
         });
 
+
+        // 일정 순으로 정렬
+        DatabaseReference meetingdb = database.getReference().child("chat").child(chatType).child(chatRoomId)
+                .child("meeting");
+        Query meetingOrderQuery = meetingdb.orderByChild("date");
+        meetingOrderQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         // 만남 생성 확인 버튼을 누를때
         binding.meetingAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,8 +122,12 @@ public class AddMeetingActivity extends AppCompatActivity {
                     meetingModel.setDate(date);
                     meetingModel.setDescription(description);
                     meetingModel.setUsers(userUidList);
-                    database.getReference().child("chat").child(chatType).child(chatRoomId).child("meeting")
-                            .push().setValue(meetingModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    DatabaseReference meetingRef = database.getReference().child("chat").child(chatType).child(chatRoomId).child("meeting")
+                            .push();
+                    String meetingId = meetingRef.getKey();
+                    meetingModel.setMeetingId(meetingId);
+
+                    meetingRef.setValue(meetingModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Toast.makeText(AddMeetingActivity.this, "만남 생성", Toast.LENGTH_SHORT).show();
@@ -178,10 +201,12 @@ public class AddMeetingActivity extends AppCompatActivity {
         DatePickerDialog dialog = new DatePickerDialog(AddMeetingActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
                 binding.startingDate.setText(MessageFormat.format("{0}/{1}/{2}", String.valueOf(year)
                         , String.valueOf(month + 1), dayFormat(dayOfMonth)));
             }
         }, year, month , day);
+        dialog.getDatePicker().setMinDate(System.currentTimeMillis());
         dialog.show();
 
     }

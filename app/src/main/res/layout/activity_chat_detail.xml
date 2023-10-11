@@ -49,12 +49,14 @@
                 android:id="@+id/meeting_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="여행 약속"
-                android:src="@drawable/ic_calendar"
+                android:layout_gravity="end"
                 android:background="#022E62"
+                android:src="@drawable/ic_calendar"
+                android:text="여행 약속"
+                android:visibility="invisible"
                 app:tint="@color/white"
-                android:layout_marginRight="8dp"
-                android:layout_gravity="end"/>
+                tools:layout_editor_absoluteX="315dp"
+                tools:layout_editor_absoluteY="4dp" />
 
 
         </androidx.appcompat.widget.Toolbar>

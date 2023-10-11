@@ -49,10 +49,16 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         NowPost model = list.get(position);
-        Picasso.get()                                                                           // 포스트 이미지
-                .load(model.getPostImage())
-                .placeholder(R.drawable.solpl_icon)
-                .into(holder.binding.nowpostImage);
+
+        if(model.getPostImage() == null){
+            holder.binding.nowpostImage.setVisibility(View.GONE);
+        }else {
+            Picasso.get()                                                                           // 포스트 이미지
+                    .load(model.getPostImage())
+                    .placeholder(R.drawable.ic_photo)
+                    .into(holder.binding.nowpostImage);
+        }
+
         holder.binding.nowPostDate.setText(getReadableDataTime(model.getPostedAt()));        // 게시글 날짜
         holder.binding.nowpostLike.setText(model.getPostLike()+"");
         holder.binding.nowpostComment.setText(model.getCommentCount()+"");
@@ -95,7 +101,7 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
                 .child("nowPosts")
                 .child(model.getPostId())
                 .child("likes")
-                .child(FirebaseAuth.getInstance().getUid())
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {

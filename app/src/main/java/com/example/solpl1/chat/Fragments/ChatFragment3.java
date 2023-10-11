@@ -96,12 +96,10 @@ public class ChatFragment3 extends Fragment {
                 CheckedLocationPermission();
                 binding.chatLocation.setText(userLocation);
 
-                database.getReference().child("chat").child("chat_local")
-                        .child(address1).child(address2).child(address3).child(address4);
 
                 // 어댑터에 데이터 넣기
                 database.getReference().child("chat").child("chat_local")
-                        .child(address1).child(address2).child(address3).child(address4).addValueEventListener(new ValueEventListener() {
+                        .child(address1).child(address2).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if(snapshot.exists()){
@@ -169,7 +167,7 @@ public class ChatFragment3 extends Fragment {
             Log.w("checkSelfPermission", "Denied");
         } else {
             Location GpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            Log.w("checkSelfPermission", "Granted");
+            Log.w("checkSelfPermission", "GPS");
             // GPS 보다 Network가 더 나은듯??
             if(GpsLocation != null){
                 double latitude = GpsLocation.getLatitude();
@@ -224,11 +222,12 @@ public class ChatFragment3 extends Fragment {
             if(addresses != null && addresses.size()>0){
                 address1 = addresses.get(0).getAdminArea();     // 경기도
                 address2 = addresses.get(0).getLocality();      // 안양시
-                address3 = addresses.get(0).getSubLocality();   // 동안구
-                address4 = addresses.get(0).getThoroughfare();  // 부흥동
+//                address3 = addresses.get(0).getSubLocality();   // 동안구
+//                address4 = addresses.get(0).getThoroughfare();  // 부흥동
                 // AdminArea => 경기도 , Locality => 안양시,subLocality => 동안구, Thoroughfare : 부흥동
 
-                userLocation = address1 + " " + address2 +" " + address3 + " " + address4;
+//                userLocation = address1 + " " + address2 +" " + address3 + " " + address4;
+                userLocation = address1 + " " + address2;
                 return userLocation;
             }
         } catch (Exception e){
@@ -264,18 +263,29 @@ public class ChatFragment3 extends Fragment {
                     chatItem.setTitle(title.getText().toString());
 
                     DatabaseReference pushedChatRef = database.getReference().child("chat").child("chat_local")
-                            .child(address1).child(address2).child(address3).child(address4).push();
+                            .child(address1).child(address2).push();
                     String chatRoomId = pushedChatRef.getKey();
                     chatItem.setChatRoomId(chatRoomId);
                     pushedChatRef.setValue(chatItem).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Intent intent = new Intent(getContext(), ChatDetailActivity.class);
-                            intent.putExtra("chatRoomId", chatItem.getChatRoomId());
-                            intent.putExtra("chatType", "chat_local");
-                            intent.putExtra("title", chatItem.getTitle());
-                            startActivity(intent);
-                            Toast.makeText(getContext(), "채팅방 생성", Toast.LENGTH_SHORT).show();
+                            // chatUser DB에 방장 추가
+                            pushedChatRef.child("chatUser")
+                                    .child(auth.getCurrentUser().getUid()).setValue(true)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Intent intent = new Intent(getContext(), ChatDetailActivity.class);
+                                            intent.putExtra("chatRoomId", chatItem.getChatRoomId());
+                                            intent.putExtra("chatType", "chat_local");
+                                            intent.putExtra("title", chatItem.getTitle());
+                                            intent.putExtra("address1", address1);
+                                            intent.putExtra("address2", address2);
+                                            startActivity(intent);
+                                            Toast.makeText(getContext(), "채팅방 생성", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
                         }
                     });
                 } else{

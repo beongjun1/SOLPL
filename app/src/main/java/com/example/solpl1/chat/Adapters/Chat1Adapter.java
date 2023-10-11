@@ -101,7 +101,7 @@ public class Chat1Adapter extends RecyclerView.Adapter<Chat1Adapter.ViewHolder>{
                                                                                 .child(chatItem.getChatRoomId())
                                                                                 .child("chatUser")
                                                                                 .child(auth.getCurrentUser().getUid())
-                                                                                .setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                .setValue(false).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                     @Override
                                                                                     public void onSuccess(Void unused) {
                                                                                         // 현재 채팅방 유저 수  + 1

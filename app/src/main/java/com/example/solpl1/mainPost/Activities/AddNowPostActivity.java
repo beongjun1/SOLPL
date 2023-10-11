@@ -14,7 +14,11 @@ import android.widget.Toast;
 
 import com.example.solpl1.R;
 import com.example.solpl1.UserAccount;
+import com.example.solpl1.chat.Activity.AddMeetingActivity;
+import com.example.solpl1.chat.Activity.ChatDetailActivity;
 import com.example.solpl1.databinding.ActivityAddNowPostBinding;
+import com.example.solpl1.mainPost.Adapters.NowPostAdapter;
+import com.example.solpl1.mainPost.Fragments.NowPostFragment;
 import com.example.solpl1.mainPost.Models.NowPost;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,23 +55,9 @@ public class AddNowPostActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_loading);
 
 
-        database.getReference().child("UserAccount")
-                .child(FirebaseAuth.getInstance().getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
         // 프로필, 이름
         database.getReference().child("UserAccount")
-                .child(auth.getCurrentUser()
-                        .getUid()).addValueEventListener(new ValueEventListener() {
+                .child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         UserAccount userAccount = snapshot.getValue(UserAccount.class);
@@ -92,6 +82,7 @@ public class AddNowPostActivity extends AppCompatActivity {
                 });
 
 
+        //이미지 추가
         binding.nowpostNewAddPostImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,10 +100,30 @@ public class AddNowPostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.show();
+                //사진이 없을때
+                if(uri == null){
+                    NowPost nowPost = new NowPost();
+                    nowPost.setPostDescription(binding.nowpostDescription.getText().toString());
+                    nowPost.setPostedBy(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    nowPost.setPostedAt(new Date().getTime());
+                    database.getReference().child("nowPosts")
+                            .push().setValue(nowPost).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Intent intent = new Intent(AddNowPostActivity.this, NowPostFragment.class);
+                                    startActivity(intent);
+                                    dialog.cancel();
+                                    Toast.makeText(AddNowPostActivity.this, "게시글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                }
+
                 // firebase storage에 사진 저장 저장
                 final StorageReference reference = storage.getReference().child("nowPosts")
                         .child(FirebaseAuth.getInstance().getUid())
                         .child(new Date().getTime()+"");
+
                 reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -130,6 +141,8 @@ public class AddNowPostActivity extends AppCompatActivity {
                                         .push().setValue(nowPost).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
+                                                Intent intent = new Intent(AddNowPostActivity.this, NowPostFragment.class);
+                                                startActivity(intent);
                                                 dialog.cancel();
                                                 Toast.makeText(AddNowPostActivity.this, "게시글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
                                             }
