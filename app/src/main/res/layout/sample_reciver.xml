@@ -12,7 +12,7 @@
         android:layout_width="@dimen/_25mdp"
         android:layout_height="@dimen/_25mdp"
         android:scaleType="centerCrop"
-        android:src="@drawable/profile"
+        android:src="@drawable/default_profile"
         app:layout_constraintBottom_toBottomOf="@id/chatMessage"
         app:layout_constraintStart_toStartOf="parent"
         app:riv_oval="true" />
@@ -39,7 +39,7 @@
         android:text="오후 2:00"
         android:textColor="#7E7D7D"
         android:textSize="@dimen/_10mdp"
-        app:layout_constraintStart_toStartOf="@+id/chatMessage"
+        app:layout_constraintEnd_toEndOf="@+id/chatMessage"
         app:layout_constraintTop_toBottomOf="@+id/chatMessage" />
 
     <TextView

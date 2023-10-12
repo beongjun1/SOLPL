@@ -1,5 +1,6 @@
 package com.example.solpl1.chat.Adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ public class Chat1Adapter extends RecyclerView.Adapter<Chat1Adapter.ViewHolder>{
     ArrayList<ChatItem> list;
     FirebaseDatabase database;
     FirebaseAuth auth;
+
 
     public Chat1Adapter(Context context, ArrayList<ChatItem> list) {
         this.context = context;

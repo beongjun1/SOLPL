@@ -3,6 +3,7 @@ package com.example.solpl1.mainPost.Activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.accounts.Account;
 import android.app.Dialog;
@@ -110,7 +111,7 @@ public class AddNowPostActivity extends AppCompatActivity {
                             .push().setValue(nowPost).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    Intent intent = new Intent(AddNowPostActivity.this, NowPostFragment.class);
+                                    Intent intent = new Intent(AddNowPostActivity.this, PostActivity.class);
                                     startActivity(intent);
                                     dialog.cancel();
                                     Toast.makeText(AddNowPostActivity.this, "게시글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
@@ -118,39 +119,42 @@ public class AddNowPostActivity extends AppCompatActivity {
                             });
 
                 }
+                else {
+                    // firebase storage에 사진 저장 저장
+                    final StorageReference reference = storage.getReference().child("nowPosts")
+                            .child(FirebaseAuth.getInstance().getUid())
+                            .child(new Date().getTime()+"");
 
-                // firebase storage에 사진 저장 저장
-                final StorageReference reference = storage.getReference().child("nowPosts")
-                        .child(FirebaseAuth.getInstance().getUid())
-                        .child(new Date().getTime()+"");
+                    reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                //firebase database에 내용 저장
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    NowPost nowPost = new NowPost();
+                                    nowPost.setPostImage(uri.toString());
+                                    nowPost.setPostDescription(binding.nowpostDescription.getText().toString());
+                                    nowPost.setPostedBy(FirebaseAuth.getInstance().getUid());
+                                    nowPost.setPostedAt(new Date().getTime());
 
-                reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            //firebase database에 내용 저장
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                NowPost nowPost = new NowPost();
-                                nowPost.setPostImage(uri.toString());
-                                nowPost.setPostDescription(binding.nowpostDescription.getText().toString());
-                                nowPost.setPostedBy(FirebaseAuth.getInstance().getUid());
-                                nowPost.setPostedAt(new Date().getTime());
+                                    database.getReference().child("nowPosts")
+                                            .push().setValue(nowPost).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    Intent intent = new Intent(AddNowPostActivity.this, PostActivity.class);
+                                                    startActivity(intent);
+                                                    dialog.cancel();
+                                                    Toast.makeText(AddNowPostActivity.this, "게시글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                            });
+                        }
+                    });
+                }
 
-                                database.getReference().child("nowPosts")
-                                        .push().setValue(nowPost).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                Intent intent = new Intent(AddNowPostActivity.this, NowPostFragment.class);
-                                                startActivity(intent);
-                                                dialog.cancel();
-                                                Toast.makeText(AddNowPostActivity.this, "게시글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                            }
-                        });
-                    }
-                });
+
             }
         });
 

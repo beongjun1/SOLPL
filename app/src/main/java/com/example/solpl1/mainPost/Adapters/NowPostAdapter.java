@@ -107,6 +107,7 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if(snapshot.exists()){                                              // nowpost DB에 사용자 Uid가 있을때(사용자가 좋아요를 눌렀을때)
                                     holder.binding.nowpostLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite,0,0,0);
+
                                 } else {
                                     holder.binding.nowpostLike.setOnClickListener(new View.OnClickListener() {
                                         @Override
