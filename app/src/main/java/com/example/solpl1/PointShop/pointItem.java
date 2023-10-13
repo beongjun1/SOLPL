@@ -3,15 +3,43 @@ package com.example.solpl1.PointShop;
 public class pointItem {
     private String name;
     private int cost;
+    private String store;
     private String date;
     private String imgUrl;
     private String key;
+    private String category;
 
-    public pointItem(String name, int cost, String date, String imgUrl, String key) {
+    public pointItem(String name, int cost, String store, String date, String imgUrl, String key, String category) {
         this.name = name;
         this.cost = cost;
+        this.store = store;
         this.date = date;
         this.imgUrl = imgUrl;
+        this.key = key;
+        this.category = category;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getStore() {
+        return store;
+    }
+
+    public void setStore(String store) {
+        this.store = store;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
         this.key = key;
     }
 
@@ -45,14 +73,6 @@ public class pointItem {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
     }
 }
 

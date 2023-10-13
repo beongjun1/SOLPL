@@ -96,6 +96,8 @@
         <activity android:name="com.example.solpl1.PointShop.pointShopActivity" />
         <activity android:name="com.example.solpl1.PointShop.category.activity.activity_store" />
         <activity android:name="com.example.solpl1.review.reviewActivity" />
+        <activity android:name="com.example.solpl1.PointShop.barcode.barcodeActivity" />
+        <activity android:name="com.example.solpl1.PointShop.detail.detailActivity" />
 
         <!-- 카메라 사용하는 API -->
         <provider

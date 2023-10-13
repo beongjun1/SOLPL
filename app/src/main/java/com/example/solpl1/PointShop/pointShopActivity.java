@@ -2,6 +2,7 @@ package com.example.solpl1.PointShop;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -37,7 +38,6 @@ public class pointShopActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.point_recycler);
         pointList = new ArrayList<>();
-
         pointAdapter = new pointAdapter();
 
         recyclerView.setAdapter(pointAdapter);
@@ -56,8 +56,10 @@ public class pointShopActivity extends AppCompatActivity {
                         int cost = pointSnapshot.child("cost").getValue(Integer.class);
                         String imgUrl = pointSnapshot.child("imgUrl").getValue(String.class);
                         String key = pointSnapshot.child("key").getValue(String.class);
-
-                        pointItem pointItems = new pointItem(title, cost, date, imgUrl, key);
+                        String store = pointSnapshot.child("store").getValue(String.class);
+                        String category = pointSnapshot.child("category").getValue(String.class);
+                        Log.d("pointShopActivity", "category: " + category);
+                        pointItem pointItems = new pointItem(title,cost,store,date, imgUrl, key,category);
                         pointList.add(pointItems);
                     }
                     pointAdapter.setPointItems(pointList);

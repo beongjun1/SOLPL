@@ -2,17 +2,37 @@ package com.example.solpl1.PointShop.category.item;
 
 public class category_item {
     private String name;
+    private String category;
     private int cost;
+    private String store;
     private String date;
     private String imgUrl;
     private String key;
 
-    public category_item(String name, int cost, String date, String imgUrl, String key) {
+    public category_item(String name, String category, int cost, String store, String date, String imgUrl, String key) {
         this.name = name;
+        this.category = category;
         this.cost = cost;
+        this.store = store;
         this.date = date;
         this.imgUrl = imgUrl;
         this.key = key;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getStore() {
+        return store;
+    }
+
+    public void setStore(String store) {
+        this.store = store;
     }
 
     public String getKey() {
