@@ -10,8 +10,8 @@
         android:layout_width="@dimen/_30mdp"
         android:layout_height="@dimen/_30mdp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/profile"
-        app:civ_border_color="#B1B1B1"
+        android:src="@drawable/default_profile"
+        app:civ_border_color="#FFFFFF"
         app:civ_border_width="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -52,7 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="@dimen/_150mdp"
         android:layout_marginTop="16dp"
-        android:scaleType="centerCrop"
+        android:scaleType="center"
         android:src="@drawable/landscape"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="@+id/nowpost_image"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nowpost_image"
         app:srcCompat="@drawable/ic_bookmark" />
 
@@ -77,7 +77,7 @@
         android:layout_marginTop="8dp"
         android:drawableLeft="@drawable/ic_like"
         android:text="123"
-        app:layout_constraintStart_toStartOf="@+id/nowpost_image"
+        app:layout_constraintStart_toStartOf="@+id/profile"
         app:layout_constraintTop_toBottomOf="@+id/nowpost_image" />
 
     <TextView
@@ -97,16 +97,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="내용입니다."
-        app:layout_constraintStart_toStartOf="@+id/nowpost_image"
+        app:layout_constraintStart_toStartOf="@+id/profile"
         app:layout_constraintTop_toBottomOf="@+id/nowpost_like" />
 
     <TextView
         android:id="@+id/nowPost_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2023.9.9"
         android:layout_marginTop="4dp"
-        app:layout_constraintStart_toStartOf="@+id/nowpost_like"
+        android:layout_marginBottom="8dp"
+        android:text="2023.9.9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/profile"
         app:layout_constraintTop_toBottomOf="@+id/nowpost_content" />
 
 

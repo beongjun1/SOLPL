@@ -133,14 +133,22 @@ public class ChatFragment2 extends Fragment {
                     pushedChatRef.setValue(chatItem).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
+                            // chatUser DB에 방장 추가
+                            pushedChatRef.child("chatUser")
+                                    .child(auth.getCurrentUser().getUid()).setValue(true)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Intent intent = new Intent(getContext(), ChatDetailActivity.class);
+                                            intent.putExtra("chatRoomId", chatItem.getChatRoomId());
+                                            intent.putExtra("chatType", "chat_together");
+                                            intent.putExtra("title", chatItem.getTitle());
+                                            startActivity(intent);
+                                            Toast.makeText(getContext(), "채팅방 생성", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
 
 
-                            Intent intent = new Intent(getContext(), ChatDetailActivity.class);
-                            intent.putExtra("chatRoomId", chatItem.getChatRoomId());
-                            intent.putExtra("chatType", "chat_together");
-                            intent.putExtra("title", chatItem.getTitle());
-                            startActivity(intent);
-                            Toast.makeText(getContext(), "채팅방 생성", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else{
