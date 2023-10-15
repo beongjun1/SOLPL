@@ -71,8 +71,8 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
+        //여행지
         LatLng SunCheonMan = new LatLng(34.523, 127.28);
-
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(SunCheonMan);
         markerOptions.title("순천만 습지");
@@ -84,25 +84,26 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
                 if(markerId.equals("순천만 습지")){
                     place_image.setImageResource(R.drawable.suncheonman);
                     place_title.setText("순천만 습지");
-                }
-                databaseReference.child("순천만 습지").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        place = snapshot.getValue(PLACE.class);
-                        place_address.setText("주소:"+place.getAddress());
-                        place_tel.setText("번호:"+place.getTel());
-                        if(place.getRating()==0)place_rating.setText("평점:리뷰 수집중입니다.");
-                        else{
-                            place_rating.setText("평점:" + String.valueOf(place.getRating()));
+                    databaseReference.child("순천만 습지").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            place = snapshot.getValue(PLACE.class);
+                            place_address.setText("주소:"+place.getAddress());
+                            place_tel.setText("번호:"+place.getTel());
+                            if(place.getRating()==0)place_rating.setText("평점:리뷰 수집중입니다.");
+                            else{
+                                place_rating.setText("평점:" + String.valueOf(place.getRating()));
+                            }
+
                         }
 
-                    }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+                }
 
-                    }
-                });
                 cardView.setVisibility(View.VISIBLE);
                 return false;
             }

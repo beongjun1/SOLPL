@@ -88,6 +88,7 @@ public class RegisterActivity extends AppCompatActivity {
                             account.setName(strName);
                             account.setPassword(strPwd);
                             account.setReco_text("영수증인식텍스트");
+                            account.setBadge("대표뱃지");
                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
                             Toast.makeText(RegisterActivity.this, "회원가입에 성공했습니다.", Toast.LENGTH_SHORT).show();
 

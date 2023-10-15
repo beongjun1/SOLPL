@@ -13,6 +13,7 @@ public class UserAccount {
     private String imageUrl;            //프로필 이미지
 
     private String reco_text;
+    private String badge;
 
     public String getImageUrl() {
         return imageUrl;
@@ -71,4 +72,11 @@ public class UserAccount {
         this.reco_text = reco_text;
     }
 
+    public String getBadge() {
+        return badge;
+    }
+
+    public void setBadge(String badge) {
+        this.badge = badge;
+    }
 }
