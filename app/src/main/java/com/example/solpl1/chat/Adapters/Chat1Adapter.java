@@ -1,5 +1,6 @@
 package com.example.solpl1.chat.Adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ public class Chat1Adapter extends RecyclerView.Adapter<Chat1Adapter.ViewHolder>{
     ArrayList<ChatItem> list;
     FirebaseDatabase database;
     FirebaseAuth auth;
+
 
     public Chat1Adapter(Context context, ArrayList<ChatItem> list) {
         this.context = context;
@@ -101,7 +103,7 @@ public class Chat1Adapter extends RecyclerView.Adapter<Chat1Adapter.ViewHolder>{
                                                                                 .child(chatItem.getChatRoomId())
                                                                                 .child("chatUser")
                                                                                 .child(auth.getCurrentUser().getUid())
-                                                                                .setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                .setValue(false).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                                     @Override
                                                                                     public void onSuccess(Void unused) {
                                                                                         // 현재 채팅방 유저 수  + 1

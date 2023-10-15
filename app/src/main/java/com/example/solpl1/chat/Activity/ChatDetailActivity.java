@@ -64,10 +64,12 @@ public class ChatDetailActivity extends AppCompatActivity implements NavigationV
     ActivityChatDetailBinding binding;
     FirebaseDatabase database;
     FirebaseAuth auth;
+    boolean authority;
     DrawerLayout drawerLayout;
     ArrayList<MessageModel> messageModels;
     String chatRoomId, chatType, title;
     int chatUserCount;
+    String address1, address2;
     ArrayList<String> list =  new ArrayList<>();       // 현재 채팅방에 있는 유저들
     ArrayList<MeetingModel> meetingList = new ArrayList<>();    // 미팅 리스트
 
@@ -81,7 +83,6 @@ public class ChatDetailActivity extends AppCompatActivity implements NavigationV
     String[]  UserList;
     TextView usersTv;
     TextInputEditText editText;
-
 
 
     @Override
@@ -106,15 +107,20 @@ public class ChatDetailActivity extends AppCompatActivity implements NavigationV
 
         }
 
-
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
         messageModels = new ArrayList<>();
+        authority = false;
 
-        String senderId = auth.getUid();
+        String senderId = auth.getCurrentUser().getUid();
         chatRoomId = getIntent().getStringExtra("chatRoomId");
         chatType = getIntent().getStringExtra("chatType");
         title = getIntent().getStringExtra("title");
+
+        address1 = getIntent().getStringExtra("address1");
+        address2 = getIntent().getStringExtra("address2");
+
+
         binding.textName.setText(title);
 
 
@@ -123,8 +129,7 @@ public class ChatDetailActivity extends AppCompatActivity implements NavigationV
         binding.chatRecyclerView.setAdapter(adapter);
         binding.chatRecyclerView.setLayoutManager(layoutManager);
 
-
-       //채팅방  메세지 보여주기
+        //채팅방  메세지 보여주기
         database.getReference().child("chat").child(chatType)
                 .child(chatRoomId).child("chatMessage").addValueEventListener(new ValueEventListener() {
                     @Override
@@ -171,8 +176,51 @@ public class ChatDetailActivity extends AppCompatActivity implements NavigationV
             }
         });
 
-        // 채팅방 여행 팀 생성
+        //권한 확인
+        Log.e("senderId" , senderId);
+        address1 = "경기도";
+        address2 = "의왕";
+        if(chatType.equals("chat_local")){
+            database.getReference().child("chat").child(chatType)
+                    .child(address1).child(address2).child(chatRoomId).child("chatUser")
+                    .child(senderId).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            authority = snapshot.getValue(boolean.class);
+                            Log.e("authority", authority+"");
+                            if(authority){
+                                //binding.meetingBtn.setVisibility(View.VISIBLE);
+                            }
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+        }
+        else {
+            database.getReference().child("chat").child(chatType).child(chatRoomId).child("chatUser")
+                    .child(senderId).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            authority = snapshot.getValue(boolean.class);
+                            Log.e("authority", authority+"");
+                            if(authority){
+                                binding.meetingBtn.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+        }
+
+
+
+        // 채팅방 여행 팀 생성 => 방장만(chatUser에서 true인사람)
 
         binding.meetingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,7 +267,6 @@ public class ChatDetailActivity extends AppCompatActivity implements NavigationV
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-
                     }
                 }).setNegativeButton("close", new DialogInterface.OnClickListener() {
                     @Override
@@ -230,7 +277,6 @@ public class ChatDetailActivity extends AppCompatActivity implements NavigationV
 
 
         alertDialog.show();
-
     }
 
     @Override
@@ -250,15 +296,15 @@ public class ChatDetailActivity extends AppCompatActivity implements NavigationV
         return true;
     }
 
+    // 미팅 일정 보여주기
     private void showBottomDialog2() {
         final Dialog dialog2 = new Dialog(this);
         dialog2.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog2.setContentView(R.layout.dialog_meeting_list);
 
-
-
+        TextView textView = dialog2.findViewById(R.id.textView13);
         RecyclerView recyclerView = dialog2.findViewById(R.id.meetingRecyclerview);
-        MeetingListAdapter adapter = new MeetingListAdapter(meetingList, this);
+        MeetingListAdapter adapter = new MeetingListAdapter(meetingList, this,chatType,chatRoomId);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -286,7 +332,11 @@ public class ChatDetailActivity extends AppCompatActivity implements NavigationV
                     }
                 });
 
-
+//        // 일정이 없을때
+//        if(meetingList.isEmpty()){
+//            recyclerView.setVisibility(View.GONE);
+//            textView.setVisibility(View.VISIBLE);
+//        }
         dialog2.show();
         dialog2.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog2.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -307,10 +357,11 @@ public class ChatDetailActivity extends AppCompatActivity implements NavigationV
 
 
         RecyclerView recyclerView = dialog.findViewById(R.id.userRecyclerview);
-        ChatUserListAdapter adapter = new ChatUserListAdapter(list, this);
+        ChatUserListAdapter adapter = new ChatUserListAdapter(list, this,chatType,chatRoomId);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
 
         database.getReference().child("chat").child(chatType).child(chatRoomId)
                 .child("chatUser").addValueEventListener(new ValueEventListener() {
@@ -378,8 +429,6 @@ public class ChatDetailActivity extends AppCompatActivity implements NavigationV
                     }
                 });
     }
-
-
 
     @Override
     public void onBackPressed() {

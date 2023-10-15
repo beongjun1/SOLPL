@@ -58,10 +58,19 @@ public class NowPostCommentActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         NowPost nowPost = snapshot.getValue(NowPost.class);
-                        Picasso.get()
-                                .load(nowPost.getPostImage())
-                                .placeholder(R.drawable.solpl_icon)
-                                .into(binding.nowpostimage);
+                        if(nowPost.getPostImage() == null){
+                            Picasso.get()
+                                    .load(R.drawable.ex1)
+                                    .placeholder(R.drawable.ic_photo)
+                                    .into(binding.nowpostimage);
+                        }
+                        else{
+                            Picasso.get()
+                                    .load(nowPost.getPostImage())
+                                    .placeholder(R.drawable.ic_photo)
+                                    .into(binding.nowpostimage);
+                        }
+
                         binding.description.setText(nowPost.getPostDescription());
                         binding.nowpostLike.setText(nowPost.getPostLike()+"");
                         binding.nowpostComment.setText(nowPost.getCommentCount()+"");
@@ -176,6 +185,56 @@ public class NowPostCommentActivity extends AppCompatActivity {
 
                     }
                 });
+
+        // 좋아요 기능
+        FirebaseDatabase.getInstance().getReference()
+                .child("nowPosts")
+                .child(postId)
+                .child("likes")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){                                              // nowpost DB에 사용자 Uid가 있을때(사용자가 좋아요를 눌렀을때)
+                            binding.nowpostLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite,0,0,0);
+
+                        } else {
+                            binding.nowpostLike.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    FirebaseDatabase.getInstance().getReference()
+                                            .child("nowPosts")
+                                            .child(postId)
+                                            .child("likes")
+                                            .child(FirebaseAuth.getInstance().getUid())
+                                            .setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() { // likes DB 값 변경
+                                                @Override
+                                                public void onSuccess(Void unused) {                            //성공시 like개수 +1
+                                                    FirebaseDatabase.getInstance().getReference()
+                                                            .child("nowPosts")
+                                                            .child(postId)
+                                                            .child("postLike")
+                                                            .setValue(Integer.parseInt((String) binding.nowpostLike.getText()) + 1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {            // 좋아요 누른 ui로 변경
+                                                                    binding.nowpostLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite,0,0,0);
+
+                                                                }
+                                                            });
+                                                }
+                                            });
+                                }
+                            });
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
 
     }
 }

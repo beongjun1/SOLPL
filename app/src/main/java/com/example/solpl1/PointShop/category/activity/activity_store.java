@@ -65,8 +65,9 @@ public class activity_store extends AppCompatActivity {
                     int cost = pointSnapshot.child("cost").getValue(Integer.class);
                     String imgUrl = pointSnapshot.child("imgUrl").getValue(String.class);
                     String key = pointSnapshot.child("key").getValue(String.class);
-
-                    category_item category_items = new category_item(title,cost,date,imgUrl,key);
+                    String store = pointSnapshot.child("store").getValue(String.class);
+                    String category = pointSnapshot.child("category").getValue(String.class);
+                    category_item category_items = new category_item(title,category,cost,store,date,imgUrl,key);
                     category_List.add(category_items);
                 }
                 convenience_store_adapter.setCategory_items(category_List);
