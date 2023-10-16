@@ -88,13 +88,7 @@ public class Place_review extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "이미지를 선택해주세요.", Toast.LENGTH_LONG).show();
                 }
                 else {
-                        if (isEditTextEmpty(review_content)) {
-                            Toast.makeText(Place_review.this, "해시태그를 제외한 입력필드를 모두 입력해주세요", Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            storage_upload();
-                        }
-
+                        storage_upload();
                 }
             }
         });
