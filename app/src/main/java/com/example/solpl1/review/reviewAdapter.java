@@ -19,8 +19,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
@@ -31,6 +34,7 @@ import java.util.ArrayList;
 public class reviewAdapter extends RecyclerView.Adapter<reviewAdapter.ViewHolder> {
     private ArrayList<review_item> review_items;
     private String placeTitle;
+    private int point;
 
     public void setReviewAdapter(ArrayList<review_item> review_items) {
         this.review_items = review_items;
@@ -105,11 +109,23 @@ public class reviewAdapter extends RecyclerView.Adapter<reviewAdapter.ViewHolder
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String currentUserIdToken = user.getUid();
         String userEmail = user.getEmail();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("UserAccount").child(currentUserIdToken).child("reviews");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("UserAccount").child(currentUserIdToken);
         DatabaseReference placesReference = FirebaseDatabase.getInstance().getReference("places").child(placeTitle).child("reviews");
 
         placesReference.child(reviewId).removeValue();
-        databaseReference.child(reviewId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+
+        databaseReference.child("point").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                point=snapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        databaseReference.child("reviews").child(reviewId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 removeItem(position);
@@ -124,6 +140,7 @@ public class reviewAdapter extends RecyclerView.Adapter<reviewAdapter.ViewHolder
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Log.d("review Activity : ", "이미지 삭제 되었습니다");
+                                    databaseReference.child("point").setValue(point-100);
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override

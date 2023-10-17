@@ -216,6 +216,7 @@ public class Place_review extends AppCompatActivity {
             imageValues.put(imageKey, imageUrl);
         }
 
+
             user_account_database.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -224,6 +225,7 @@ public class Place_review extends AppCompatActivity {
                         String currentUserId = currentUser.getUid();
                         String idToken = snapshot.child(currentUserId).child("idToken").getValue(String.class);
                         String name = snapshot.child(currentUserId).child("name").getValue(String.class);
+                        int point = snapshot.child(currentUserId).child("point").getValue(Integer.class);
 
                         if (idToken != null) {
                             reviewValues.put("id_token", idToken);
@@ -233,6 +235,7 @@ public class Place_review extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "업로드 되었습니다.", Toast.LENGTH_LONG).show();
                             FirebaseDatabase.getInstance().getReference("UserAccount").child(idToken).child("reviews").child(key).setValue(reviewValues);
                             FirebaseDatabase.getInstance().getReference("UserAccount").child(idToken).child("reviews").child(key).child("images").updateChildren(imageValues);
+                            FirebaseDatabase.getInstance().getReference("UserAccount").child(idToken).child("point").setValue(point+100);
                             finish();
 
                         } else {
