@@ -60,8 +60,9 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
                 intent.putExtra("place_address",place_address.getText());
                 intent.putExtra("place_tel",place_tel.getText());
                 intent.putExtra("place_rating",place.getRating());
-                intent.putExtra("place_image",R.drawable.suncheonman);
                 intent.putExtra("resion",place.getResion());
+                if(place_title.getText().equals("에버랜드"))intent.putExtra("place_image",R.drawable.everland);
+                else if(place_title.getText().equals("순천만 습지"))intent.putExtra("place_image",R.drawable.suncheonman);
                 startActivity(intent);
             }
         });
@@ -77,6 +78,11 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
         markerOptions.position(SunCheonMan);
         markerOptions.title("순천만 습지");
 
+        LatLng EverLand = new LatLng(37.29393, 127.2026);
+        MarkerOptions markerEverLand = new MarkerOptions();
+        markerEverLand.position(EverLand);
+        markerEverLand.title("에버랜드");
+
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
@@ -84,26 +90,30 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
                 if(markerId.equals("순천만 습지")){
                     place_image.setImageResource(R.drawable.suncheonman);
                     place_title.setText("순천만 습지");
-                    databaseReference.child("순천만 습지").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            place = snapshot.getValue(PLACE.class);
-                            place_address.setText("주소:"+place.getAddress());
-                            place_tel.setText("번호:"+place.getTel());
-                            if(place.getRating()==0)place_rating.setText("평점:리뷰 수집중입니다.");
-                            else{
-                                place_rating.setText("평점:" + String.valueOf(place.getRating()));
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                }
+                if(markerId.equals("에버랜드")){
+                    place_image.setImageResource(R.drawable.everland);
+                    place_title.setText("에버랜드");
                 }
 
+                databaseReference.child(markerId).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        place = snapshot.getValue(PLACE.class);
+                        place_address.setText("주소:"+place.getAddress());
+                        place_tel.setText("번호:"+place.getTel());
+                        if(place.getRating()==0)place_rating.setText("평점:리뷰 수집중입니다.");
+                        else{
+                            place_rating.setText("평점:" + String.valueOf(place.getRating()));
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
                 cardView.setVisibility(View.VISIBLE);
                 return false;
             }
@@ -117,6 +127,7 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
         });
 
         mMap.addMarker(markerOptions);
+        mMap.addMarker(markerEverLand);
 
         // 대한민국 전체 한눈에 들어오도록 초기 배율 및 화면 초기화
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(36.34,127.77), 7));

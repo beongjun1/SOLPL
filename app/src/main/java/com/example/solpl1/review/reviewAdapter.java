@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 public class reviewAdapter extends RecyclerView.Adapter<reviewAdapter.ViewHolder> {
     private ArrayList<review_item> review_items;
+    private String placeTitle;
 
     public void setReviewAdapter(ArrayList<review_item> review_items) {
         this.review_items = review_items;
@@ -88,6 +89,7 @@ public class reviewAdapter extends RecyclerView.Adapter<reviewAdapter.ViewHolder
             currentPosition = position;
 
             title.setText(reviewItem.getTitle());
+            placeTitle=reviewItem.getTitle();
             content.setText(reviewItem.getContent());
             float rating = reviewItem.getRatingBar();
             ratingBar.setRating(rating);
@@ -104,7 +106,9 @@ public class reviewAdapter extends RecyclerView.Adapter<reviewAdapter.ViewHolder
         String currentUserIdToken = user.getUid();
         String userEmail = user.getEmail();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("UserAccount").child(currentUserIdToken).child("reviews");
+        DatabaseReference placesReference = FirebaseDatabase.getInstance().getReference("places").child(placeTitle).child("reviews");
 
+        placesReference.child(reviewId).removeValue();
         databaseReference.child(reviewId).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {

@@ -87,7 +87,8 @@ public class Place_page extends AppCompatActivity {
                     my_page_item tripItem = new my_page_item(name, rating, reviewImageUri,content);
                     reviewList.add(tripItem);
                 }
-                frating/=cnt;
+                if(frating!=0)frating/=cnt;
+
                 ratingReference.setValue(frating);
 
                 recycler_adapter.setReviewList(reviewList);
