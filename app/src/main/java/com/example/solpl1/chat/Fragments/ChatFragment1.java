@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -28,6 +29,7 @@ import com.example.solpl1.chat.Models.ChatItem;
 
 import com.example.solpl1.chat.Utils.RecyclerViewDecoration;
 import com.example.solpl1.databinding.FragmentChat1Binding;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class ChatFragment1 extends Fragment {
@@ -46,6 +49,9 @@ public class ChatFragment1 extends Fragment {
     ArrayList<ChatItem> list = new ArrayList<>();
     FirebaseDatabase database;
     FirebaseAuth auth;
+    Chat1Adapter adapter;
+    LinearLayoutManager layoutManager;
+
     public ChatFragment1(){}
 
     @Override
@@ -56,11 +62,29 @@ public class ChatFragment1 extends Fragment {
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
-        Chat1Adapter adapter = new Chat1Adapter(getContext(),list);
+        adapter = new Chat1Adapter(getContext(),list);
         binding.chatRecyclerView.setAdapter(adapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         binding.chatRecyclerView.addItemDecoration(new RecyclerViewDecoration(20));
         binding.chatRecyclerView.setLayoutManager(layoutManager);
+
+
+        //chat 검색
+        binding.chatSearch.clearFocus();
+        binding.chatSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                chatSearch(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                chatSearch(newText);
+                return true;
+            }
+        });
+
 
 
 
@@ -92,6 +116,21 @@ public class ChatFragment1 extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    // chat search 함수
+    private void chatSearch(String newText) {
+        ArrayList<ChatItem> filteredList = new ArrayList<>();
+        for(ChatItem item : list){
+            if(item.getTitle().toLowerCase(Locale.KOREA).contains(newText.toLowerCase(Locale.KOREA))){
+                filteredList.add(item);
+            }
+        }
+        if(filteredList.isEmpty()){
+            Toast.makeText(getContext(),"해당 채팅방이 없습니다.",Toast.LENGTH_SHORT).show();
+        }else {
+            adapter.setFilteredList(filteredList);
+        }
     }
 
     private void showBottomDialog() {

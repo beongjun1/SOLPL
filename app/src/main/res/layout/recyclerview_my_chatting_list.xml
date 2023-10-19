@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp">
+
+    <TextView
+        android:id="@+id/myChat_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="가이드"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/myChat_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="제목"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/myChat_category"
+        app:layout_constraintTop_toTopOf="@+id/myChat_category" />
+
+    <TextView
+        android:id="@+id/myChat_lastTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="06.23"
+        app:layout_constraintBottom_toBottomOf="@+id/myChat_lastChat"
+        app:layout_constraintEnd_toEndOf="@+id/myChat_title"
+        app:layout_constraintTop_toBottomOf="@+id/myChat_title" />
+
+    <TextView
+        android:id="@+id/myChat_lastChat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="마지막 채팅"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/myChat_lastTime"
+        app:layout_constraintStart_toStartOf="@+id/myChat_title"
+        app:layout_constraintTop_toBottomOf="@+id/myChat_title" />
+</androidx.constraintlayout.widget.ConstraintLayout>

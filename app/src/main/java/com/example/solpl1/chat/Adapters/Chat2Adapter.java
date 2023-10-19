@@ -37,6 +37,11 @@ public class Chat2Adapter extends RecyclerView.Adapter<Chat2Adapter.ViewHolder>{
         this.list = list;
     }
 
+    public void setFilteredList(ArrayList<ChatItem> filteredList){
+        this.list = filteredList;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public Chat2Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -100,12 +100,13 @@
         android:padding="10dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:text="소개"
             android:textColor="@color/sopl_basic"
             android:textSize="16sp" />
+
         <EditText
             android:id="@+id/chat_description"
             android:layout_width="match_parent"

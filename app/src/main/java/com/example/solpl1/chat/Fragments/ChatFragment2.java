@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -36,6 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 
 public class ChatFragment2 extends Fragment {
@@ -44,6 +46,7 @@ public class ChatFragment2 extends Fragment {
     ArrayList<ChatItem> list = new ArrayList<>();
     FirebaseDatabase database;
     FirebaseAuth auth;
+    Chat2Adapter adapter;
 
 
     public ChatFragment2() {
@@ -57,13 +60,28 @@ public class ChatFragment2 extends Fragment {
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
-        Chat2Adapter adapter = new Chat2Adapter(getContext(),list);
+        adapter = new Chat2Adapter(getContext(),list);
         binding.chatRecyclerView.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         binding.chatRecyclerView.addItemDecoration(new RecyclerViewDecoration(20));
         binding.chatRecyclerView.setLayoutManager(layoutManager);
 
 
+        //chat 검색
+        binding.chatSearch.clearFocus();
+        binding.chatSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                chatSearch(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                chatSearch(newText);
+                return true;
+            }
+        });
 
         // chat add 버튼 누르면
         binding.chatAddBtn.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +119,20 @@ public class ChatFragment2 extends Fragment {
 
     }
 
+    private void chatSearch(String newText) {
+        ArrayList<ChatItem> filteredList = new ArrayList<>();
+        for(ChatItem item : list){
+            if(item.getTitle().toLowerCase(Locale.KOREA).contains(newText.toLowerCase(Locale.KOREA))){
+                filteredList.add(item);
+            }
+        }
+        if(filteredList.isEmpty()){
+            Toast.makeText(getContext(),"해당 채팅방이 없습니다.",Toast.LENGTH_SHORT).show();
+        }else {
+            adapter.setFilteredList(filteredList);
+        }
+    }
+
 
     private void showBottomDialog() {
 
@@ -120,12 +152,14 @@ public class ChatFragment2 extends Fragment {
             @Override
             public void onClick(View v) {
                 ChatItem chatItem = new ChatItem();
-                if(!title.getText().toString().equals("") && !description.getText().toString().equals("") && !countMax.getText().toString().equals("")){
+                if(!title.getText().toString().equals("") && !description.getText().toString().equals("")
+                        && !countMax.getText().toString().equals("")){
                     chatItem.setChatRoomBy(auth.getCurrentUser().getUid());
                     chatItem.setDescription(description.getText().toString());
                     chatItem.setTitle(title.getText().toString());
                     int count = Integer.parseInt(countMax.getText().toString());
                     chatItem.setUserCountMax(count);
+                    chatItem.setUserCountCurrent(1);
 
                     DatabaseReference pushedChatRef = database.getReference().child("chat").child("chat_together").push();
                     String chatRoomId = pushedChatRef.getKey();

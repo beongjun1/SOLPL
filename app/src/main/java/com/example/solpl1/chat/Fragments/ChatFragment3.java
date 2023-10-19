@@ -93,6 +93,7 @@ public class ChatFragment3 extends Fragment {
         binding.switchMaterial.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
                 CheckedLocationPermission();
                 binding.chatLocation.setText(userLocation);
 

@@ -100,7 +100,6 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
 
 
         //권한
-
         database.getReference().child("chat").child(chatType).child(chatRoomId)
                 .child("chatUser").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
                     @Override

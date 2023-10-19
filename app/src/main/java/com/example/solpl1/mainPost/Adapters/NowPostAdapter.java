@@ -76,7 +76,7 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         UserAccount userAccount = snapshot.getValue(UserAccount.class);
-                        if(userAccount.getImageUrl()== null){                                       // 기본 프로필 이미지 설정
+                        if(userAccount.getImageUrl() == null){                                       // 기본 프로필 이미지 설정
                             Picasso.get()                                                           //유저 프로필
                                     .load(R.drawable.default_profile)
                                     .into(holder.binding.profile);
@@ -86,8 +86,10 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
                                     .placeholder(R.drawable.default_profile)
                                     .into(holder.binding.profile);
                         }
-
-                        holder.binding.name.setText(userAccount.getName());              // 유저이름
+                        String email = userAccount.getEmailId();
+                        String email2 = email.substring(0, email.lastIndexOf("@"));
+                        String name = userAccount.getName() + "(" + email2 + ")";
+                        holder.binding.name.setText(name);                                          // 유저이름
                     }
 
                     @Override

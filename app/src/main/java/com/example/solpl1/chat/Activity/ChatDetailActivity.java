@@ -178,8 +178,6 @@ public class ChatDetailActivity extends AppCompatActivity implements NavigationV
 
         //권한 확인
         Log.e("senderId" , senderId);
-        address1 = "경기도";
-        address2 = "의왕";
         if(chatType.equals("chat_local")){
             database.getReference().child("chat").child(chatType)
                     .child(address1).child(address2).child(chatRoomId).child("chatUser")

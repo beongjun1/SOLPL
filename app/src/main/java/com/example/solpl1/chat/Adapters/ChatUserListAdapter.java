@@ -2,6 +2,7 @@ package com.example.solpl1.chat.Adapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
@@ -15,14 +16,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.solpl1.R;
 import com.example.solpl1.UserAccount;
 
 import com.example.solpl1.chat.Activity.AddMeetingActivity;
+import com.example.solpl1.chat.Activity.ChatDetailActivity;
+import com.example.solpl1.chat.Models.ChatItem;
 import com.example.solpl1.databinding.RecyclerviewChatUserListBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,6 +50,7 @@ public class ChatUserListAdapter extends RecyclerView.Adapter<ChatUserListAdapte
     FirebaseAuth auth;
     String name;
     float ratingScore;
+    ChatItem chatItem;
 
     public ChatUserListAdapter(ArrayList<String> list, Context context, String chatType, String chatRoomId, String meetingId) {
         this.list = list;
@@ -74,6 +80,18 @@ public class ChatUserListAdapter extends RecyclerView.Adapter<ChatUserListAdapte
         database = FirebaseDatabase.getInstance();
         auth = FirebaseAuth.getInstance();
 
+        // 채팅방 정보
+        database.getReference().child("chat").child(chatType).child(chatRoomId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                chatItem = snapshot.getValue(ChatItem.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         // 평점주는 화면에서 넘어왔을때
         if(!meetingId.equals("")){
             holder.binding.ratingBtn.setVisibility(View.VISIBLE);
@@ -87,14 +105,18 @@ public class ChatUserListAdapter extends RecyclerView.Adapter<ChatUserListAdapte
         });
 
 
+        // 리스트 유저 권한 확인-> 방장인지 확인
         database.getReference().child("chat").child(chatType).child(chatRoomId)
                        .child("chatUser").child(uid).addValueEventListener(new ValueEventListener() {
                    @Override
                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                       boolean authority = snapshot.getValue(boolean.class);
-                       if(authority){
-                           holder.binding.manager.setVisibility(View.VISIBLE);
+                       if(snapshot.exists()){
+                           boolean authority = snapshot.getValue(boolean.class);
+                           if(authority){
+                               holder.binding.manager.setVisibility(View.VISIBLE);
+                           }
                        }
+
                    }
 
                    @Override
@@ -120,6 +142,57 @@ public class ChatUserListAdapter extends RecyclerView.Adapter<ChatUserListAdapte
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        //현재 사용자 권한 확인
+        database.getReference().child("chat").child(chatType).child(chatRoomId)
+                .child("chatUser").child(auth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        boolean authority = snapshot.getValue(boolean.class);
+                        if(authority){
+                            if(holder.binding.manager.getVisibility() == View.VISIBLE){
+                                return;
+                            }
+                            else {
+                                holder.binding.removeBtn.setVisibility(View.VISIBLE);
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+        //  채팅방 사용자 삭제 버튼
+        holder.binding.removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog alertDialog = new MaterialAlertDialogBuilder(context)
+                        .setMessage("해당 사용자를 내보내시겠습니까?")
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                database.getReference().child("chat").child(chatType).child(chatRoomId)
+                                        .child("chatUser").child(uid).removeValue();
+
+                                database.getReference().child("chat").child(chatType).child(chatRoomId)
+                                        .child("userCountCurrent").setValue(chatItem.getUserCountCurrent() - 1);
+
+                            }
+                        }).setNegativeButton("close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create();
+
+
+                alertDialog.show();
             }
         });
 

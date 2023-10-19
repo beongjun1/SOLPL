@@ -279,9 +279,9 @@ public class mypage_main_activity extends AppCompatActivity {
                                 String imageUrl = childSnapshot.child("imageUrl").getValue(String.class);
                                 String idToken = childSnapshot.child("idToken").getValue(String.class);
                                 Log.d("idToken", "idToken: " + userIdToken);
-                                int point = childSnapshot.child("point").getValue(int.class);
+                                int point = childSnapshot.child("point").getValue(Integer.class);
                                 Log.d("sundayPoint: ", "point :" + point);
-                                float rating = childSnapshot.child("userRating").getValue(float.class);
+                                float rating = childSnapshot.child("userRating").getValue(Float.class);
                                 Log.d("rating", "rating: "+rating);
 
                                 if(idToken.equals(userIdToken)){
