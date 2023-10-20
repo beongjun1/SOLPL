@@ -2,14 +2,24 @@ package com.example.solpl1.mainPost.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.example.solpl1.MainActivity;
 import com.example.solpl1.R;
+import com.example.solpl1.ShakeDetector;
 import com.example.solpl1.UserAccount;
 import com.example.solpl1.calendar.MainCalendar;
 import com.example.solpl1.chat.Activity.ChatActivity;
@@ -32,12 +42,31 @@ public class PostActivity extends AppCompatActivity {
     ActivityMainPostBinding binding;
     BottomNavigationView bottomNavigationView;
     FirebaseAuth auth;
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
+    int nCurrentPermission=0;
+    static final int PERMISSIONS_REQUEST = 0x0000001;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainPostBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        OnCheckPermission();
 
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+            @Override
+            public void onShake(int count) {
+                //감지시 할 작업 작성
+                Toast.makeText(PostActivity.this,"흔들림 감지",Toast.LENGTH_SHORT).show();
+                Intent intent=new Intent(PostActivity.this, SOSActivity.class);
+                startActivity(intent);
+            }
+        });
 
         ViewPager2 viewPager2 = binding.pager;
         viewPager2.setAdapter(new PostFragmentsAdapter(this));
@@ -129,5 +158,37 @@ public class PostActivity extends AppCompatActivity {
 
 
 
+    }
+    private void OnCheckPermission() {
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED||ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED||ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)!=PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.ACCESS_FINE_LOCATION)){
+                Toast.makeText(this,"앱 실행을 위해서는 권한을 설정해야 합니다.", Toast.LENGTH_SHORT).show();
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SEND_SMS},PERMISSIONS_REQUEST);
+            }
+            else{
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.SEND_SMS},PERMISSIONS_REQUEST);
+            }
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "앱 실행을 위한 권한이 설정되었습니다.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "앱 실행을 위한 권한이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Add the following line to register the Session Manager Listener onResume
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,    SensorManager.SENSOR_DELAY_UI);
     }
 }
