@@ -2,6 +2,7 @@ package com.example.solpl1.mainPost.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,8 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         NowPost model = list.get(position);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseAuth auth = FirebaseAuth.getInstance();
 
         if(model.getPostImage() == null){
             holder.binding.nowpostImage.setVisibility(View.GONE);
@@ -58,6 +61,12 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
                     .placeholder(R.drawable.ic_photo)
                     .into(holder.binding.nowpostImage);
         }
+        holder.binding.nowpostImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         holder.binding.nowPostDate.setText(getReadableDataTime(model.getPostedAt()));        // 게시글 날짜
         holder.binding.nowpostLike.setText(model.getPostLike()+"");
@@ -99,53 +108,57 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
                 });
 
         // 좋아요 기능
-        FirebaseDatabase.getInstance().getReference()
-                .child("nowPosts")
-                .child(model.getPostId())
-                .child("likes")
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                if(snapshot.exists()){                                              // nowpost DB에 사용자 Uid가 있을때(사용자가 좋아요를 눌렀을때)
-                                    holder.binding.nowpostLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite,0,0,0);
-
-                                } else {
-                                    holder.binding.nowpostLike.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            FirebaseDatabase.getInstance().getReference()
-                                                    .child("nowPosts")
-                                                    .child(model.getPostId())
-                                                    .child("likes")
-                                                    .child(FirebaseAuth.getInstance().getUid())
-                                                    .setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() { // likes DB 값 변경
-                                                        @Override
-                                                        public void onSuccess(Void unused) {                            //성공시 like개수 +1
-                                                            FirebaseDatabase.getInstance().getReference()
-                                                                    .child("nowPosts")
-                                                                    .child(model.getPostId())
-                                                                    .child("postLike")
-                                                                    .setValue(model.getPostLike() + 1).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                        @Override
-                                                                        public void onSuccess(Void unused) {            // 좋아요 누른 ui로 변경
-                                                                            holder.binding.nowpostLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite,0,0,0);
-
-                                                                        }
-                                                                    });
-                                                        }
-                                                    });
-                                        }
-                                    });
-                                }
-
+        if(model.getPostLike() != 0){
+            Log.e("게시글 좋아요수 ",model.getPostLike()+"");
+            database.getReference()
+                    .child("nowPosts")
+                    .child(model.getPostId())
+                    .child("likes").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.hasChild(auth.getUid())){   // nowpost DB에 사용자 Uid가 있을때(사용자가 좋아요를 누른 게시글일때)
+                                holder.binding.favoriteIcon.setVisibility(View.VISIBLE);
+                                holder.binding.nowPostLikeIcon.setVisibility(View.GONE);
                             }
+                            snapshot.getChildrenCount();
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                        }
+                    });
+        }
 
+        holder.binding.nowPostLikeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseDatabase.getInstance().getReference()
+                        .child("nowPosts")
+                        .child(model.getPostId())
+                        .child("likes")
+                        .child(FirebaseAuth.getInstance().getUid())
+                        .setValue(true).addOnSuccessListener(new OnSuccessListener<Void>() { // likes DB 값 변경
                             @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                            public void onSuccess(Void unused) {                            //성공시 like개수 +1
 
+                                FirebaseDatabase.getInstance().getReference()
+                                        .child("nowPosts")
+                                        .child(model.getPostId())
+                                        .child("postLike")
+                                        .setValue(model.getPostLike() + 1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {            // 좋아요 누른 ui로 변경
+                                                holder.binding.favoriteIcon.setVisibility(View.VISIBLE);
+                                                holder.binding.nowPostLikeIcon.setVisibility(View.GONE);
+
+                                            }
+                                        });
                             }
                         });
+            }
+        });
+
+
+
 
 
 

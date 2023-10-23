@@ -27,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -78,11 +80,9 @@ public class NowPostFragment extends Fragment {
         NowPostAdapter nowPostAdapter = new NowPostAdapter(nowPostList,getContext());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         dashboardRecyclerView.setLayoutManager(layoutManager);
-        //dashboardRecyclerView.addItemDecoration(new DividerItemDecoration(dashboardRecyclerView.getContext(),DividerItemDecoration.VERTICAL));
-        //dashboardRecyclerView.setNestedScrollingEnabled(false);
         dashboardRecyclerView.setAdapter(nowPostAdapter);
 
-        database.getReference().child("nowPosts").addValueEventListener(new ValueEventListener() {
+        database.getReference().child("nowPosts").orderByChild("postedAt").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 nowPostList.clear();
@@ -91,6 +91,7 @@ public class NowPostFragment extends Fragment {
                     nowPost.setPostId(dataSnapshot.getKey());
                     nowPostList.add(nowPost);
                 }
+                Collections.reverse(nowPostList);
                 nowPostAdapter.notifyDataSetChanged();
             }
 

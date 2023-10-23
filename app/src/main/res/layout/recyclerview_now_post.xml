@@ -70,14 +70,35 @@
         app:layout_constraintTop_toBottomOf="@+id/nowpost_image"
         app:srcCompat="@drawable/ic_bookmark" />
 
+    <ImageView
+        android:id="@+id/now_post_like_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_like"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@id/profile"
+        app:layout_constraintTop_toBottomOf="@id/nowpost_image" />
+
+    <ImageView
+        android:id="@+id/favorite_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_favorite"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/profile"
+        app:layout_constraintTop_toBottomOf="@id/nowpost_image" />
+
+
     <TextView
         android:id="@+id/nowpost_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
         android:layout_marginTop="8dp"
-        android:drawableLeft="@drawable/ic_like"
         android:text="123"
-        app:layout_constraintStart_toStartOf="@+id/profile"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nowpost_image" />
 
     <TextView
