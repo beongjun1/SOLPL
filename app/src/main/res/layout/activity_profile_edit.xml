@@ -128,27 +128,27 @@
                 android:textSize="20sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginBottom="10dp">-->
 
-            <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:text="@string/phone"
-                android:textColor="@color/black"
-                android:textSize="18sp" />
+<!--            <TextView-->
+<!--                android:layout_width="80dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/phone"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="18sp" />-->
 
-            <EditText
-                android:id="@+id/profile_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="전화번호"
-                android:enabled="false"
-                android:focusable="false"
-                android:textSize="20sp" />
-        </LinearLayout>
+<!--            <EditText-->
+<!--                android:id="@+id/profile_phone"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="전화번호"-->
+<!--                android:enabled="false"-->
+<!--                android:focusable="false"-->
+<!--                android:textSize="20sp" />-->
+<!--        </LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -191,8 +191,8 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:id="@+id/profileRadioButtonMan"
                     android:enabled="false"
-                    android:checked="true"
                     android:layout_width="70dp"
                     android:layout_height="50dp"
                     android:layout_marginEnd="20dp"
@@ -200,6 +200,7 @@
                     android:textSize="20sp" />
 
                 <RadioButton
+                    android:id="@+id/profileRadioButtonWoman"
                     android:enabled="false"
                     android:layout_width="70dp"
                     android:layout_height="50dp"

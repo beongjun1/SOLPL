@@ -140,7 +140,7 @@ public class paymentActivity extends AppCompatActivity {
 
                     final_point = user_point - point;
                     userAccount.child("point").setValue(final_point);
-                    userAccount.child("pointShop").child("productKey").child(productKey).setValue(productKey);
+                    userAccount.child("pointShop").child("productKey").child(productKey).child("productKey").setValue(productKey);
 
 
 
@@ -168,7 +168,7 @@ public class paymentActivity extends AppCompatActivity {
 
                             // 여기에서 바코드 이미지 URL과 함께 데이터베이스에 구매 정보 저장 로직을 추가할 수 있습니다.
                             // 예를 들어, "barcodeImageUrl"을 데이터베이스에 저장하고 필요한 정보를 함께 저장할 수 있습니다.
-                            userAccount.child("pointShop").child("productKey").child("barcodeImageUrl").setValue(barcodeImageUrl);
+                            userAccount.child("pointShop").child("productKey").child(productKey).child("barcodeImageUrl").setValue(barcodeImageUrl);
 
                             // 바코드 이미지 URL과 관련된 로직 추가
                         }

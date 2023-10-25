@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +64,7 @@ public class profile_edit_activity extends AppCompatActivity {
     private Uri imageUri;
     EditText email_edit_text;
     EditText name_edit_text;
+    RadioButton radioButtonMan,radioButtonWoman;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -266,6 +268,15 @@ public class profile_edit_activity extends AppCompatActivity {
                                     String name = childSnapshot.child("name").getValue(String.class);
 //                                    String phone = childSnapshot.child("phone").getValue(String.class);
 //                                    String location = childSnapshot.child("location").getValue(String.class);
+                                    String radioBtn = childSnapshot.child("gender").getValue(String.class);
+                                    radioButtonMan = findViewById(R.id.profileRadioButtonMan);
+                                    radioButtonWoman = findViewById(R.id.profileRadioButtonWoman);
+                                    if (radioBtn.equals("남성")) {
+                                        radioButtonMan.setChecked(true);
+                                    } else if (radioBtn.equals("여성")) {
+                                        radioButtonWoman.setChecked(true);
+                                    }
+
 
                                     email_edit_text = findViewById(R.id.profile_email);
                                     email_edit_text.setText(email);

@@ -1,11 +1,15 @@
 package com.example.solpl1.mypage;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.RatingBar;
@@ -24,9 +28,11 @@ import com.example.solpl1.PointShop.pointItem;
 import com.example.solpl1.PointShop.pointShopActivity;
 import com.example.solpl1.R;
 import com.example.solpl1.MainActivity;
+import com.example.solpl1.UserAccount;
 import com.example.solpl1.calendar.MainCalendar;
 import com.example.solpl1.chat.Activity.ChatActivity;
 import com.example.solpl1.chat.chat_room_activity;
+import com.example.solpl1.mainPost.Activities.PostActivity;
 import com.example.solpl1.map.MainMap;
 import com.example.solpl1.my_page_item;
 import com.example.solpl1.post_management.post_management_activity;
@@ -39,6 +45,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
@@ -187,7 +194,7 @@ public class mypage_main_activity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.nav_main:
-                        Intent intent = new Intent(mypage_main_activity.this, MainActivity.class);
+                        Intent intent = new Intent(mypage_main_activity.this, PostActivity.class);
                         startActivity(intent);
                         finish();
                     case R.id.nav_calendar:

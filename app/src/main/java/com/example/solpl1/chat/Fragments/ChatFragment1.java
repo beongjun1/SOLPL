@@ -29,7 +29,6 @@ import com.example.solpl1.chat.Models.ChatItem;
 
 import com.example.solpl1.chat.Utils.RecyclerViewDecoration;
 import com.example.solpl1.databinding.FragmentChat1Binding;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

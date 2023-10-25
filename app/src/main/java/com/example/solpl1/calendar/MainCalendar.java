@@ -76,7 +76,7 @@ public class MainCalendar extends AppCompatActivity {
         // 첫 시작 요일이 월요일이 되도록 설정
         calendarView.state()
                 .edit()
-                .setFirstDayOfWeek(DayOfWeek.of(Calendar.MONDAY))
+                .setFirstDayOfWeek(DayOfWeek.of(Calendar.SATURDAY))
                 .commit();
 
         // 월, 요일을 한글로 보이게 설정

@@ -7,7 +7,7 @@
     android:background="#ffffff"
     android:layout_marginTop="8dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/profile_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,12 +15,14 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:orientation="horizontal">
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+        <ImageView
+            android:layout_gravity="center_vertical"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/activity_search" />
 
         <ImageView
+            android:layout_alignParentEnd="true"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_gravity="center"
@@ -29,7 +31,7 @@
             android:minHeight="0dp"
             android:id="@+id/my_page_menu"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/mypage2"

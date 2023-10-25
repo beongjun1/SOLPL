@@ -14,6 +14,33 @@ public class UserAccount {
 
     private String reco_text;
     private String badge;
+    private String gender;
+    private int point;
+    private float userRating;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point = point;
+    }
+
+    public float getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(float userRating) {
+        this.userRating = userRating;
+    }
 
     public String getImageUrl() {
         return imageUrl;

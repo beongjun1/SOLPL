@@ -7,6 +7,8 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,10 @@ public class RegisterActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseRef; // 실시간 데이터베이스
     private EditText mEtName, mEtEmail, mEtPassword, mEtPasswordConfirm;
     private Button mBtnRegister; // 회원가입 버튼
+    private RadioGroup radioGroup;
+    private RadioButton radioButtonMan, radioButtonWoman;
+
+    private String checked = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +42,10 @@ public class RegisterActivity extends AppCompatActivity {
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.hide();
 
+        radioGroup = findViewById(R.id.radioGroup);
+        radioButtonMan = findViewById(R.id.radioButtonMan);
+        radioButtonWoman = findViewById(R.id.radioButtonWoman);
+
         mFireBaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mEtName = findViewById(R.id.et_name);
@@ -43,7 +53,23 @@ public class RegisterActivity extends AppCompatActivity {
         mEtPassword = findViewById(R.id.et_password);
         mEtPasswordConfirm = findViewById(R.id.et_pwd_equals);
 
+
         mBtnRegister = findViewById(R.id.sign_up);
+
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // 라디오 버튼의 상태가 변경될 때마다 호출됩니다.
+                // checkedId는 현재 선택된 라디오 버튼의 ID입니다.
+
+                if (checkedId == R.id.radioButtonMan) {
+                    checked = "남성";
+                } else if (checkedId == R.id.radioButtonWoman) {
+                    checked = "여성";
+                }
+            }
+        });
         mBtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +94,11 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "비밀번호는 6자리 이상이어야 합니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if (checked.equals("")){
+                    Toast.makeText(RegisterActivity.this, "성별을 체크해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 // 회원가입 처리 시작
                 String strEmail = mEtEmail.getText().toString();
                 String strPwd = mEtPassword.getText().toString();
@@ -89,6 +120,10 @@ public class RegisterActivity extends AppCompatActivity {
                             account.setPassword(strPwd);
                             account.setReco_text("영수증인식텍스트");
                             account.setBadge("대표뱃지");
+                            account.setPoint(0);
+                            account.setUserRating(3.0F);
+
+                            account.setGender(checked);
                             mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(account);
                             Toast.makeText(RegisterActivity.this, "회원가입에 성공했습니다.", Toast.LENGTH_SHORT).show();
 
@@ -98,7 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(RegisterActivity.this, "회원가입에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "회원가입에 실패했습니다. 오류: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -106,6 +141,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
 
     // 빈 필드가 있는지 확인하는 코드
     private boolean isEditTextEmpty(EditText editText) {

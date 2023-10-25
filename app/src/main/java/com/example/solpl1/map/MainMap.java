@@ -83,6 +83,73 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
         markerEverLand.position(EverLand);
         markerEverLand.title("에버랜드");
 
+        //오산시 여행지
+        LatLng Mulhyanggi = new LatLng(37.168601, 127.059017);
+        MarkerOptions markerMulhyanggi = new MarkerOptions();
+        markerMulhyanggi.position(Mulhyanggi);
+        markerMulhyanggi.title("물향기수목원");
+
+        LatLng Gwollisa = new LatLng(37.16000, 127.06194);
+        MarkerOptions markerGwollisa = new MarkerOptions();
+        markerGwollisa.position(Gwollisa);
+        markerGwollisa.title("궐리사");
+
+        LatLng Doksanseong = new LatLng(37.183611, 127.019444);
+        MarkerOptions markerDoksanseong = new MarkerOptions();
+        markerDoksanseong.position(Doksanseong);
+        markerDoksanseong.title("오산 독산성");
+
+        LatLng MalgeumteoPark = new LatLng(37.137936, 127.064594);
+        MarkerOptions markerMalgeumteoPark = new MarkerOptions();
+        markerMalgeumteoPark.position(MalgeumteoPark);
+        markerMalgeumteoPark.title("맑음터공원");
+
+        LatLng OsanEcorium = new LatLng(37.138397, 127.063806);
+        MarkerOptions markerOsanEcorium = new MarkerOptions();
+        markerOsanEcorium.position(OsanEcorium);
+        markerOsanEcorium.title("오산 에코리움");
+
+        LatLng Jukmiryeong = new LatLng(37.184705, 127.049343);
+        MarkerOptions markerJukmiryeong  = new MarkerOptions();
+        markerJukmiryeong.position(Jukmiryeong);
+        markerJukmiryeong.title("오산 죽미령 평화공원");
+
+        LatLng SeorangCulturalVillage = new LatLng(37.173183, 127.005750);
+        MarkerOptions markerSeorangCulturalVillage  = new MarkerOptions();
+        markerSeorangCulturalVillage.position(SeorangCulturalVillage);
+        markerSeorangCulturalVillage.title("서랑동 문화마을");
+
+
+
+        //경기도 고양
+        LatLng Seooreung = new LatLng(37.623596, 126.900767);
+        MarkerOptions markerSeooreung  = new MarkerOptions();
+        markerSeooreung.position(Seooreung);
+        markerSeooreung.title("서오릉");
+
+        LatLng lakePark = new LatLng(37.656568, 126.766229);
+        MarkerOptions markerlakePark  = new MarkerOptions();
+        markerlakePark.position(lakePark);
+        markerlakePark.title("호수공원");
+
+        LatLng AngokWetlandPark = new LatLng(37.684559, 126.783466);
+        MarkerOptions markerAngokWetlandPark  = new MarkerOptions();
+        markerAngokWetlandPark.position(AngokWetlandPark);
+        markerAngokWetlandPark.title("안곡습지공원");
+
+        LatLng Gongneungcheon = new LatLng(37.713228, 126.835623);
+        MarkerOptions markerGongneungcheon  = new MarkerOptions();
+        markerGongneungcheon.position(Gongneungcheon);
+        markerGongneungcheon.title("공릉천");
+
+        LatLng OneMount = new LatLng(37.665113, 126.754823);
+        MarkerOptions markerOneMount  = new MarkerOptions();
+        markerOneMount.position(OneMount);
+        markerOneMount.title("원마운트");
+
+
+
+
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {

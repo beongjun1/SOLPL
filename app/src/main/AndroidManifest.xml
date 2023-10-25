@@ -108,6 +108,8 @@
         <activity android:name="com.example.solpl1.PointShop.detail.detailActivity" />
         <activity android:name="com.example.solpl1.PointShop.payment.paymentActivity" />
         <activity android:name=".mainPost.Activities.SOSActivity"/>
+        <activity android:name="com.example.solpl1.PointShop.detail.detailActivity" />
+        <activity android:name="com.example.solpl1.PointShop.payment.paymentActivity" />
 
         <!-- 카메라 사용하는 API -->
         <provider
