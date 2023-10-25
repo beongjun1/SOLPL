@@ -6,25 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".mainPost.Fragments.NowPostFragment">
 
+    <FrameLayout
+        android:id="@+id/nowpost_frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nowpost_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/nowpost_frameLayout">
 
     </androidx.recyclerview.widget.RecyclerView>
 
-
-
-
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/nowpost_search"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/bg_round"
+        android:backgroundTint="#E8E8E8"
+        android:ems="10"
+        android:hint="search"
+        android:inputType="text"
+        android:maxLines="2"
+        android:paddingLeft="4dp"
+        android:textColorHint="#BAB9B9"
+        android:textSize="14sp"
+        app:guidelineUseRtl="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/nowpost_new_addBtn"

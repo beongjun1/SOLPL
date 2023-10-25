@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialogbkg">
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_round_remove_24"
+        android:layout_gravity="center|top"
+        android:scaleType="centerCrop"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/createText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="5dp"
+            android:padding="8dp"
+            android:text="사용자 검색"
+            android:textAlignment="viewStart"
+            android:textColor="@color/sopl_basic"
+            android:textSize="18dp" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/user_search"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:backgroundTint="#E8E8E8"
+            android:hint="search"
+            android:layout_gravity="bottom"
+            android:inputType="text"
+            android:maxLines="2"
+            android:textColorHint="#BAB9B9"
+            android:textSize="14sp"/>
+
+        <ImageView
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitEnd"
+            android:src="@drawable/ic_baseline_clear_24" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/allUserRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>

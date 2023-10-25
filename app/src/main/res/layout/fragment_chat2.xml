@@ -24,6 +24,7 @@
         android:id="@+id/chat_search"
         android:layout_width="0dp"
         android:layout_height="50dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/bg_round"
         android:backgroundTint="#E8E8E8"
         android:ems="10"
@@ -31,15 +32,11 @@
         android:inputType="text"
         android:maxLines="2"
         android:paddingLeft="4dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
         android:textColorHint="#BAB9B9"
         android:textSize="14sp"
-        android:layout_marginRight="20dp"
         app:guidelineUseRtl="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"

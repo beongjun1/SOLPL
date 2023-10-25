@@ -64,7 +64,7 @@ public class ChatFragment3 extends Fragment {
     FirebaseStorage storage;
     FirebaseAuth auth;
     LocationManager locationManager;
-    String userLongitude, userLatitude, address1, address2, address3, address4;
+    String userLongitude, userLatitude, address1, address2,address4;
     String userLocation;
 
     private final static int REQUEST_LOCATION=1;
@@ -170,16 +170,16 @@ public class ChatFragment3 extends Fragment {
             Location GpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             Log.w("checkSelfPermission", "GPS");
             // GPS 보다 Network가 더 나은듯??
-            if(GpsLocation != null){
-                double latitude = GpsLocation.getLatitude();
-                double Longitude = GpsLocation.getLongitude();
-
-                userLatitude = String.valueOf(latitude);
-                userLongitude = String.valueOf(Longitude);
-
-                getAddressFromLatLong(getContext(),latitude,Longitude);
-                Log.w("Location", userLocation);
-            }else {
+//            if(GpsLocation != null){
+//                double latitude = GpsLocation.getLatitude();
+//                double Longitude = GpsLocation.getLongitude();
+//
+//                userLatitude = String.valueOf(latitude);
+//                userLongitude = String.valueOf(Longitude);
+//
+//                getAddressFromLatLong(getContext(),latitude,Longitude);
+//                Log.w("Location", userLocation);
+//            }else {
                 Log.w("GpsLocation", "null");
                 Log.w("NetworkLocation", "start");
                 Location NetworkLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
@@ -191,7 +191,7 @@ public class ChatFragment3 extends Fragment {
                 getAddressFromLatLong(getContext(),latitude,Longitude);
 
 
-            }
+//            }
 
         }
     }
@@ -221,13 +221,17 @@ public class ChatFragment3 extends Fragment {
             // 주소를 위한 list
             List<Address> addresses = geocoder.getFromLocation(LATITUDE,LONGITUDE,1);
             if(addresses != null && addresses.size()>0){
-                address1 = addresses.get(0).getAdminArea();     // 경기도
-                address2 = addresses.get(0).getLocality();      // 안양시
+                address4 = addresses.get(0).toString();
+                String[] address = addresses.get(0).toString().split(" ");
+                address1 = address[1];     // 경기도
+                address2 = address[2];      // 안양시
 //                address3 = addresses.get(0).getSubLocality();   // 동안구
 //                address4 = addresses.get(0).getThoroughfare();  // 부흥동
                 // AdminArea => 경기도 , Locality => 안양시,subLocality => 동안구, Thoroughfare : 부흥동
+                Log.e("Full address",address4);
+                Log.e("address1 address2",address1 + " " + address2);
 
-//                userLocation = address1 + " " + address2 +" " + address3 + " " + address4;
+
                 userLocation = address1 + " " + address2;
                 return userLocation;
             }

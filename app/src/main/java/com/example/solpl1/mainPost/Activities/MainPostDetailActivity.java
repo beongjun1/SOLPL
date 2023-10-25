@@ -67,11 +67,12 @@ public class MainPostDetailActivity extends AppCompatActivity {
         database.getReference().child("post_database").child(post_id).child("hashtags").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    String hashTag = "#" + dataSnapshot.getValue(String.class);
-                    hashTags = hashTags + hashTag;
+                if(snapshot.exists()){
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        String hashTag = "#" + dataSnapshot.getValue(String.class);
+                        hashTags = hashTags + hashTag;
+                    }
                 }
-
                 binding.hashTags.setText(hashTags);
             }
 
@@ -98,7 +99,10 @@ public class MainPostDetailActivity extends AppCompatActivity {
                                     .placeholder(R.drawable.default_profile)
                                     .into(binding.profile);
                         }
-                        binding.mainPostName.setText(userAccount.getName());
+                        String email = userAccount.getEmailId();
+                        String email2 = email.substring(0, email.lastIndexOf("@"));
+                        String name = userAccount.getName() + "(" + email2 + ")";
+                        binding.mainPostName.setText(name);
                     }
 
                     @Override

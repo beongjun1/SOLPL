@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.solpl1.R;
 import com.example.solpl1.UserAccount;
+import com.example.solpl1.chat.Models.ChatItem;
 import com.example.solpl1.databinding.RecyclerviewNowPostBinding;
 import com.example.solpl1.mainPost.Models.NowPost;
 import com.example.solpl1.mainPost.Activities.NowPostCommentActivity;
@@ -37,6 +38,10 @@ public class NowPostAdapter extends RecyclerView.Adapter<NowPostAdapter.ViewHold
     public NowPostAdapter(ArrayList<NowPost> list, Context context) {
         this.list = list;
         this.context = context;
+    }
+    public void setFilteredList(ArrayList<NowPost> filteredList){
+        this.list = filteredList;
+        notifyDataSetChanged();
     }
 
     @NonNull

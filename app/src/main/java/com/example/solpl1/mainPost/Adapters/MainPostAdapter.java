@@ -33,6 +33,10 @@ public class MainPostAdapter extends RecyclerView.Adapter<MainPostAdapter.ViewHo
         this.list = list;
         this.context = context;
     }
+    public void setFilteredList(ArrayList<MainPost> filteredList){
+        this.list = filteredList;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
@@ -49,7 +53,7 @@ public class MainPostAdapter extends RecyclerView.Adapter<MainPostAdapter.ViewHo
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         // 유저 정보 가져오기
-        database.getReference().child("UserAccount").child(model.getUser_id())
+        database.getReference().child("UserAccount").child(model.getId_token())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -111,7 +115,7 @@ public class MainPostAdapter extends RecyclerView.Adapter<MainPostAdapter.ViewHo
             public void onClick(View v) {
                 Intent intent = new Intent(context, MainPostDetailActivity.class);
                 intent.putExtra("post_id", model.getPost_id());
-                intent.putExtra("user_id", model.getUser_id());
+                intent.putExtra("user_id", model.getId_token());
                 intent.setFlags(intent.FLAG_ACTIVITY_NEW_TASK);         // 새로운 테스크 생성-> 기존에 열어둔게 없으면 새로 생성, 기존게 있으면 그 태스크로 들어감
                 context.startActivity(intent);
             }

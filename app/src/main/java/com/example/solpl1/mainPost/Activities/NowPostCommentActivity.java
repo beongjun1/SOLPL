@@ -98,6 +98,7 @@ public class NowPostCommentActivity extends AppCompatActivity {
                                     .placeholder(R.drawable.default_profile)
                                     .into(binding.profile);
                         }
+
                         binding.name.setText(userAccount.getName());
                     }
 

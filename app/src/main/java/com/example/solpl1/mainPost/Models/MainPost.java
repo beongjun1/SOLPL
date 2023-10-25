@@ -7,16 +7,24 @@ public class MainPost {
     private String cost;    // 금액
     private String post_date;   // 게시글 날짜
     private String trip_date;   //  여행 날짜
-    private String user_id;     // 작성자
+    private String id_token;     // 작성자
 
-    public MainPost(String post_id, String title, String content, String cost, String post_date, String trip_date, String user_id) {
+    public String getId_token() {
+        return id_token;
+    }
+
+    public void setId_token(String id_token) {
+        this.id_token = id_token;
+    }
+
+    public MainPost(String post_id, String title, String content, String cost, String post_date, String trip_date, String id_token) {
         this.post_id = post_id;
         this.title = title;
         this.content = content;
         this.cost = cost;
         this.post_date = post_date;
         this.trip_date = trip_date;
-        this.user_id = user_id;
+        this.id_token = id_token;
     }
     public MainPost(){}
 
@@ -68,11 +76,5 @@ public class MainPost {
         this.trip_date = trip_date;
     }
 
-    public String getUser_id() {
-        return user_id;
-    }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
-    }
 }

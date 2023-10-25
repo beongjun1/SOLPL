@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".mainPost.Fragments.MainPostFragment">
 
+    <FrameLayout
+        android:id="@+id/mainPost_frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mainPost_recyclerView"
@@ -13,30 +23,30 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/mainPost_frameLayout">
 
     </androidx.recyclerview.widget.RecyclerView>
-
-
-
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/mainPost_new_addBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_24mdp"
-        android:layout_marginRight="@dimen/_24mdp"
-        android:layout_marginBottom="@dimen/_24mdp"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_add"
-        android:backgroundTint="#022E62"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/mainPost_search"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/bg_round"
+        android:backgroundTint="#E8E8E8"
+        android:ems="10"
+        android:hint="search"
+        android:inputType="text"
+        android:maxLines="2"
+        android:paddingLeft="4dp"
+        android:textColorHint="#BAB9B9"
+        android:textSize="14sp"
+        app:guidelineUseRtl="false"
         app:layout_constraintEnd_toEndOf="parent"
-        android:tint="@color/white"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
