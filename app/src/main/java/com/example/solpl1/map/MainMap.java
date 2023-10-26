@@ -63,6 +63,7 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
                 intent.putExtra("resion",place.getResion());
                 if(place_title.getText().equals("에버랜드"))intent.putExtra("place_image",R.drawable.everland);
                 else if(place_title.getText().equals("순천만 습지"))intent.putExtra("place_image",R.drawable.suncheonman);
+                else if(place_title.getText().equals("오게스트"))intent.putExtra("place_image",R.drawable.guesthouse);
                 startActivity(intent);
             }
         });
@@ -97,7 +98,7 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
         LatLng Doksanseong = new LatLng(37.183611, 127.019444);
         MarkerOptions markerDoksanseong = new MarkerOptions();
         markerDoksanseong.position(Doksanseong);
-        markerDoksanseong.title("오산 독산성");
+        markerDoksanseong.title("독산성");
 
         LatLng MalgeumteoPark = new LatLng(37.137936, 127.064594);
         MarkerOptions markerMalgeumteoPark = new MarkerOptions();
@@ -112,7 +113,7 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
         LatLng Jukmiryeong = new LatLng(37.184705, 127.049343);
         MarkerOptions markerJukmiryeong  = new MarkerOptions();
         markerJukmiryeong.position(Jukmiryeong);
-        markerJukmiryeong.title("오산 죽미령 평화공원");
+        markerJukmiryeong.title("죽미령 평화공원");
 
         LatLng SeorangCulturalVillage = new LatLng(37.173183, 127.005750);
         MarkerOptions markerSeorangCulturalVillage  = new MarkerOptions();
@@ -130,7 +131,7 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
         LatLng lakePark = new LatLng(37.656568, 126.766229);
         MarkerOptions markerlakePark  = new MarkerOptions();
         markerlakePark.position(lakePark);
-        markerlakePark.title("호수공원");
+        markerlakePark.title("일산호수공원");
 
         LatLng AngokWetlandPark = new LatLng(37.684559, 126.783466);
         MarkerOptions markerAngokWetlandPark  = new MarkerOptions();
@@ -147,8 +148,10 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
         markerOneMount.position(OneMount);
         markerOneMount.title("원마운트");
 
-
-
+        LatLng guesthouse = new LatLng(35.16262,129.15856);
+        MarkerOptions markerGuestHouse = new MarkerOptions();
+        markerGuestHouse.position(guesthouse);
+        markerGuestHouse.title("오게스트");
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -157,10 +160,36 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
                 if(markerId.equals("순천만 습지")){
                     place_image.setImageResource(R.drawable.suncheonman);
                     place_title.setText("순천만 습지");
-                }
-                if(markerId.equals("에버랜드")){
+                }else if(markerId.equals("에버랜드")){
                     place_image.setImageResource(R.drawable.everland);
                     place_title.setText("에버랜드");
+                }else if(markerId.equals("오게스트")){
+                    place_image.setImageResource(R.drawable.guesthouse);
+                    place_title.setText("오게스트");
+                }else if(markerId.equals("물향기수목원")){
+                    place_title.setText("물향기수목원");
+                } else if (markerId.equals("궐리사")) {
+                    place_title.setText("궐리사");
+                } else if (markerId.equals("독산성")) {
+                    place_title.setText("독산성");
+                } else if (markerId.equals("맑음터공원")) {
+                    place_title.setText("맑음터공원");
+                } else if (markerId.equals("오산 에코리움")) {
+                    place_title.setText("오산 에코리움");
+                } else if (markerId.equals("죽미령 평화공원")) {
+                    place_title.setText("죽미령 평화공원");
+                } else if (markerId.equals("서랑동 문화마을")) {
+                    place_title.setText("서랑동 문화마을");
+                } else if (markerId.equals("서오릉")) {
+                    place_title.setText("서오릉");
+                } else if (markerId.equals("일산호수공원")) {
+                    place_title.setText("일산호수공원");
+                } else if (markerId.equals("안곡습지공원")) {
+                    place_title.setText("안곡습지공원");
+                } else if (markerId.equals("공릉천")) {
+                    place_title.setText("공릉천");
+                } else if (markerId.equals("원마운트")) {
+                    place_title.setText("원마운트");
                 }
 
                 databaseReference.child(markerId).addValueEventListener(new ValueEventListener() {
@@ -195,6 +224,19 @@ public class MainMap extends AppCompatActivity implements OnMapReadyCallback {
 
         mMap.addMarker(markerOptions);
         mMap.addMarker(markerEverLand);
+        mMap.addMarker(markerGuestHouse);
+        mMap.addMarker(markerDoksanseong);
+        mMap.addMarker(markerGongneungcheon);
+        mMap.addMarker(markerGwollisa);
+        mMap.addMarker(markerJukmiryeong);
+        mMap.addMarker(markerAngokWetlandPark);
+        mMap.addMarker(markerlakePark);
+        mMap.addMarker(markerMalgeumteoPark);
+        mMap.addMarker(markerMulhyanggi);
+        mMap.addMarker(markerOneMount);
+        mMap.addMarker(markerOsanEcorium);
+        mMap.addMarker(markerSeooreung);
+        mMap.addMarker(markerSeorangCulturalVillage);
 
         // 대한민국 전체 한눈에 들어오도록 초기 배율 및 화면 초기화
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(36.34,127.77), 7));
