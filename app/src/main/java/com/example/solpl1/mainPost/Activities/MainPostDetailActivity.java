@@ -115,7 +115,7 @@ public class MainPostDetailActivity extends AppCompatActivity {
 
         // 게시글 이미지 넣기
         MainPostImageAdapter adapter = new MainPostImageAdapter(imageList, this);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         binding.mainPostImages.setAdapter(adapter);
         binding.mainPostImages.setLayoutManager(layoutManager);
 
